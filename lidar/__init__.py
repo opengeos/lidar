@@ -7,3 +7,4 @@ __email__ = 'giswqs@gmail.com'
 __version__ = '0.1.1'
 
 from .filling import ExtractSinks
+from .slicing import DelineateDepressions
