@@ -1,0 +1,7 @@
+Click>=6.0
+numpy==1.14.3
+matplotlib==2.2.2
+scipy==1.1.0
+scikit-image==0.13.1
+pygdal==2.2.2.3
+richdem==0.2.0
