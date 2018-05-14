@@ -23,7 +23,7 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 from unittest.mock import MagicMock
-import lidar
+# import lidar
 class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
