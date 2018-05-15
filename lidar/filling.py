@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
     # ************************ change the following parameters if needed ******************************** #
     # set input files
-    in_dem = "../data/dem.tif"
+    in_dem = "data/dem.tif"
     # parameters for depression filling
     min_size = 1000        # minimum number of pixels as a depression
     min_depth = 0.3        # minimum depression depth

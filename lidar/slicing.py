@@ -485,8 +485,8 @@ if __name__ == '__main__':
 
     # ************************ change the following parameters if needed ******************************** #
     # set input files
-    in_dem = "../data/dem.tif"
-    in_sink = "../data/sink.tif"
+    in_dem = "data/dem.tif"
+    in_sink = "data/sink.tif"
     # parameters for level set method
     min_size = 1000         # minimum number of pixels as a depression
     min_depth = 0.3         # minimum depression depth
