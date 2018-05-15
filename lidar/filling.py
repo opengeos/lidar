@@ -123,7 +123,7 @@ def ExtractSinks(in_dem, min_size, out_dir):
         os.mkdir(out_dir)
 
     # load the dem and get dem info
-    print("Loading data ...\n")
+    print("Loading data ...")
     dem = rd.LoadGDAL(in_dem)
     no_data = dem.no_data
     projection = dem.projection
@@ -133,27 +133,27 @@ def ExtractSinks(in_dem, min_size, out_dir):
     # get min and max elevation of the dem
     max_elev = np.float(np.max(dem))
     min_elev = np.float(np.min(dem[dem > 0]))
-    print("min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}\n".format(min_elev, max_elev, no_data, cell_size))
+    print("min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}".format(min_elev, max_elev, no_data, cell_size))
 
     # depression filling
-    print("Depression filling ...\n")
+    print("Depression filling ...")
     dem_filled = rd.FillDepressions(dem, in_place=False)
     dem_diff = dem_filled - dem
     dem_diff.no_data = 0
 
-    print("Saving filled dem ...\n")
+    print("Saving filled dem ...")
     rd.SaveGDAL(out_dem_filled, dem_filled)
     rd.SaveGDAL(out_dem_diff, dem_diff)
 
     # nb_labels is the total number of objects. 0 represents background object.
-    print("Region grouping ...\n")
+    print("Region grouping ...")
     label_objects, nb_labels = regionGroup(dem_diff, min_size, no_data)
     dem_diff[label_objects == 0] = 0
     depth = np2rdarray(dem_diff, no_data=0, projection=projection, geotransform=geotransform)
     rd.SaveGDAL(out_depth, depth)
     del dem_diff, depth
 
-    print("Computing properties ...\n")
+    print("Computing properties ...")
     objects = measure.regionprops(label_objects, dem)
     dep_list = get_dep_props(objects, cell_size)
     write_dep_csv(dep_list, out_csv_file)
@@ -163,14 +163,14 @@ def ExtractSinks(in_dem, min_size, out_dir):
     region = np2rdarray(label_objects, no_data=0, projection=projection, geotransform=geotransform)
     del label_objects
 
-    print("Saving sink dem ...\n")
+    print("Saving sink dem ...")
     sink = np.copy(dem)
     sink[region == 0] = 0
     sink = np2rdarray(sink, no_data=0, projection=projection, geotransform=geotransform)
     rd.SaveGDAL(out_sink, sink)
     # del sink
 
-    print("Saving refined dem ...\n")
+    print("Saving refined dem ...")
     dem_refined = dem_filled
     dem_refined[region > 0] = dem[region > 0]
     dem_refined = np2rdarray(dem_refined, no_data=no_data, projection=projection, geotransform=geotransform)
@@ -178,13 +178,13 @@ def ExtractSinks(in_dem, min_size, out_dir):
     rd.SaveGDAL(out_region, region)
     del dem_refined, region, dem
 
-    print("Converting raster to vector ...\n")
+    print("Converting raster to vector ...")
     polygonize(out_region, out_vec_file)
 
     end_time = time.time()
     print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
 
-    return sink
+    return out_sink
 
 
 if __name__ == '__main__':
@@ -199,8 +199,9 @@ if __name__ == '__main__':
     out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
     # ************************************************************************************************** #
 
-    sink = ExtractSinks(in_dem, min_size=min_size, out_dir=out_dir)
+    sink_path = ExtractSinks(in_dem, min_size=min_size, out_dir=out_dir)
     dem = rd.LoadGDAL(in_dem)
+    sink = rd.LoadGDAL(sink_path)
     demfig = rd.rdShow(dem, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
     sinkfig = rd.rdShow(sink, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
 

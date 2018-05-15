@@ -6,8 +6,6 @@ import numpy as np
 import richdem as rd
 from scipy import ndimage
 from skimage import measure
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 from osgeo import gdal, ogr, osr
 
 
@@ -363,7 +361,7 @@ def np2rdarray(in_array, no_data, projection, geotransform):
 
 
 # delineate nested depressions
-def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp):
+def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp=False):
 
     # The following parameters can be used by default
     interval = interval * (-1)  # convert slicing interval to negative value
@@ -477,7 +475,7 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
 
     end_time = time.time()
     print("Total run time:\t\t\t {:.4f} s".format(end_time - init_time))
-    return True
+    return out_obj_file, out_level_file
 
 
 # #####################################  main script
@@ -491,15 +489,15 @@ if __name__ == '__main__':
     min_size = 1000         # minimum number of pixels as a depression
     min_depth = 0.3         # minimum depression depth
     interval = 0.3          # slicing interval, top-down approach
-    bool_level_shp = True  # whether or not to extract polygons for each individual level
+    bool_level_shp = False  # whether or not to extract polygons for each individual level
     # set output directory
     out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
     # **************************************************************************************************#
 
-    results = DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp)
+    dep_id_path, dep_level_path = DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp)
     print("Results are saved in: {}".format(out_dir))
 
-    dep_id = rd.LoadGDAL(os.path.join(out_dir, "depression_id.tif"))
+    dep_id = rd.LoadGDAL(dep_id_path)
     dep_id_fig = rd.rdShow(dep_id, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
-    dep_level = rd.LoadGDAL(os.path.join(out_dir, "depression_level.tif"))
+    dep_level = rd.LoadGDAL(dep_level_path)
     dep_level_fig = rd.rdShow(dep_level, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
