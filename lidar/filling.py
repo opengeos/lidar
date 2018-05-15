@@ -1,12 +1,10 @@
-import richdem as rd
-import numpy as np
-import math
 import os
 import time
+import numpy as np
+import richdem as rd
 from scipy import ndimage
 from skimage import measure
 from osgeo import gdal, ogr, osr
-import matplotlib.pyplot as plt
 
 
 # class for true depression
@@ -20,15 +18,6 @@ class Depression:
         self.maxDepth = maxDepth
         self.minElev = minElev
         self.bndElev = bndElev
-
-
-# get image info
-def get_min_max_nodata(image):
-    max_elev = np.max(image)
-    min_elev = np.min(image)
-    nodata = pow(10, math.floor(math.log10(np.max(image))) + 2) - 1  # based on the max value, assign no data value
-    image[image <= 0] = nodata  # change no data value
-    return np.float(min_elev), np.float(max_elev), np.int32(nodata)
 
 
 # identify regions based on region growing method
@@ -58,18 +47,14 @@ def get_dep_props(objects, resolution):
 
     for object in objects:
         unique_id = object.label
-        cells = object.area
-        size = cells * pow(resolution, 2)  # depression size
-        max_depth = np.float(object.max_intensity - object.min_intensity)  # depression max depth
-        mean_depth = np.float((object.max_intensity * cells - np.sum(object.intensity_image)) / cells)  # depression mean depth
-        volume = mean_depth * cells * pow(resolution, 2)  # depression volume
-        spill_elev = np.float(object.max_intensity)  # to be implemented
+        count = object.area
+        size = count * pow(resolution, 2)  # depression size
         min_elev = np.float(object.min_intensity)  # depression min elevation
         max_elev = np.float(object.max_intensity)  # depression max elevation
-        # print("id = {}, size = {}, max depth = {:.2f}, mean depth = {:.2f}, volume = {:.2f}, spill elev = {:.2f}".format(
-        #     unique_id, size, max_depth, mean_depth, volume, spill_elev))
-
-        dep_list.append(Depression(unique_id, cells, size, volume, mean_depth, max_depth, min_elev, max_elev))
+        max_depth = max_elev - min_elev  # depression max depth
+        mean_depth = np.float((max_elev * count - np.sum(object.intensity_image)) / count)  # depression mean depth
+        volume = mean_depth * count * pow(resolution, 2)  # depression volume
+        dep_list.append(Depression(unique_id, count, size, volume, mean_depth, max_depth, min_elev, max_elev))
 
     return dep_list
 
@@ -77,12 +62,12 @@ def get_dep_props(objects, resolution):
 # save the depression list info to csv
 def write_dep_csv(dep_list, csv_file):
     csv = open(csv_file, "w")
-    header = "id" + "," + "count"+"," + "area"+","+"volume"+","+"avg-depth"+","+"max-depth"+","+"min-elev"+","+"max-elev"
+    header = "id" + "," + "count"+"," + "area" + "," + "volume" + "," + "avg-depth" + "," + "max-depth" + \
+             "," + "min-elev" + "," + "max-elev"
     csv.write(header + "\n")
     for dep in dep_list:
         line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}".format(dep.id, dep.count, dep.size, dep.volume,
                                                                 dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev)
-        # print(line)
         csv.write(line + "\n")
     csv.close()
 
@@ -102,14 +87,10 @@ def polygonize(img,shp_path):
                     gdal.GDT_CFloat32: ogr.OFTReal,
                     gdal.GDT_CFloat64: ogr.OFTReal}
 
-    # tif = os.path.split(img)[1]
-    # print("reading {}...".format(tif))
     ds = gdal.Open(img)
     prj = ds.GetProjection()
     srcband = ds.GetRasterBand(1)
-    # create shapefile datasource from geotiff file
-    # shp = os.path.split(shp_path)[1]
-    # print("creating {}...".format(shp))
+
     dst_layername = "Shape"
     drv = ogr.GetDriverByName("ESRI Shapefile")
     dst_ds = drv.CreateDataSource(shp_path)
@@ -119,11 +100,7 @@ def polygonize(img,shp_path):
     # raster_field = ogr.FieldDefn('id', type_mapping[srcband.DataType])
     raster_field = ogr.FieldDefn('id', type_mapping[gdal.GDT_Int32])
     dst_layer.CreateField(raster_field)
-    # count_field = ogr.FieldDefn('count', type_mapping[gdal.GDT_Int32])
-    # dst_layer.CreateField(count_field)
     gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
-    # result = gdal.Polygonize(srcband, maskband, dst_layer, dst_field, options,
-    #                          callback=prog_func)
     del img, ds, srcband, dst_ds, dst_layer
 
 
@@ -141,13 +118,12 @@ def ExtractSinks(in_dem, min_size, out_dir):
     out_csv_file = os.path.join(out_dir, "depressions_info.csv")
     out_vec_file = os.path.join(out_dir, "depressions.shp")
 
-
-    # delete contents in output folder if existing
+    # create output folder if nonexistent
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
 
     # load the dem and get dem info
-    print("Loading data ...")
+    print("Loading data ...\n")
     dem = rd.LoadGDAL(in_dem)
     no_data = dem.no_data
     projection = dem.projection
@@ -157,28 +133,27 @@ def ExtractSinks(in_dem, min_size, out_dir):
     # get min and max elevation of the dem
     max_elev = np.float(np.max(dem))
     min_elev = np.float(np.min(dem[dem > 0]))
-    print("min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}".format(min_elev, max_elev, no_data, cell_size))
+    print("min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}\n".format(min_elev, max_elev, no_data, cell_size))
 
     # depression filling
-    print("Depression filling ...")
+    print("Depression filling ...\n")
     dem_filled = rd.FillDepressions(dem, in_place=False)
     dem_diff = dem_filled - dem
     dem_diff.no_data = 0
 
-    print("Saving filled dem ...")
+    print("Saving filled dem ...\n")
     rd.SaveGDAL(out_dem_filled, dem_filled)
     rd.SaveGDAL(out_dem_diff, dem_diff)
 
     # nb_labels is the total number of objects. 0 represents background object.
-    print("Region grouping ...")
+    print("Region grouping ...\n")
     label_objects, nb_labels = regionGroup(dem_diff, min_size, no_data)
-    # regions = measure.regionprops(label_objects, dem_diff)
     dem_diff[label_objects == 0] = 0
     depth = np2rdarray(dem_diff, no_data=0, projection=projection, geotransform=geotransform)
     rd.SaveGDAL(out_depth, depth)
     del dem_diff, depth
 
-    print("Computing properties ...")
+    print("Computing properties ...\n")
     objects = measure.regionprops(label_objects, dem)
     dep_list = get_dep_props(objects, cell_size)
     write_dep_csv(dep_list, out_csv_file)
@@ -188,14 +163,14 @@ def ExtractSinks(in_dem, min_size, out_dir):
     region = np2rdarray(label_objects, no_data=0, projection=projection, geotransform=geotransform)
     del label_objects
 
-    print("Saving sink dem ...")
+    print("Saving sink dem ...\n")
     sink = np.copy(dem)
     sink[region == 0] = 0
     sink = np2rdarray(sink, no_data=0, projection=projection, geotransform=geotransform)
     rd.SaveGDAL(out_sink, sink)
     # del sink
 
-    print("Saving refined dem ...")
+    print("Saving refined dem ...\n")
     dem_refined = dem_filled
     dem_refined[region > 0] = dem[region > 0]
     dem_refined = np2rdarray(dem_refined, no_data=no_data, projection=projection, geotransform=geotransform)
@@ -203,17 +178,11 @@ def ExtractSinks(in_dem, min_size, out_dir):
     rd.SaveGDAL(out_region, region)
     del dem_refined, region, dem
 
-    print("Converting raster to vector ...")
+    print("Converting raster to vector ...\n")
     polygonize(out_region, out_vec_file)
 
-    # # plot dems
-    # demfig = rd.rdShow(dem, ignore_colours=[0], axes=False, cmap='jet', figsize=(8, 5.5))
-    # demfig_filled = rd.rdShow(dem_filled, ignore_colours=[0], axes=False, cmap='jet', vmin=demfig['vmin'],
-    #                           vmax=demfig['vmax'], figsize=(8, 5.5))
-    # demfig_diff = rd.rdShow(dem_diff, ignore_colours=[0], axes=False, cmap='jet', figsize=(8, 5.5))
-
     end_time = time.time()
-    print("Total run time:\t\t\t {:.4f} s".format(end_time - start_time))
+    print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
 
     return sink
 
@@ -227,10 +196,12 @@ if __name__ == '__main__':
     min_size = 1000        # minimum number of pixels as a depression
     min_depth = 0.3         # minimum depression depth
     # set output directory
-    out_dir = "/home/qiusheng/temp"
+    out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
     # ************************************************************************************************** #
 
     sink = ExtractSinks(in_dem, min_size=min_size, out_dir=out_dir)
     dem = rd.LoadGDAL(in_dem)
     demfig = rd.rdShow(dem, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
     sinkfig = rd.rdShow(sink, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
+
+    print("Results are saved in: {}".format(out_dir))

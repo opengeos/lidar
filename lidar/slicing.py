@@ -1,16 +1,14 @@
-__author__ = "Dr. Qiusheng Wu (wqs@binghamton.edu)"
-
-from skimage.external.tifffile import TiffFile
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from scipy import ndimage
-from skimage import measure
-import numpy as np
+import os
 import math
 import time
-import os
 import shutil
+import numpy as np
+from scipy import ndimage
+from skimage import measure
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from osgeo import gdal, ogr, osr
+from skimage.external.tifffile import TiffFile
 
 
 # class for true depression
@@ -31,15 +29,14 @@ class Depression:
 # get min and max elevation of a dem
 def get_min_max_nodata(image):
     max_elev = np.max(image)
-    nodata = pow(10, math.floor(math.log10(np.max(image))) + 2) - 1  # based on the max value of the image, assign no data value
-    image[image <= 0] = nodata  #change no data value
+    nodata = pow(10, math.floor(math.log10(np.max(image))) + 2) - 1  # assign no data value
+    image[image <= 0] = nodata  # change no data value
     min_elev = np.min(image)
     return min_elev, max_elev, nodata
 
 
 # get cell size of tif file
 def get_cell_size(tif):
-
     cell_size = 0
     try:
         meta = tif.info()  # return text, the cell size looks like "* model_pixel_scale (3d) (1.0, 1.0, 0.0)"
@@ -167,14 +164,9 @@ def polygonize(img,shp_path):
                     gdal.GDT_CFloat32: ogr.OFTReal,
                     gdal.GDT_CFloat64: ogr.OFTReal}
 
-    # tif = os.path.split(img)[1]
-    # print("reading {}...".format(tif))
     ds = gdal.Open(img)
     prj = ds.GetProjection()
     srcband = ds.GetRasterBand(1)
-    # create shapefile datasource from geotiff file
-    # shp = os.path.split(shp_path)[1]
-    # print("creating {}...".format(shp))
     dst_layername = "Shape"
     drv = ogr.GetDriverByName("ESRI Shapefile")
     dst_ds = drv.CreateDataSource(shp_path)
@@ -184,60 +176,17 @@ def polygonize(img,shp_path):
     raster_field = ogr.FieldDefn('level', type_mapping[srcband.DataType])
     dst_layer.CreateField(raster_field)
     gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
-    # result = gdal.Polygonize(srcband, maskband, dst_layer, dst_field, options,
-    #                          callback=prog_func)
     del img, ds, srcband, dst_ds, dst_layer
 
 
-# raster to vector
-def polygonize_bk(img_arr, shp_path, template):
-    # mapping between gdal type and ogr field type
-    type_mapping = {gdal.GDT_Byte: ogr.OFTInteger,
-                    gdal.GDT_UInt16: ogr.OFTInteger,
-                    gdal.GDT_Int16: ogr.OFTInteger,
-                    gdal.GDT_UInt32: ogr.OFTInteger,
-                    gdal.GDT_Int32: ogr.OFTInteger,
-                    gdal.GDT_Float32: ogr.OFTReal,
-                    gdal.GDT_Float64: ogr.OFTReal,
-                    gdal.GDT_CInt16: ogr.OFTInteger,
-                    gdal.GDT_CInt32: ogr.OFTInteger,
-                    gdal.GDT_CFloat32: ogr.OFTReal,
-                    gdal.GDT_CFloat64: ogr.OFTReal}
-
-    # tif = os.path.split(img)[1]
-    # print("reading {}...".format(tif))
-    ds = gdal.Open(template)
-    prj = ds.GetProjection()
-    srcband = ds.GetRasterBand(1)
-    srcband.WriteArray(img_arr,0, 0)
-    srcband.FlushCache()
-    # create shapefile datasource from geotiff file
-    # shp = os.path.split(shp_path)[1]
-    # print("creating {}...".format(shp))
-    dst_layername = "Shape"
-    drv = ogr.GetDriverByName("ESRI Shapefile")
-    dst_ds = drv.CreateDataSource(shp_path)
-    srs = osr.SpatialReference(wkt=prj)
-
-    dst_layer = dst_ds.CreateLayer(dst_layername, srs=srs)
-    raster_field = ogr.FieldDefn('level', type_mapping[srcband.DataType])
-    dst_layer.CreateField(raster_field)
-    # gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
-    gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
-
-    # result = gdal.Polygonize(srcband, maskband, dst_layer, dst_field, options,
-    #                          callback=prog_func)
-    del img_arr, ds, srcband, dst_ds, dst_layer
-
-
-# convert images in a selected foler to shapefiles
+# convert images in a selected folder to shapefiles
 def img_to_shp(in_img_dir, out_shp_dir):
     img_files = os.listdir(in_img_dir)
     for img_file in img_files:
         if img_file.endswith(".tif"):
-            img_filename = os.path.join(in_img_dir,img_file)
-            shp_filename = os.path.join(out_shp_dir,img_file.replace("tif","shp"))
-            polygonize(img_filename,shp_filename)
+            img_filename = os.path.join(in_img_dir, img_file)
+            shp_filename = os.path.join(out_shp_dir, img_file.replace("tif", "shp"))
+            polygonize(img_filename, shp_filename)
 
 
 # parallel processing
@@ -266,10 +215,10 @@ def levelSet(img, region_id, obj_uid, image_paras, rain_paras):
     img[img == 0] = no_data
     min_elev = np.min(img)
 
-    print("=============================================================================== Region: {}".format(region_id))
+    print("============================================================================= Region: {}".format(region_id))
     unique_id = obj_uid
     # unique_id = 0
-    parent_ids = {}  #  store current parent depressions
+    parent_ids = {}  # store current parent depressions
     nbr_ids = {}  # store the inner-neighbor ids of current parent depressions
     dep_list = []  # list for storing depressions
 
@@ -435,19 +384,19 @@ def obj_to_level2(obj_img, dep_list):
 # save the depression list info to csv
 def write_dep_csv(dep_list, csv_file):
     csv = open(csv_file, "w")
-    header = "Depression ID" +","+"Level"+","+"Area"+","+"Volume"+","+"Mean depth"+","+"Maximum depth"+","+"Lowest elevation"+","+"Spill elevation"+","+"Children IDs"+","+"Region ID"
+    header = "Depression ID" +","+"Level"+","+"Area"+","+"Volume"+","+"Mean depth"+","+"Maximum depth"+","+\
+             "Lowest elevation"+","+"Spill elevation"+","+"Children IDs"+","+"Region ID"
     csv.write(header + "\n")
     for dep in dep_list:
-        #id, level, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, nbrId = 0
-        line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{}".format(dep.id, dep.level, dep.size, dep.volume, dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev, str(dep.inNbrId).replace(",",":"), dep.regionId)
-        # print(line)
-
+        # id, level, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, nbrId = 0
+        line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{}".format(dep.id, dep.level, dep.size, dep.volume,
+                dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev, str(dep.inNbrId).replace(",",":"), dep.regionId)
         csv.write(line + "\n")
     csv.close()
 
 
 # extracting individual level image
-def extract_levels_bk(level_img, min_size, no_data, out_dir, template, bool_comb = False):
+def extract_levels_bk(level_img, min_size, no_data, out_dir, template, bool_comb=False):
     max_level = int(np.max(level_img))
     combined_images = []
     single_images = []
@@ -485,7 +434,7 @@ def extract_levels_bk(level_img, min_size, no_data, out_dir, template, bool_comb
     return True
 
 
-def extract_levels(level_img, min_size, no_data, out_img_dir, out_shp_dir, template, bool_comb = False):
+def extract_levels(level_img, min_size, no_data, out_img_dir, out_shp_dir, template, bool_comb=False):
     max_level = int(np.max(level_img))
     combined_images = []
     single_images = []
@@ -548,6 +497,7 @@ def display_image(img, title, legend ="", max_plot = False):
         plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     plt.show()
     return True
+
 
 # delineate nested depressions
 def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir):
@@ -619,7 +569,7 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir):
     obj_uid = 0
     global_dep_list = []
 
-    #loop through regions and identify nested depressions in each region using level-set method
+    # loop through regions and identify nested depressions in each region using level-set method
     for region in regions:  # iterate through each depression region
         region_id = region.label
         img = region.intensity_image  # dem subset for each region
@@ -697,11 +647,10 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir):
     return True
 
 
-######################################  main script
+# #####################################  main script
 if __name__ == '__main__':
 
-
-    #************************ change the following parameters if needed ********************************#
+    # ************************ change the following parameters if needed ******************************** #
     # set input files
     in_dem = "../data/dem.tif"
     in_sink = "../data/sink.tif"
@@ -710,8 +659,9 @@ if __name__ == '__main__':
     min_depth = 0.3         # minimum depression depth
     interval = 0.2          # slicing interval, top-down approach
     # set output directory
-    out_dir = "/home/qiusheng/temp"
+    out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
     # **************************************************************************************************#
 
     results = DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir)
 
+    print("Results are saved in: {}".format(out_dir))

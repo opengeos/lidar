@@ -4,6 +4,10 @@ __pycache__/
 *$py.class
 .idea/
 
+# tif files extra
+*.tfw
+*.aux.xml
+
 # C extensions
 *.so
 
