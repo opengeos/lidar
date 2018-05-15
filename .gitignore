@@ -4,6 +4,9 @@ __pycache__/
 *$py.class
 .idea/
 
+# exclude files
+lidar/levelset.py
+
 # tif files extra
 *.tfw
 *.aux.xml
