@@ -62,7 +62,7 @@ def get_dep_props(objects, resolution):
 # save the depression list info to csv
 def write_dep_csv(dep_list, csv_file):
     csv = open(csv_file, "w")
-    header = "id" + "," + "count"+"," + "area" + "," + "volume" + "," + "avg-depth" + "," + "max-depth" + \
+    header = "region-id" + "," + "count"+"," + "area" + "," + "volume" + "," + "avg-depth" + "," + "max-depth" + \
              "," + "min-elev" + "," + "max-elev"
     csv.write(header + "\n")
     for dep in dep_list:
@@ -115,8 +115,8 @@ def ExtractSinks(in_dem, min_size, out_dir):
     out_sink = os.path.join(out_dir, "sink.tif")
     out_region = os.path.join(out_dir, "region.tif")
     out_depth = os.path.join(out_dir, "depth.tif")
-    out_csv_file = os.path.join(out_dir, "depressions_info.csv")
-    out_vec_file = os.path.join(out_dir, "depressions.shp")
+    out_csv_file = os.path.join(out_dir, "regions_info.csv")
+    out_vec_file = os.path.join(out_dir, "regions.shp")
 
     # create output folder if nonexistent
     if not os.path.exists(out_dir):
@@ -194,7 +194,7 @@ if __name__ == '__main__':
     in_dem = "../data/dem.tif"
     # parameters for depression filling
     min_size = 1000        # minimum number of pixels as a depression
-    min_depth = 0.3         # minimum depression depth
+    min_depth = 0.3        # minimum depression depth
     # set output directory
     out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
     # ************************************************************************************************** #
