@@ -12,6 +12,8 @@ lidar
 .. image:: https://readthedocs.org/projects/lidar/badge/?version=latest
         :target: https://lidar.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
+.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
+        :target: https://opensource.org/licenses/MIT
 
 
 Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
@@ -23,33 +25,60 @@ Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
 * GitHub repo: https://github.com/giswqs/lidar
 * Documentation: https://lidar.readthedocs.io.
 * PyPI: https://pypi.org/project/lidar/
-* Free software: MIT license
+* Free software: `MIT license`_
 
+.. _`MIT license`: https://en.wikipedia.org/wiki/MIT_License
 
 
 Features
 --------
 
 * Extracting depressions from DEMs (see filling.py_).
-* Filtering out small artifact depressions based on user-specified minimum depression size.
-* Delineating depression nested hierarchy using level-set method (see slicing.py_).
-* Computing topological and geometric properties of depressions, including size, volume, depth, spill elevation etc.
+* Filtering out small artifact depressions based on user-specified minimum depression size (see filling.py_).
+* Generating refined DEMs with small depressions filled but large depressions kept intact (see filling.py_).
+* Delineating depression nested hierarchy using the level-set method (see slicing.py_).
+* Computing topological and geometric properties of depressions, including size, volume, mean depth, maximum depth, lowest elevation, and spill elevation (see slicing.py_).
+* Exporting depression properties as a csv file (see slicing.py_).
 
 
 Using It
 --------
-Install the Python package with: ``pip install lidar``
+Install the Python package using the following command:
+
+.. code:: python
+
+  pip install lidar
 
 
 And use:
 
-     ``import lidar``
+.. code:: python
 
-     ``lidar.ExtractSinks(in_dem, min_size, out_dir)``
+  import os
+  import pkg_resources
+  import lidar
 
-     ``lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)``
+  # identify the sample data directory of the package
+  package_name = 'lidar'
+  data_dir = pkg_resources.resource_filename(package_name, 'data/')
+
+  # use the sample dem. Change it to your own dem if needed
+  in_dem = os.path.join(data_dir, 'dem.tif')
+  # set output directory. By default, use the temp directory under user's home directory
+  out_dir = os.path.join(os.path.expanduser("~"), "temp")
+
+  # parameters for identifying sinks and delineating nested depressions
+  min_size = 1000      # minimum number of pixels as a depression
+  min_depth = 0.5      # minimum depth as a depression
+  interval = 0.3       # slicing interval for the level-set method
+  bool_shp = False     # output shapefiles for each individual level
+
+  # extracting sinks based on user-defined minimum depression size
+  sink_path = lidar.ExtractSinks(in_dem, min_size, out_dir)
+  dep_id_path, dep_level_path = lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)
 
 Check the example.py_ for more details.
+
 
 Examples
 --------
@@ -61,6 +90,7 @@ The following example was conducted on a 64-bit Linux machine with a quad-core I
 .. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_DEM.jpg
 .. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_Result.jpg
 .. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_Table.jpg
+
 
 Publications
 ------------
