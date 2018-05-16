@@ -30,9 +30,9 @@ Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
 Features
 --------
 
-* Extracting depressions from DEMs.
+* Extracting depressions from DEMs (see filling.py_).
 * Filtering out small artifact depressions based on user-specified minimum depression size.
-* Delineating depression nested hierarchy using level-set method.
+* Delineating depression nested hierarchy using level-set method (see slicing.py_).
 * Computing topological and geometric properties of depressions, including size, volume, depth, spill elevation etc.
 
 
@@ -46,7 +46,7 @@ And use:
      ``import lidar``
 
      ``lidar.ExtractSinks(in_dem, min_size, out_dir)``
-     
+
      ``lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)``
 
 Check the example.py_ for more details.
@@ -57,7 +57,8 @@ Credits
 
 * This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
-
+.. _filling.py: https://github.com/giswqs/lidar/blob/master/lidar/filling.py
+.. _slicing.py: https://github.com/giswqs/lidar/blob/master/lidar/slicing.py
 .. _example.py: https://github.com/giswqs/lidar/blob/master/lidar/example.py
 .. _richdem: https://github.com/r-barnes/richdem
 .. _numpy: http://www.numpy.org/
