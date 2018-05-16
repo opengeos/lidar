@@ -51,6 +51,23 @@ And use:
 
 Check the example.py_ for more details.
 
+Examples
+--------
+
+The images below show working examples of the level set method for delineating nested depressions in the Cottonwood Lake Study Area (CLSA), North Dakota. More test datasets (e.g., the Pipestem watershed in the Prairie Pothole Region of North Dakota) can be downloaded from http://gishub.org/2018-JAWRA-Data
+
+The following example was conducted on a 64-bit Linux machine with a quad-core Intel i7-7700 CPU and 16 GB RAM. The average running time of the algorithm for this DEM was 0.75 seconds.
+
+.. image:: images/CLSA_DEM.png
+.. image:: images/CLSA_Result.png
+.. image:: images/CLSA_Table.png
+
+Publications
+------------
+The level-set algorithm used in the **lidar** package has been published in the following articles.
+
+* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Methods. *Journal of the American Water Resources Association*. (forthcoming)
+
 Credits
 -------
 * This algorithms are built on richdem_, numpy_, scipy_, scikit-image_, and pygdal_.
