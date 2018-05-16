@@ -58,9 +58,9 @@ The images below show working examples of the level set method for delineating n
 
 The following example was conducted on a 64-bit Linux machine with a quad-core Intel i7-7700 CPU and 16 GB RAM. The average running time of the algorithm for this DEM was 0.75 seconds.
 
-.. image:: images/CLSA_DEM.png
-.. image:: images/CLSA_Result.png
-.. image:: images/CLSA_Table.png
+.. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_DEM.jpg
+.. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_Result.jpg
+.. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_Table.jpg
 
 Publications
 ------------
