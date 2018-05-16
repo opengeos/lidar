@@ -38,21 +38,16 @@ Features
 
 Using It
 --------
-Install the Python package with:
+Install the Python package with: ``pip install lidar``
 
-.. code-block:: python
-   :emphasize-lines: 3,5
-
-     pip install lidar
 
 And use:
 
-.. code-block:: python
-   :emphasize-lines: 3,5
+     ``import lidar``
 
-     import lidar
-     lidar.ExtractSinks(in_dem, min_size, out_dir)
-     lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)
+     ``lidar.ExtractSinks(in_dem, min_size, out_dir)``
+     
+     ``lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)``
 
 Check the example.py_ for more details.
 
