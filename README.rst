@@ -35,7 +35,7 @@ Features
 
 * Extracting depressions from DEMs (see filling.py_).
 * Filtering out small artifact depressions based on user-specified minimum depression size (see filling.py_).
-* Generating refined DEMs with small depressions filled but large depressions kept intact (see filling.py_).
+* Generating refined DEMs with small depressions filled but larger depressions kept intact (see filling.py_).
 * Delineating depression nested hierarchy using the level-set method (see slicing.py_).
 * Computing topological and geometric properties of depressions, including size, volume, mean depth, maximum depth, lowest elevation, and spill elevation (see slicing.py_).
 * Exporting depression properties as a csv file (see slicing.py_).
