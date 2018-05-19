@@ -159,18 +159,32 @@ def levelSet(img, region_id, obj_uid, image_paras):
     no_data, min_size, min_depth, interval, resolution = get_image_paras(image_paras)
 
     level_img = np.zeros(img.shape)     # init output level image
-    flood_img = np.zeros(img.shape)     # init output flood time image
+    # flood_img = np.zeros(img.shape)     # init output flood time image
 
     max_elev = np.max(img)
     img[img == 0] = no_data
     min_elev = np.min(img)
 
     print("Processing Region # {} ...".format(region_id))
-    # print("============================================================================= Region: {}".format(region_id))
+    # print("=========================================================================== Region: {}".format(region_id))
     unique_id = obj_uid
     parent_ids = {}  # store current parent depressions
     nbr_ids = {}  # store the inner-neighbor ids of current parent depressions
     dep_list = []  # list for storing depressions
+    (rows, cols) = img.shape
+    if rows == 1 or cols == 1:      # if the depression is a horizontal or vertical line
+        cells = rows * cols
+        size = cells * pow(resolution, 2)  # depression size
+        max_depth = max_elev - min_elev
+        mean_depth = (max_elev * cells - np.sum(img)) / cells
+        volume = mean_depth * cells * pow(resolution, 2)
+        unique_id += 1
+        level = 1
+        dep_list.append(
+            Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [], region_id))
+        level_img = np.ones(img.shape)
+        del img
+        return level_img, dep_list
 
     for elev in np.arange(max_elev, min_elev, interval):  # slicing operation using top-down approach
         img[img > elev] = 0  # set elevation higher than xy-plane to zero
@@ -334,7 +348,7 @@ def extract_levels(level_img, min_size, no_data, out_img_dir, out_shp_dir, templ
         out_shp_file = os.path.join(out_shp_dir, filename_single)
 
         out_img_file = os.path.join(out_img_dir, "tmp.tif")
-        writeRaster(sin_img, out_img_file, in_sink)
+        writeRaster(sin_img, out_img_file, template)
         polygonize(out_img_file, out_shp_file)
         # writeRaster(sin_img,out_file,template)
         del sin_img

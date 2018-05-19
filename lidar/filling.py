@@ -193,7 +193,7 @@ if __name__ == '__main__':
     # set input files
     in_dem = "data/dem.tif"
     # parameters for depression filling
-    min_size = 10        # minimum number of pixels as a depression
+    min_size = 1000        # minimum number of pixels as a depression
     min_depth = 0.3        # minimum depression depth
     # set output directory
     out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
