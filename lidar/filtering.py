@@ -39,7 +39,7 @@ def MeanFilter(in_dem, kernel_size=3, out_file=None):
 # median filter
 def MedianFilter(in_dem, kernel_size=3, out_file=None):
 
-    print("Median filter ...")
+    print("Median filtering ...")
     start_time = time.time()
     dem = rd.LoadGDAL(in_dem)
     no_data = dem.no_data

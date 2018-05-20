@@ -9,7 +9,8 @@ from osgeo import gdal, ogr, osr
 
 # class for true depression
 class Depression:
-    def __init__(self, id, count, size, volume, meanDepth, maxDepth, minElev, bndElev):
+    def __init__(self, id, count, size, volume, meanDepth, maxDepth, minElev, bndElev, perimeter, major_axis,
+                 minor_axis, elongatedness, eccentricity, orientation, area_bbox_ratio):
         self.id = id
         self.count = count
         self.size = size
@@ -18,6 +19,13 @@ class Depression:
         self.maxDepth = maxDepth
         self.minElev = minElev
         self.bndElev = bndElev
+        self.perimeter = perimeter
+        self.major_axis = major_axis
+        self.minor_axis = minor_axis
+        self.elongatedness = elongatedness
+        self.eccentricity = eccentricity
+        self.orientation = orientation
+        self.area_bbox_ratio = area_bbox_ratio
 
 
 # identify regions based on region growing method
@@ -54,7 +62,16 @@ def get_dep_props(objects, resolution):
         max_depth = max_elev - min_elev  # depression max depth
         mean_depth = np.float((max_elev * count - np.sum(object.intensity_image)) / count)  # depression mean depth
         volume = mean_depth * count * pow(resolution, 2)  # depression volume
-        dep_list.append(Depression(unique_id, count, size, volume, mean_depth, max_depth, min_elev, max_elev))
+        perimeter = object.perimeter
+        major_axis = object.major_axis_length
+        minor_axis = object.minor_axis_length
+        elongatedness = major_axis * 1.0 / minor_axis
+        eccentricity = object.eccentricity
+        orientation = object.orientation / 3.1415 * 180
+        area_bbox_ratio = object.extent
+
+        dep_list.append(Depression(unique_id, count, size, volume, mean_depth, max_depth, min_elev, max_elev, perimeter,
+                                   major_axis, minor_axis, elongatedness, eccentricity, orientation, area_bbox_ratio))
 
     return dep_list
 
@@ -63,11 +80,15 @@ def get_dep_props(objects, resolution):
 def write_dep_csv(dep_list, csv_file):
     csv = open(csv_file, "w")
     header = "region-id" + "," + "count"+"," + "area" + "," + "volume" + "," + "avg-depth" + "," + "max-depth" + \
-             "," + "min-elev" + "," + "max-elev"
+             "," + "min-elev" + "," + "max-elev" + "," + "perimeter" + "," + "major-axis" + "," + "minor-axis" + \
+             "," + "elongatedness" + "," + "eccentricity" + "," + "orientation" + "," + "area-bbox-ratio"
+
     csv.write(header + "\n")
     for dep in dep_list:
-        line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}".format(dep.id, dep.count, dep.size, dep.volume,
-                                                                dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev)
+        line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}, {:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}".format(
+            dep.id, dep.count, dep.size, dep.volume,dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev,
+            dep.perimeter, dep.major_axis, dep.minor_axis, dep.elongatedness, dep.eccentricity, dep.orientation,
+            dep.area_bbox_ratio)
         csv.write(line + "\n")
     csv.close()
 

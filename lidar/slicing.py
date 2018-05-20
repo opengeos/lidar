@@ -11,7 +11,8 @@ from osgeo import gdal, ogr, osr
 
 # class for true depression
 class Depression:
-    def __init__(self, id, level, count, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, regionId):
+    def __init__(self, id, level, count, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, regionId,
+                 perimeter, major_axis, minor_axis, elongatedness, eccentricity, orientation, area_bbox_ratio):
         self.id = id
         self.level = level
         self.count = count
@@ -23,6 +24,13 @@ class Depression:
         self.bndElev = bndElev
         self.inNbrId = inNbrId
         self.regionId = regionId
+        self.perimeter = perimeter
+        self.major_axis = major_axis
+        self.minor_axis = minor_axis
+        self.elongatedness = elongatedness
+        self.eccentricity = eccentricity
+        self.orientation = orientation
+        self.area_bbox_ratio = area_bbox_ratio
 
 
 # get min and max elevation of a dem
@@ -180,8 +188,22 @@ def levelSet(img, region_id, obj_uid, image_paras):
         volume = mean_depth * cells * pow(resolution, 2)
         unique_id += 1
         level = 1
-        dep_list.append(
-            Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [], region_id))
+        perimeter = cells * resolution
+        major_axis = cells * resolution
+        minor_axis = resolution
+        area_bbox_ratio = 1
+        if rows == 1:
+            elongatedness = cols
+            eccentricity = math.sqrt(1 - cols * cols)
+            orientation = 0
+        else:
+            elongatedness = rows
+            eccentricity = math.sqrt(1 - rows * rows)
+            orientation = 90
+
+        dep_list.append(Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [],
+                                   region_id, perimeter, major_axis, minor_axis, elongatedness, eccentricity,
+                                   orientation, area_bbox_ratio))
         level_img = np.ones(img.shape)
         del img
         return level_img, dep_list
@@ -212,7 +234,16 @@ def levelSet(img, region_id, obj_uid, image_paras):
                 #     size, max_depth, mean_depth, volume, spill_elev))
                 unique_id += 1
                 level = 1
-                dep_list.append(Depression(unique_id,level,cells,size,volume,mean_depth,max_depth,min_elev,max_elev,[],region_id))
+                perimeter = object.perimeter
+                major_axis = object.major_axis_length
+                minor_axis = object.minor_axis_length
+                elongatedness = major_axis * 1.0 / minor_axis
+                eccentricity = object.eccentricity
+                orientation = object.orientation / 3.1415 * 180
+                area_bbox_ratio = object.extent
+                dep_list.append(Depression(unique_id,level,cells,size,volume,mean_depth,max_depth,min_elev,max_elev,[],
+                                           region_id, perimeter, major_axis, minor_axis, elongatedness, eccentricity,
+                                           orientation, area_bbox_ratio))
                 parent_ids[unique_id] = 0  # number of inner neighbors
                 nbr_ids[unique_id] = []   # ids of inner neighbors
                 tmp_img = np.zeros(object.image.shape)
@@ -244,8 +275,17 @@ def levelSet(img, region_id, obj_uid, image_paras):
                     #         size, max_depth, mean_depth, volume, spill_elev))
                     unique_id += 1
                     level = 1
+                    perimeter = object.perimeter
+                    major_axis = object.major_axis_length
+                    minor_axis = object.minor_axis_length
+                    elongatedness = major_axis * 1.0 / minor_axis
+                    eccentricity = object.eccentricity
+                    orientation = object.orientation / 3.1415 * 180
+                    area_bbox_ratio = object.extent
                     dep_list.append(
-                        Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [], region_id))
+                        Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [],
+                                   region_id, perimeter, major_axis, minor_axis, elongatedness, eccentricity,
+                                   orientation, area_bbox_ratio))
                     dep_list[key-1-obj_uid].inNbrId.append(unique_id)
                     parent_ids[unique_id] = 0
                     nbr_ids[unique_id] = []
@@ -304,12 +344,16 @@ def obj_to_level(obj_img, dep_list):
 def write_dep_csv(dep_list, csv_file):
     csv = open(csv_file, "w")
     header = "id" +","+"level"+","+"count"+","+"area"+","+"volume"+","+"avg-depth"+","+"max-depth"+","+\
-             "min-elev"+","+"max-elev"+","+"children-id"+","+"region-id"
+             "min-elev"+","+"max-elev"+","+"children-id"+","+"region-id" + "," + "perimeter" + "," + "major-axis" + \
+             "," + "minor-axis" + "," + "elongatedness" + "," + "eccentricity" + "," + "orientation" + "," + \
+             "area-bbox-ratio"
     csv.write(header + "\n")
     for dep in dep_list:
         # id, level, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, nbrId = 0
-        line = "{},{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{}".format(dep.id, dep.level, dep.count, dep.size, dep.volume,
-                dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev, str(dep.inNbrId).replace(",",":"), dep.regionId)
+        line = "{},{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}"\
+            .format(dep.id, dep.level, dep.count, dep.size, dep.volume, dep.meanDepth, dep.maxDepth, dep.minElev,
+                    dep.bndElev, str(dep.inNbrId).replace(",",":"), dep.regionId, dep.perimeter, dep.major_axis,
+                    dep.minor_axis, dep.elongatedness, dep.eccentricity, dep.orientation, dep.area_bbox_ratio)
         csv.write(line + "\n")
     csv.close()
 

@@ -12,6 +12,9 @@ in_dem = os.path.join(data_dir, 'dem.tif')
 # set output directory. By default, use the temp directory under user's home directory
 out_dir = os.path.join(os.path.expanduser("~"), "temp")
 
+if not os.path.exists(out_dir):
+    os.mkdir(out_dir)
+
 # parameters for identifying sinks and delineating nested depressions
 min_size = 1000         # minimum number of pixels as a depression
 min_depth = 0.3         # minimum depth as a depression
