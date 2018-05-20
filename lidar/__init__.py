@@ -8,3 +8,4 @@ __version__ = '0.1.5'
 
 from .filling import ExtractSinks
 from .slicing import DelineateDepressions
+from .filtering import MeanFilter, MedianFilter, GaussianFilter

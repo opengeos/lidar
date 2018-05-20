@@ -13,12 +13,14 @@ in_dem = os.path.join(data_dir, 'dem.tif')
 out_dir = os.path.join(os.path.expanduser("~"), "temp")
 
 # parameters for identifying sinks and delineating nested depressions
-min_size = 1000             # minimum number of pixels as a depression
-min_depth = 0.3             # minimum depth as a depression
-interval = 0.3      # slicing interval for the level-set method
-bool_shp = False      # output shapefiles for each individual level
+min_size = 1000         # minimum number of pixels as a depression
+min_depth = 0.3         # minimum depth as a depression
+interval = 0.3          # slicing interval for the level-set method
+bool_shp = False        # output shapefiles for each individual level
 
 # extracting sinks based on user-defined minimum depression size
+out_dem = os.path.join(out_dir, "median.tif")
+in_dem = lidar.MedianFilter(in_dem, kernel_size=3, out_file=out_dem)
 sink_path = lidar.ExtractSinks(in_dem, min_size, out_dir)
 dep_id_path, dep_level_path = lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)
 

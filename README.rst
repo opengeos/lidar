@@ -33,6 +33,7 @@ Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
 Features
 --------
 
+* Smoothing DEMs using mean, median, and Gaussian filters (see filtering.py_)
 * Extracting depressions from DEMs (see filling.py_).
 * Filtering out small artifact depressions based on user-specified minimum depression size (see filling.py_).
 * Generating refined DEMs with small depressions filled but larger depressions kept intact (see filling.py_).
@@ -104,6 +105,7 @@ Credits
 
 * This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
+.. _filtering.py: https://github.com/giswqs/lidar/blob/master/lidar/filtering.py
 .. _filling.py: https://github.com/giswqs/lidar/blob/master/lidar/filling.py
 .. _slicing.py: https://github.com/giswqs/lidar/blob/master/lidar/slicing.py
 .. _example.py: https://github.com/giswqs/lidar/blob/master/lidar/example.py
