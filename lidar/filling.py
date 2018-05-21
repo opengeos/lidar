@@ -85,8 +85,8 @@ def write_dep_csv(dep_list, csv_file):
 
     csv.write(header + "\n")
     for dep in dep_list:
-        line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}, {:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}".format(
-            dep.id, dep.count, dep.size, dep.volume,dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev,
+        line = "{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}, {:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}".\
+            format(dep.id, dep.count, dep.size, dep.volume,dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev,
             dep.perimeter, dep.major_axis, dep.minor_axis, dep.elongatedness, dep.eccentricity, dep.orientation,
             dep.area_bbox_ratio)
         csv.write(line + "\n")
@@ -149,7 +149,7 @@ def ExtractSinks(in_dem, min_size, out_dir):
     no_data = dem.no_data
     projection = dem.projection
     geotransform = dem.geotransform
-    cell_size = geotransform[1]
+    cell_size = np.round(geotransform[1], decimals=2)
 
     # get min and max elevation of the dem
     max_elev = np.float(np.max(dem))

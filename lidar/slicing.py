@@ -350,10 +350,11 @@ def write_dep_csv(dep_list, csv_file):
     csv.write(header + "\n")
     for dep in dep_list:
         # id, level, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, nbrId = 0
-        line = "{},{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}"\
-            .format(dep.id, dep.level, dep.count, dep.size, dep.volume, dep.meanDepth, dep.maxDepth, dep.minElev,
-                    dep.bndElev, str(dep.inNbrId).replace(",",":"), dep.regionId, dep.perimeter, dep.major_axis,
-                    dep.minor_axis, dep.elongatedness, dep.eccentricity, dep.orientation, dep.area_bbox_ratio)
+        line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}," \
+               "{:.2f}".format(dep.id, dep.level, dep.count, dep.size, dep.volume, dep.meanDepth, dep.maxDepth,
+                               dep.minElev,dep.bndElev, str(dep.inNbrId).replace(",",":"), dep.regionId, dep.perimeter,
+                               dep.major_axis, dep.minor_axis, dep.elongatedness, dep.eccentricity, dep.orientation,
+                               dep.area_bbox_ratio)
         csv.write(line + "\n")
     csv.close()
 
@@ -406,7 +407,7 @@ def getMetadata(img):
     no_data = img.no_data
     projection = img.projection
     geotransform = img.geotransform
-    cell_size = geotransform[1]
+    cell_size = np.round(geotransform[1], decimals=2)
     return no_data, projection, geotransform, cell_size
 
 
@@ -500,8 +501,8 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
     print("(rows, cols):\t\t\t {0}".format(str(rows_cols)))
     print("Pixel resolution:\t\t {0} m".format(str(resolution)))
     print("Number of regions:\t\t {0}".format(str(nb_labels)))
-    print("Data preparation time:\t {:.4f} s".format(prep_time - init_time))
-    print("Identify level time:\t {:.4f} s".format(time.time() - identify_time))
+    print("Data preparation time:\t\t {:.4f} s".format(prep_time - init_time))
+    print("Identify level time:\t\t {:.4f} s".format(time.time() - identify_time))
 
     write_time = time.time()
     # writeRaster(obj_image, out_obj_file, in_sink)

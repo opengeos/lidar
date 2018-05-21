@@ -38,7 +38,8 @@ Features
 * Filtering out small artifact depressions based on user-specified minimum depression size (see filling.py_).
 * Generating refined DEMs with small depressions filled but larger depressions kept intact (see filling.py_).
 * Delineating depression nested hierarchy using the level-set method (see slicing.py_).
-* Computing topological and geometric properties of depressions, including size, volume, mean depth, maximum depth, lowest elevation, and spill elevation, perimeter, major axis length, minor axis length, elongatedness, eccentricity, orientation, and area-bbox-ratio (see slicing.py_).
+* Delineating mount nested hierarchy using the level-set method (see mounts.py_).
+* Computing topological and geometric properties of depressions, including size, volume, mean depth, maximum depth, lowest elevation, spill elevation, perimeter, major axis length, minor axis length, elongatedness, eccentricity, orientation, and area-bbox-ratio (see slicing.py_).
 * Exporting depression properties as a csv file (see slicing.py_).
 
 
@@ -75,6 +76,8 @@ And use:
   bool_shp = False     # output shapefiles for each individual level
 
   # extracting sinks based on user-defined minimum depression size
+  out_dem = os.path.join(out_dir, "median.tif")
+  in_dem = MedianFilter(in_dem, kernel_size=3, out_file=out_dem)
   sink_path = lidar.ExtractSinks(in_dem, min_size, out_dir)
   dep_id_path, dep_level_path = lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)
 
@@ -108,6 +111,7 @@ Credits
 .. _filtering.py: https://github.com/giswqs/lidar/blob/master/lidar/filtering.py
 .. _filling.py: https://github.com/giswqs/lidar/blob/master/lidar/filling.py
 .. _slicing.py: https://github.com/giswqs/lidar/blob/master/lidar/slicing.py
+.. _mounts.py: https://github.com/giswqs/lidar/blob/master/lidar/mounts.py
 .. _example.py: https://github.com/giswqs/lidar/blob/master/lidar/example.py
 .. _richdem: https://github.com/r-barnes/richdem
 .. _numpy: http://www.numpy.org/
