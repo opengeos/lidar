@@ -78,8 +78,8 @@ And use:
   # extracting sinks based on user-defined minimum depression size
   out_dem = os.path.join(out_dir, "median.tif")
   in_dem = MedianFilter(in_dem, kernel_size=3, out_file=out_dem)
-  sink_path = lidar.ExtractSinks(in_dem, min_size, out_dir)
-  dep_id_path, dep_level_path = lidar.DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)
+  sink_path = ExtractSinks(in_dem, min_size, out_dir)
+  dep_id_path, dep_level_path = DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)
 
 Check the example.py_ for more details.
 
