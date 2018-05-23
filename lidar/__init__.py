@@ -9,3 +9,4 @@ __version__ = '0.1.6'
 from .filling import ExtractSinks
 from .slicing import DelineateDepressions
 from .filtering import MeanFilter, MedianFilter, GaussianFilter
+from .mounts import DelineateMounts

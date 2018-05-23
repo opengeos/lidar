@@ -62,9 +62,11 @@ def get_dep_props(objects, resolution):
         max_depth = max_elev - min_elev  # depression max depth
         mean_depth = np.float((max_elev * count - np.sum(object.intensity_image)) / count)  # depression mean depth
         volume = mean_depth * count * pow(resolution, 2)  # depression volume
-        perimeter = object.perimeter
-        major_axis = object.major_axis_length
-        minor_axis = object.minor_axis_length
+        perimeter = object.perimeter * resolution
+        major_axis = object.major_axis_length * resolution
+        minor_axis = object.minor_axis_length * resolution
+        if minor_axis == 0:
+            minor_axis = resolution
         elongatedness = major_axis * 1.0 / minor_axis
         eccentricity = object.eccentricity
         orientation = object.orientation / 3.1415 * 180

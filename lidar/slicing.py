@@ -194,11 +194,11 @@ def levelSet(img, region_id, obj_uid, image_paras):
         area_bbox_ratio = 1
         if rows == 1:
             elongatedness = cols
-            eccentricity = math.sqrt(1 - cols * cols)
+            eccentricity = 1
             orientation = 0
         else:
             elongatedness = rows
-            eccentricity = math.sqrt(1 - rows * rows)
+            eccentricity = 1
             orientation = 90
 
         dep_list.append(Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [],
@@ -234,9 +234,11 @@ def levelSet(img, region_id, obj_uid, image_paras):
                 #     size, max_depth, mean_depth, volume, spill_elev))
                 unique_id += 1
                 level = 1
-                perimeter = object.perimeter
-                major_axis = object.major_axis_length
-                minor_axis = object.minor_axis_length
+                perimeter = object.perimeter * resolution
+                major_axis = object.major_axis_length * resolution
+                minor_axis = object.minor_axis_length * resolution
+                if minor_axis == 0:
+                    minor_axis = resolution
                 elongatedness = major_axis * 1.0 / minor_axis
                 eccentricity = object.eccentricity
                 orientation = object.orientation / 3.1415 * 180
@@ -275,9 +277,11 @@ def levelSet(img, region_id, obj_uid, image_paras):
                     #         size, max_depth, mean_depth, volume, spill_elev))
                     unique_id += 1
                     level = 1
-                    perimeter = object.perimeter
-                    major_axis = object.major_axis_length
-                    minor_axis = object.minor_axis_length
+                    perimeter = object.perimeter * resolution
+                    major_axis = object.major_axis_length * resolution
+                    minor_axis = object.minor_axis_length * resolution
+                    if minor_axis == 0:
+                        minor_axis = resolution
                     elongatedness = major_axis * 1.0 / minor_axis
                     eccentricity = object.eccentricity
                     orientation = object.orientation / 3.1415 * 180
