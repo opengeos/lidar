@@ -91,17 +91,17 @@ The images below show working examples of the level set method for delineating n
 
 The following example was conducted on a 64-bit Linux machine with a quad-core Intel i7-7700 CPU and 16 GB RAM. The average running time of the algorithm for this DEM was 0.75 seconds.
 
-.. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_DEM.jpg
-.. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_Result.jpg
-.. image:: http://spatial.binghamton.edu/pubs/2018-JAWRA/images/CLSA_Table.jpg
+.. image:: https://wetlands.io/file/images/CLSA_DEM.jpg
+.. image:: https://wetlands.io/file/images/CLSA_Result.jpg
+.. image:: https://wetlands.io/file/images/CLSA_Table.jpg
 
 
 Publications
 ------------
 The algorithms used in the **lidar** package have been published in the following articles.
 
-* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Methods. *Journal of the American Water Resources Association*. (forthcoming)
-* **Wu, Q.**, & Lane, C.R. (2017). Delineating wetland catchments and modeling hydrologic connectivity using LiDAR data and aerial imagery. *Hydrology and Earth System Sciences. 21: 3579-3595*. DOI: `10.5194/hess-21-3579-2017`_
+* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. (forthcoming)
+* **Wu, Q.**, & Lane, C.R. (2017). Delineating wetland catchments and modeling hydrologic connectivity using LiDAR data and aerial imagery. *Hydrology and Earth System Sciences*. 21: 3579-3595. DOI: `10.5194/hess-21-3579-2017`_
 * **Wu, Q.**, Deng, C., & Chen, Z. (2016). Automated delineation of karst sinkholes from LiDAR-derived digital elevation models. *Geomorphology*. 266: 1-10. DOI: `10.1016/j.geomorph.2016.05.006`_
 * **Wu, Q.**, Su, H., Sherman, D.J., Liu, H., Wozencraft, J.M., Yu, B., & Chen, Z. (2016). A graph-based approach for assessing storm-induced coastal changes. *International Journal of Remote Sensing*. 37:4854-4873. DOI: `10.1080/01431161.2016.1225180`_
 * **Wu, Q.**, & Lane, C.R. (2016). Delineation and quantification of wetland depressions in the Prairie Pothole Region of North Dakota. *Wetlands*. 36(2):215–227. DOI: `10.1007/s13157-015-0731-6`_
