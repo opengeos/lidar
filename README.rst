@@ -102,7 +102,7 @@ The level-set algorithm in the **lidar** package has been published in the follo
 
 * **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. (forthcoming)
 
-Applications of the level-set and contour-tree methods for feature extraction for LiDAR data:
+Applications of the level-set and contour-tree methods for feature extraction from LiDAR data:
 
 * **Wu, Q.**, & Lane, C.R. (2017). Delineating wetland catchments and modeling hydrologic connectivity using LiDAR data and aerial imagery. *Hydrology and Earth System Sciences*. 21: 3579-3595. DOI: `10.5194/hess-21-3579-2017`_
 * **Wu, Q.**, Deng, C., & Chen, Z. (2016). Automated delineation of karst sinkholes from LiDAR-derived digital elevation models. *Geomorphology*. 266: 1-10. DOI: `10.1016/j.geomorph.2016.05.006`_
