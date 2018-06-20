@@ -98,9 +98,12 @@ The following example was conducted on a 64-bit Linux machine with a quad-core I
 
 Publications
 ------------
-The algorithms used in the **lidar** package have been published in the following articles.
+The level-set algorithm in the **lidar** package has been published in the following article:
 
 * **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. (forthcoming)
+
+Applications of the level-set and contour-tree methods for feature extraction for LiDAR data:
+
 * **Wu, Q.**, & Lane, C.R. (2017). Delineating wetland catchments and modeling hydrologic connectivity using LiDAR data and aerial imagery. *Hydrology and Earth System Sciences*. 21: 3579-3595. DOI: `10.5194/hess-21-3579-2017`_
 * **Wu, Q.**, Deng, C., & Chen, Z. (2016). Automated delineation of karst sinkholes from LiDAR-derived digital elevation models. *Geomorphology*. 266: 1-10. DOI: `10.1016/j.geomorph.2016.05.006`_
 * **Wu, Q.**, Su, H., Sherman, D.J., Liu, H., Wozencraft, J.M., Yu, B., & Chen, Z. (2016). A graph-based approach for assessing storm-induced coastal changes. *International Journal of Remote Sensing*. 37:4854-4873. DOI: `10.1080/01431161.2016.1225180`_
@@ -110,7 +113,7 @@ The algorithms used in the **lidar** package have been published in the followin
 
 Credits
 -------
-* This algorithms are built on richdem_, numpy_, scipy_, scikit-image_, and pygdal_.
+* The algorithms are built on richdem_, numpy_, scipy_, scikit-image_, and pygdal_.
 
 * This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
