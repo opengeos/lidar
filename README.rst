@@ -100,7 +100,7 @@ Publications
 ------------
 The level-set algorithm in the **lidar** package has been published in the following article:
 
-* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. (forthcoming)
+* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. (in press) preprint_
 
 Applications of the level-set and contour-tree methods for feature extraction from LiDAR data:
 
@@ -135,3 +135,4 @@ Credits
 .. _`10.1080/13658816.2015.1038719`: http://dx.doi.org/10.1080/13658816.2015.1038719
 .. _`10.1080/01431161.2016.1225180`: http://dx.doi.org/10.1080/01431161.2016.1225180
 .. _`10.3390/rs61111444`: http://dx.doi.org/10.3390/rs61111444
+.. _preprint: https://www.preprints.org/manuscript/201808.0358/v1
