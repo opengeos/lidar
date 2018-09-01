@@ -12,7 +12,8 @@ GDAL_VERSION = os.popen("gdal-config --version").read().rstrip()
 PYGDAL_VERSION = '2.3.1.4' # default pygdal version to install
 
 # pygdal version to install based on the GDAL version
-# URL: https://pypi.org/project/pygdal/#history
+# GDAL version history: https://trac.osgeo.org/gdal/wiki/DownloadSource
+# pygdal version history: https://pypi.org/project/pygdal/#history
 if GDAL_VERSION[:3] == '2.3':
     PYGDAL_VERSION = GDAL_VERSION + '.4'
 else:
