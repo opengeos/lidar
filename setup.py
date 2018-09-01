@@ -2,9 +2,21 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
+import os
 from os import path as op
 import io
 from setuptools import setup, find_packages
+
+# check GDAL version installed in the system
+GDAL_VERSION = os.popen("gdal-config --version").read().rstrip()
+PYGDAL_VERSION = '2.3.1.4' # default pygdal version to install
+
+# pygdal version to install based on the GDAL version
+# URL: https://pypi.org/project/pygdal/#history
+if GDAL_VERSION[:3] == '2.3':
+    PYGDAL_VERSION = GDAL_VERSION + '.4'
+else:
+    PYGDAL_VERSION = GDAL_VERSION + '.3'
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -19,6 +31,7 @@ with io.open(op.join(here, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
 
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
+install_requires.append('pygdal==' + PYGDAL_VERSION)
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
 requirements = ['Click>=6.0', ]
