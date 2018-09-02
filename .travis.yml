@@ -13,14 +13,14 @@ before_install:
   - gdal-config --version
 install: pip install -U tox-travis
 script: tox
-deploy:
-  provider: pypi
-  skip_existing: true
-  distributions: sdist bdist_wheel
-  user: giswqs
-  password:
-    secure: fgwacryZ5tJOFZroAqiu4bln3VG/0/U2XawA79Ury+fFtj30p6m2eokNWHgpcO1bIZecNSOUEB1nNKdDlq5c8RxpiEc2T64HsujQXWybjPHtCrfImccRF0fTBtSJ+mXh+/C7ZzPReJGZnoPzkR4EJWLt2chqYa0eix4W3mR0SLHrEpM7Ouyo/tvl+B2ZHBS8d03opqr4Eou0feL1A7zftGXfgndgBS7LSYi5wgxsAfgu+YvLSQhu3yEYJjCaKfHpFVXI3dbm9YAC0zbFxKMqyY8Px3/H5e/MQ0dO5gRRpica8K5qelFIASZDMN9XRgD+lFbtlpj7SYfNfvM9rMaQCV9EnTI+gghJIzy2mIO8kgd6Uexd3qFOB3XJN8hbX44bATXKzpa9bjuXyBTnFyybBjHfXQJbdCXvDS70jim+uMZapl2fxxrY/Y8VYvduJ6e9BewbNoe7WxAJNfAD5+9fB2O7gDWKIxDvsJRa6kIj04R5aWxw7gUnuOwERcTm9OR1+1F97e4788fHiu1s5sbkZanHH7ximDhfPw4xYz9CgJrl6cOiP3N5w+1/I7Ko2vuR7TsEDY3uQFbw9Rrgex/+Ln7xZLtH1bDgKGirboXd5nQ6Z6n5kUCJk1JLzzs4MhcUg9tV/easbRiGXgYRRYuH5NbX/fCSnx/F3Oj5NcAQpNg=
-  on:
-    tags: true
-    repo: giswqs/lidar
-    python: 3.6
+#deploy:
+#  provider: pypi
+#  skip_existing: true
+#  distributions: sdist bdist_wheel
+#  user: giswqs
+#  password:
+#    secure: fgwacryZ5tJOFZroAqiu4bln3VG/0/U2XawA79Ury+fFtj30p6m2eokNWHgpcO1bIZecNSOUEB1nNKdDlq5c8RxpiEc2T64HsujQXWybjPHtCrfImccRF0fTBtSJ+mXh+/C7ZzPReJGZnoPzkR4EJWLt2chqYa0eix4W3mR0SLHrEpM7Ouyo/tvl+B2ZHBS8d03opqr4Eou0feL1A7zftGXfgndgBS7LSYi5wgxsAfgu+YvLSQhu3yEYJjCaKfHpFVXI3dbm9YAC0zbFxKMqyY8Px3/H5e/MQ0dO5gRRpica8K5qelFIASZDMN9XRgD+lFbtlpj7SYfNfvM9rMaQCV9EnTI+gghJIzy2mIO8kgd6Uexd3qFOB3XJN8hbX44bATXKzpa9bjuXyBTnFyybBjHfXQJbdCXvDS70jim+uMZapl2fxxrY/Y8VYvduJ6e9BewbNoe7WxAJNfAD5+9fB2O7gDWKIxDvsJRa6kIj04R5aWxw7gUnuOwERcTm9OR1+1F97e4788fHiu1s5sbkZanHH7ximDhfPw4xYz9CgJrl6cOiP3N5w+1/I7Ko2vuR7TsEDY3uQFbw9Rrgex/+Ln7xZLtH1bDgKGirboXd5nQ6Z6n5kUCJk1JLzzs4MhcUg9tV/easbRiGXgYRRYuH5NbX/fCSnx/F3Oj5NcAQpNg=
+#  on:
+#    tags: true
+#    repo: giswqs/lidar
+#    python: 3.6

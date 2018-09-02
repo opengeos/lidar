@@ -4,4 +4,4 @@ matplotlib>=2.2.2
 scipy>=1.1.0
 scikit-image>=0.13.1
 richdem>=0.2.0
-#pygdal==2.2.2.3 (see setup.py)
+#pygdal==2.3.1.4 (GDAL >= 1.11.2)
