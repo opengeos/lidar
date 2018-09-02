@@ -100,6 +100,17 @@ The following commands can be used to install GDAL for Linux distributions.
   sudo add-apt-repository ppa:ubuntugis/ppa
   sudo apt-get update
   sudo apt-get install gdal-bin libgdal-dev
+  sudo apt-get install --reinstall build-essential
+  sudo apt-get install python3-dev
+
+
+After installing GDAL, the following commands are recommended before installing PyGDAL to avoid potential compiling errors.
+
+.. code:: python
+
+  sudo apt-get install --reinstall build-essential
+  sudo apt-get install python3-dev
+  pip install wheel
 
 
 After installing GDAL, the following commands are recommended before installing PyGDAL to avoid potential compiling errors.
