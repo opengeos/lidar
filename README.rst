@@ -83,6 +83,7 @@ And use:
 
 Check the example.py_ for more details.
 
+
 Dependencies
 ------------
 lidar's Python dependencies are listed in its requirements.txt file. In addition, lidar has a C library dependency: GDAL >=1.11.2. How to install GDAL in different operating systems will be explained below. More informaton about GDAL can be found here_.
@@ -99,6 +100,15 @@ The following commands can be used to install GDAL for Linux distributions.
   sudo add-apt-repository ppa:ubuntugis/ppa
   sudo apt-get update
   sudo apt-get install gdal-bin libgdal-dev
+
+
+After installing GDAL, the following commands are recommended before installing PyGDAL to avoid potential compiling errors.
+
+.. code:: python
+
+  sudo apt-get install --reinstall build-essential
+  sudo apt-get install python3-dev
+  pip install wheel
 
 
 MacOS X
@@ -121,6 +131,7 @@ I would recommend installing GDAL using OSGeo4W_. After installation, The GDAL d
 
 .. _OSGeo4W: https://trac.osgeo.org/osgeo4w/
 .. _instruction: https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows
+
 
 
 Examples
