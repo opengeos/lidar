@@ -118,16 +118,16 @@ The following commands can be used to install GDAL for Debian-based Linux distri
   sudo add-apt-repository ppa:ubuntugis/ppa
   sudo apt-get update
   sudo apt-get install gdal-bin libgdal-dev
+  pip install lidar
 
 
-After installing GDAL, the following commands are recommended before installing PyGDAL to avoid potential compiling errors.
+If you encounter any complinig errors, try the following commands. 
 
 .. code:: python
 
   sudo apt-get install --reinstall build-essential
   sudo apt-get install python3-dev
   pip install wheel
-  pip install lidar
 
 
 Pacman-based Linux
@@ -140,7 +140,7 @@ The following commands can be used to install GDAL for Pacman-based Linux distri
   sudo pacman -S yaourt --noconfirm
   yaourt -S gdal --noconfirm
   yaourt -S python-gdal --noconfirm
-  pip install lidar --no-cache-dir
+  pip install lidar
 
 
 MacOS X
