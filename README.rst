@@ -45,7 +45,7 @@ Features
 
 Using It
 --------
-Install the Python package using the following command:
+Install the **lidar** Python package using the following command. If you encounter any errors, please check the Dependencies_ section below.
 
 .. code:: python
 
@@ -58,7 +58,7 @@ And use:
 
   import os
   import pkg_resources
-  import lidar
+  from lidar import *
 
   # identify the sample data directory of the package
   package_name = 'lidar'
@@ -95,9 +95,20 @@ It is highly recommended that you use a Python virtual environment (e.g., conda)
 .. _`conda user guide`: https://conda.io/docs/user-guide/install/index.html
 .. _`managing Python environment`: https://conda.io/docs/user-guide/tasks/manage-environments.html
 
+Once GDAL has been installed, you can then proceed to install the **lidar** Python package using the following command:
+
+.. code:: python
+
+  pip install lidar
+
+
 Linux
 =====
-The following commands can be used to install GDAL for Linux distributions.
+
+Debian-based Linux
+^^^^^^^^^^^^^^^^^^
+
+The following commands can be used to install GDAL for Debian-based Linux distributions (e.g., Ubuntu, Linux Mint).
 
 .. code:: python
 
@@ -113,6 +124,20 @@ After installing GDAL, the following commands are recommended before installing 
   sudo apt-get install --reinstall build-essential
   sudo apt-get install python3-dev
   pip install wheel
+  pip install lidar
+
+
+Pacman-based Linux
+^^^^^^^^^^^^^^^^^^
+
+The following commands can be used to install GDAL for Pacman-based Linux distributions (e.g., Arch Linux, Manjaro). You might need to used `sudo` if you encounter permission errors.
+
+.. code:: python
+
+  sudo pacman -S yaourt --noconfirm
+  yaourt -S gdal --noconfirm
+  yaourt -S python-gdal --noconfirm
+  pip install lidar
 
 
 MacOS X
@@ -132,21 +157,26 @@ Alternatively, you can install GDAL binaries from kyngchaos_. You will then need
 Windows
 =======
 
-The instruction below assumes that you have installed Anaconda_.
+The instruction below assumes that you have installed Anaconda_. Open **Anaconda Prompt** and enter the following commands to create a conda environment and install required packages
 
-* Open Anaconda Prompt and enter the following commands to create a conda environment and install required packages
-* conda create -n py36 python=3.6
-* activate py36
-* conda install -c conda-forge gdal 
-* pip install richdem
-* pip install lidar
+.. code:: python
 
-When installing the richdem package, if you encounter an error that says 'Microsoft Visual C++ 14.0 is required', please follow the link below to fix the error.  
+  conda create -n py36 python=3.6
+  activate py36
+  conda install -c conda-forge gdal 
+  pip install richdem
+  pip install lidar
 
-* `Fix Python 3 on Windows error - Microsoft Visual C++ 14.0 is required`_
+When installing the **richdem** package, if you encounter an error saying 'Microsoft Visual C++ 14.0 is required', please follow the steps below to fix the error and reinstall **richdem**. More infomration can be found at this link `Fix Python 3 on Windows error - Microsoft Visual C++ 14.0 is required`_.  
+
+* Download `Microsoft Build Tools for Visual Studio 2017`_
+* Double click to install the downloaded installer - **Microsoft Build Tools for Visual Studio 2017**.
+* Open **Microsoft Build Tools for Visual Studio 2017**
+* Select **Workloads --> Visual C++ build tools** and click the install button
 
 .. _Anaconda: https://www.anaconda.com/download
 .. _`Fix Python 3 on Windows error - Microsoft Visual C++ 14.0 is required`: https://www.scivision.co/python-windows-visual-c++-14-required/
+.. _`Microsoft Build Tools for Visual Studio 2017`: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=15
 
 
 Examples
@@ -165,7 +195,7 @@ Publications
 ------------
 The level-set algorithm in the **lidar** package has been published in the following article:
 
-* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. (in press) preprint_
+* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. DOI: `10.1111/1752-1688.12689`_ (in press) preprint_
 
 Applications of the level-set and contour-tree methods for feature extraction from LiDAR data:
 
@@ -201,3 +231,4 @@ Credits
 .. _`10.1080/01431161.2016.1225180`: http://dx.doi.org/10.1080/01431161.2016.1225180
 .. _`10.3390/rs61111444`: http://dx.doi.org/10.3390/rs61111444
 .. _preprint: https://www.preprints.org/manuscript/201808.0358/v1
+.. _`10.1111/1752-1688.12689`: https://doi.org/10.1111/1752-1688.12689
