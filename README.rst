@@ -81,6 +81,9 @@ And use:
   sink_path = ExtractSinks(in_dem, min_size, out_dir)
   dep_id_path, dep_level_path = DelineateDepressions(sink_path, min_size, min_depth, interval, out_dir, bool_shp)
 
+  print('Results are saved in: {}'.format(out_dir))
+
+
 Check the example.py_ for more details.
 
 
@@ -130,14 +133,14 @@ After installing GDAL, the following commands are recommended before installing 
 Pacman-based Linux
 ^^^^^^^^^^^^^^^^^^
 
-The following commands can be used to install GDAL for Pacman-based Linux distributions (e.g., Arch Linux, Manjaro). You might need to used `sudo` if you encounter permission errors.
+The following commands can be used to install GDAL for Pacman-based Linux distributions (e.g., Arch Linux, Manjaro). You might need to use **sudo** if you encounter permission errors.
 
 .. code:: python
 
   sudo pacman -S yaourt --noconfirm
   yaourt -S gdal --noconfirm
   yaourt -S python-gdal --noconfirm
-  pip install lidar
+  pip install lidar --no-cache-dir
 
 
 MacOS X
