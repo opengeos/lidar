@@ -12,7 +12,7 @@ from setuptools import setup, find_packages
 GDAL_INFO = os.popen("gdalinfo --version").read().rstrip()
 GDAL_VERSION = GDAL_INFO.split(',')[0].replace('GDAL', '').lstrip()
 GDAL_VERSION_NUM = str(GDAL_VERSION.replace(".", ""))
-# PYGDAL_VERSION = '2.3.1.4' # default pygdal version to install
+PYGDAL_VERSION = '2.2.2.3' # default pygdal version to install
 
 
 # pygdal version to install based on the GDAL version
