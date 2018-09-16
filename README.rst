@@ -89,8 +89,11 @@ Dependencies
 
 lidar's Python dependencies are listed in its requirements.txt file. In addition, lidar has a C library dependency: GDAL >=1.11.2. How to install GDAL in different operating systems will be explained below. More informaton about GDAL can be found here_.
 
-.. _here: https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries
+It is highly recommended that you use a Python virtual environment (e.g., conda) to test the lidar package. Please follow the `conda user guide`_ to install conda if necessary. Once you have conda installed, you can use Terminal or an Anaconda Prompt to create a Python virtual environment. Check `managing Python environment`_ for more information.
 
+.. _here: https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries
+.. _`conda user guide`: https://conda.io/docs/user-guide/install/index.html
+.. _`managing Python environment`: https://conda.io/docs/user-guide/tasks/manage-environments.html
 
 Linux
 =====
@@ -129,11 +132,21 @@ Alternatively, you can install GDAL binaries from kyngchaos_. You will then need
 Windows
 =======
 
-I would recommend installing GDAL using OSGeo4W_. After installation, The GDAL dll and gdal-data directory need to be added to your Windows PATH. Check this instruction_ on how to add GDAL to system PATH.  
+The instruction below assumes that you have installed Anaconda_.
 
-.. _OSGeo4W: https://trac.osgeo.org/osgeo4w/
-.. _instruction: https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows
+* Open Anaconda Prompt and enter the following commands to create a conda environment and install required packages
+* conda create -n py36 python=3.6
+* activate py36
+* conda install -c conda-forge gdal 
+* pip install richdem
+* pip install lidar
 
+When installing the richdem package, if you encounter an error that says 'Microsoft Visual C++ 14.0 is required', please follow the link below to fix the error.  
+
+* `Fix Python 3 on Windows error - Microsoft Visual C++ 14.0 is required`_
+
+.. _Anaconda: https://www.anaconda.com/download
+.. _`Fix Python 3 on Windows error - Microsoft Visual C++ 14.0 is required`: https://www.scivision.co/python-windows-visual-c++-14-required/
 
 
 Examples
