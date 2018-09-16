@@ -10,9 +10,10 @@ from setuptools import setup, find_packages
 # check GDAL version installed in the system
 # GDAL_VERSION = os.popen("gdal-config --version").read().rstrip()
 GDAL_INFO = os.popen("gdalinfo --version").read().rstrip()
-GDAL_VERSION = GDAL_INFO.split(',')[0].replace('GDAL ', '')
+GDAL_VERSION = GDAL_INFO.split(',')[0].replace('GDAL', '').lstrip()
 GDAL_VERSION_NUM = str(GDAL_VERSION.replace(".", ""))
-PYGDAL_VERSION = '2.3.1.4' # default pygdal version to install
+# PYGDAL_VERSION = '2.3.1.4' # default pygdal version to install
+
 
 # pygdal version to install based on the GDAL version
 # GDAL version history: https://trac.osgeo.org/gdal/wiki/DownloadSource
