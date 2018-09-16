@@ -24,11 +24,17 @@ elif GDAL_VERSION[:3] == '2.3':
 else:
     PYGDAL_VERSION = GDAL_VERSION + '.3'
 
-with open('README.rst', encoding='utf-8', mode = 'r') as readme_file:
-    readme = readme_file.read()
+# with open('README.rst', encoding='utf-8', mode = 'r') as readme_file:
+#     readme = readme_file.read()
 
-with open('HISTORY.rst', encoding='utf-8', mode = 'r') as history_file:
-    history = history_file.read()
+# with open('HISTORY.rst', encoding='utf-8', mode = 'r') as history_file:
+#     history = history_file.read()
+
+with open('README.rst', mode = 'rb') as readme_file:
+    readme = readme_file.read().decode('utf-8')
+
+with open('HISTORY.rst', mode = 'rb') as history_file:
+    history = history_file.read().decode('utf-8')
 
 here = op.abspath(op.dirname(__file__))
 
