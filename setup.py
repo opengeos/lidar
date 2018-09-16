@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-import os
+import os, platform
 from os import path as op
 import io
 from setuptools import setup, find_packages
@@ -25,12 +25,6 @@ elif GDAL_VERSION[:3] == '2.3':
 else:
     PYGDAL_VERSION = GDAL_VERSION + '.3'
 
-# with open('README.rst', encoding='utf-8', mode = 'r') as readme_file:
-#     readme = readme_file.read()
-
-# with open('HISTORY.rst', encoding='utf-8', mode = 'r') as history_file:
-#     history = history_file.read()
-
 with open('README.rst', mode = 'rb') as readme_file:
     readme = readme_file.read().decode('utf-8')
 
@@ -44,7 +38,8 @@ with io.open(op.join(here, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
 
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
-install_requires.append('pygdal==' + PYGDAL_VERSION)
+if platform.system() != "Windows":
+    install_requires.append('pygdal==' + PYGDAL_VERSION)
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
 requirements = ['Click>=6.0', ]
@@ -67,6 +62,8 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+
     ],
     description="Terrain and hydrological analysis based on LiDAR-derived digital elevation models (DEM)",
     entry_points={

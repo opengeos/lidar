@@ -86,6 +86,7 @@ Check the example.py_ for more details.
 
 Dependencies
 ------------
+
 lidar's Python dependencies are listed in its requirements.txt file. In addition, lidar has a C library dependency: GDAL >=1.11.2. How to install GDAL in different operating systems will be explained below. More informaton about GDAL can be found here_.
 
 .. _here: https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries
@@ -127,6 +128,7 @@ Alternatively, you can install GDAL binaries from kyngchaos_. You will then need
 
 Windows
 =======
+
 I would recommend installing GDAL using OSGeo4W_. After installation, The GDAL dll and gdal-data directory need to be added to your Windows PATH. Check this instruction_ on how to add GDAL to system PATH.  
 
 .. _OSGeo4W: https://trac.osgeo.org/osgeo4w/
