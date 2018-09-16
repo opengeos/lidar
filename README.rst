@@ -121,7 +121,7 @@ The following commands can be used to install GDAL for Debian-based Linux distri
   pip install lidar
 
 
-If you encounter any complinig errors, try the following commands. 
+If you encounter any compiling errors, try the following commands. 
 
 .. code:: python
 
