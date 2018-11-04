@@ -15,6 +15,9 @@ lidar
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
         :target: https://opensource.org/licenses/MIT
 
+.. image:: https://mybinder.org/badge.svg 
+        :target: https://gishub.org/lidar-cloud
+
 
 Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
 
@@ -25,6 +28,7 @@ Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
 * GitHub repo: https://github.com/giswqs/lidar
 * Documentation: https://lidar.readthedocs.io.
 * PyPI: https://pypi.org/project/lidar/
+* Binder: https://gishub.org/lidar-cloud
 * Free software: `MIT license`_
 
 .. _`MIT license`: https://en.wikipedia.org/wiki/MIT_License
@@ -43,16 +47,32 @@ Features
 * Exporting depression properties as a csv file (see slicing.py_).
 
 
-Using It
---------
-Install the **lidar** Python package using the following command. If you encounter any errors, please check the Dependencies_ section below.
+Installation
+------------
+**lidar** supports a variety of platforms, including Microsoft Windows, macOS, and Linux operating systems. Note that you will need to have **Python 3.x** installed. Python 2.x is not supported. The **lidar** Python package can be installed using the following command. If you encounter any errors, please check the Dependencies_ section below.
 
 .. code:: python
 
   pip install lidar
 
 
-And use:
+If you have installed **lidar** before and want to upgrade to the latest version, you can use the following command:
+
+.. code:: python
+
+  pip install lidar -U
+
+
+Test lidar in an interactive cloud environment
+----------------------------------------------
+Launch the lidar tutorial notebook directly with MyBinder now:
+
+.. image:: https://mybinder.org/badge.svg 
+        :target: https://gishub.org/lidar-cloud
+
+
+Usage
+-----
 
 .. code:: python
 
