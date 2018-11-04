@@ -3,8 +3,8 @@ import pkg_resources
 import richdem as rd
 import numpy as np
 import lidar
-from filling import ExtractSinks
-from slicing import DelineateDepressions
+from .filling import ExtractSinks
+from .slicing import DelineateDepressions
 
 
 # get min, max, and no_data of dem

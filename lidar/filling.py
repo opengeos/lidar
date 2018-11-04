@@ -177,7 +177,7 @@ def ExtractSinks(in_dem, min_size, out_dir):
     del dem_diff, depth
 
     print("Computing properties ...")
-    objects = measure.regionprops(label_objects, dem)
+    objects = measure.regionprops(label_objects, dem, coordinates='xy')
     dep_list = get_dep_props(objects, cell_size)
     write_dep_csv(dep_list, out_csv_file)
     del objects, dep_list

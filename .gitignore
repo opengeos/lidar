@@ -8,6 +8,7 @@ __pycache__/
 # exclude files
 lidar/levelset.py
 dev/
+examples/temp
 
 # tif files extra
 *.tfw

@@ -2,10 +2,10 @@
 import os
 import pkg_resources
 import richdem as rd
-from filtering import MedianFilter, MeanFilter, GaussianFilter
-from filling import ExtractSinks
-from slicing import DelineateDepressions
-from mounts import DelineateMounts
+from .filtering import MedianFilter, MeanFilter, GaussianFilter
+from .filling import ExtractSinks
+from .slicing import DelineateDepressions
+from .mounts import DelineateMounts
 # from lidar import *
 import PySimpleGUI as sg
 
