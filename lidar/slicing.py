@@ -215,7 +215,7 @@ def levelSet(img, region_id, obj_uid, image_paras):
         if nb_labels == 0:   # if slicing results in no objects, quit
             break
 
-        objects = measure.regionprops(label_objects, img)
+        objects = measure.regionprops(label_objects, img, coordinates='xy')
         for i, object in enumerate(objects):
             (row, col) = object.coords[0]  # get a boundary cell
             bbox = object.bbox
@@ -382,7 +382,7 @@ def extract_levels(level_img, min_size, no_data, out_img_dir, out_shp_dir, templ
             writeRaster(tmp_img,out_file,template)
 
         lbl_objects, n_labels = regionGroup(tmp_img, min_size, no_data)
-        regs = measure.regionprops(lbl_objects, level_img)
+        regs = measure.regionprops(lbl_objects, level_img, coordinates='xy')
         sin_img = np.zeros(img.shape)
 
         for reg in regs:
@@ -465,7 +465,7 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
 
     # nb_labels is the total number of objects. 0 represents background object.
     label_objects, nb_labels = regionGroup(image, min_size, no_data)
-    regions = measure.regionprops(label_objects, image)
+    regions = measure.regionprops(label_objects, image, coordinates='xy')
     del image  # delete the original image to save memory
     prep_time = time.time()
     print("Data preparation time: {:.4f} seconds".format(prep_time - init_time))
