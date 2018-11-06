@@ -34,6 +34,19 @@ Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
 .. _`MIT license`: https://en.wikipedia.org/wiki/MIT_License
 
 
+**Contents**
+
+- `Features`_
+- `Installation`_
+- `Tutorials`_
+- `lidar GUI`_
+- `Dependencies`_
+- `Examples`_
+- `References`_
+- `Reporting Bugs`_
+- `Credits`_
+
+
 Features
 --------
 
@@ -63,16 +76,18 @@ If you have installed **lidar** before and want to upgrade to the latest version
   pip install lidar -U
 
 
-Test lidar in an interactive cloud environment
-----------------------------------------------
-Launch the lidar tutorial notebook directly with MyBinder now:
+
+Tutorials
+---------
+
+Launch the interactive notebook tutorial for the **lidar** Python package with MyBinder now:
 
 .. image:: https://mybinder.org/badge.svg 
         :target: https://gishub.org/lidar-cloud
 
 
-Usage
------
+A Quick Example
+===============
 
 .. code:: python
 
@@ -105,6 +120,34 @@ Usage
 
 
 Check the example.py_ for more details.
+
+
+An Interactive Jupyter Notebook Tutorial
+========================================
+
+This tutorial can be accessed in three ways:
+
+- HTML version: https://gishub.org/whitebox-html
+- Viewable Notebook: https://gishub.org/lidar-notebook
+- Interactive Notebook: https://gishub.org/lidar-cloud
+
+Launch this tutorial as an interactive Jupyter Notebook on the cloud - https://gishub.org/lidar-cloud.
+
+.. image:: https://i.imgur.com/aIttPVG.gif
+
+
+lidar GUI
+---------
+
+**lidar** also provides a Graphical User Interface (GUI), which can be invoked using the following Python script:
+
+.. code:: python
+
+  import lidar
+  lidar.gui()
+
+
+.. image:: https://i.imgur.com/eSjcSs9.png
 
 
 Dependencies
@@ -214,8 +257,8 @@ The following example was conducted on a 64-bit Linux machine with a quad-core I
 .. image:: https://wetlands.io/file/images/CLSA_Table.jpg
 
 
-Publications
-------------
+References
+----------
 The level-set algorithm in the **lidar** package has been published in the following article:
 
 * **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. DOI: `10.1111/1752-1688.12689`_ (in press) preprint_
@@ -228,6 +271,18 @@ Applications of the level-set and contour-tree methods for feature extraction fr
 * **Wu, Q.**, & Lane, C.R. (2016). Delineation and quantification of wetland depressions in the Prairie Pothole Region of North Dakota. *Wetlands*. 36(2):215–227. DOI: `10.1007/s13157-015-0731-6`_
 * **Wu, Q.**, Liu, H., Wang, S., Yu, B., Beck, R., & Hinkel, K. (2015). A localized contour tree method for deriving geometric and topological properties of complex surface depressions based on high-resolution topographic data. *International Journal of Geographical Information Science*. 29(12): 2041-2060. DOI: `10.1080/13658816.2015.1038719`_
 * **Wu, Q.**, Lane, C.R., & Liu, H. (2014). An effective method for detecting potential woodland vernal pools using high-resolution LiDAR data and aerial imagery. *Remote Sensing*. 6(11):11444-11467.  DOI: `10.3390/rs61111444`_
+
+
+Reporting Bugs
+--------------
+Report bugs at https://github.com/giswqs/lidar/issues.
+
+If you are reporting a bug, please include:
+
+* Your operating system name and version.
+* Any details about your local setup that might be helpful in troubleshooting.
+* Detailed steps to reproduce the bug.
+
 
 Credits
 -------
