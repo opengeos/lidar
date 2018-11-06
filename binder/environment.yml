@@ -8,8 +8,12 @@ dependencies:
   - matplotlib
   - scipy
   - gdal
+  - imageio
   - pip:
     - pygdal
     - lidar
-    - PySimpleGUI
+    - tifffile
+    - requests
+    - googledrivedownloader
+
 
