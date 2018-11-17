@@ -2,6 +2,11 @@
 lidar
 =====
 
+.. image:: https://mybinder.org/badge_logo.svg 
+        :target: https://gishub.org/lidar-cloud
+
+.. image:: http://binder.pangeo.io/badge.svg 
+        :target: http://binder.pangeo.io/v2/gh/giswqs/lidar/master?filepath=examples%2Flidar.ipynb
 
 .. image:: https://img.shields.io/pypi/v/lidar.svg
         :target: https://pypi.python.org/pypi/lidar
@@ -15,8 +20,6 @@ lidar
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
         :target: https://opensource.org/licenses/MIT
 
-.. image:: https://mybinder.org/badge.svg 
-        :target: https://gishub.org/lidar-cloud
 
 
 Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
@@ -80,10 +83,13 @@ If you have installed **lidar** before and want to upgrade to the latest version
 Tutorials
 ---------
 
-Launch the interactive notebook tutorial for the **lidar** Python package with MyBinder now:
+Launch the interactive notebook tutorial for the **lidar** Python package with **mybinder.org** or **binder.pangeo.io** now:
 
-.. image:: https://mybinder.org/badge.svg 
+.. image:: https://mybinder.org/badge_logo.svg 
         :target: https://gishub.org/lidar-cloud
+
+.. image:: http://binder.pangeo.io/badge.svg 
+        :target: http://binder.pangeo.io/v2/gh/giswqs/lidar/master?filepath=examples%2Flidar.ipynb
 
 
 A Quick Example
