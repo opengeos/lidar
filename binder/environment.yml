@@ -3,7 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.6
-  - scikit-image=0.14
+  - scikit-image
   - numpy
   - matplotlib
   - scipy
@@ -14,6 +14,6 @@ dependencies:
     - lidar
     - tifffile
     - requests
-    - googledrivedownloader
+    - pygis
 
 
