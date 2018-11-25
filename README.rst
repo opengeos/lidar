@@ -5,11 +5,14 @@ lidar
 .. image:: https://mybinder.org/badge_logo.svg 
         :target: https://gishub.org/lidar-cloud
 
-.. image:: http://binder.pangeo.io/badge.svg 
-        :target: http://binder.pangeo.io/v2/gh/giswqs/lidar/master?filepath=examples%2Flidar.ipynb
+.. image:: https://binder.pangeo.io/badge.svg 
+        :target: https://binder.pangeo.io/v2/gh/giswqs/lidar/master?filepath=examples%2Flidar.ipynb
 
 .. image:: https://img.shields.io/pypi/v/lidar.svg
         :target: https://pypi.python.org/pypi/lidar
+
+.. image:: https://pepy.tech/badge/lidar
+        :target: https://pepy.tech/project/lidar
 
 .. image:: https://img.shields.io/travis/giswqs/lidar.svg
         :target: https://travis-ci.org/giswqs/lidar
@@ -88,8 +91,8 @@ Launch the interactive notebook tutorial for the **lidar** Python package with *
 .. image:: https://mybinder.org/badge_logo.svg 
         :target: https://gishub.org/lidar-cloud
 
-.. image:: http://binder.pangeo.io/badge.svg 
-        :target: http://binder.pangeo.io/v2/gh/giswqs/lidar/master?filepath=examples%2Flidar.ipynb
+.. image:: https://binder.pangeo.io/badge.svg 
+        :target: https://binder.pangeo.io/v2/gh/giswqs/lidar/master?filepath=examples%2Flidar.ipynb
 
 
 A Quick Example
