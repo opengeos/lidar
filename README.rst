@@ -136,7 +136,7 @@ An Interactive Jupyter Notebook Tutorial
 
 This tutorial can be accessed in three ways:
 
-- HTML version: https://gishub.org/whitebox-html
+- HTML version: https://gishub.org/lidar-html
 - Viewable Notebook: https://gishub.org/lidar-notebook
 - Interactive Notebook: https://gishub.org/lidar-cloud
 
