@@ -23,6 +23,8 @@ lidar
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
         :target: https://opensource.org/licenses/MIT
 
+.. image:: https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg
+        :target: https://www.buymeacoffee.com/giswqs
 
 
 Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
