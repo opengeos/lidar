@@ -20,10 +20,14 @@ PYGDAL_VERSION = '2.2.2.3' # default pygdal version to install
 # pygdal version history: https://pypi.org/project/pygdal/#history
 if not GDAL_VERSION_NUM.isdigit():
     print("GDAL cannot be detected in your system. Please install GDAL first!")
-elif GDAL_VERSION[:3] == '2.3':
-    PYGDAL_VERSION = GDAL_VERSION + '.4'
+# elif GDAL_VERSION[:3] == '2.3':
+#     PYGDAL_VERSION = GDAL_VERSION + '.5'
+# elif GDAL_VERSION[:3] == '2.4':
+#     PYGDAL_VERSION = GDAL_VERSION + '.5'    
+# elif GDAL_VERSION[:3] == '3.0':
+#     PYGDAL_VERSION = GDAL_VERSION + '.5' 
 else:
-    PYGDAL_VERSION = GDAL_VERSION + '.3'
+    PYGDAL_VERSION = GDAL_VERSION + '.5'
 
 with open('README.rst', mode = 'rb') as readme_file:
     readme = readme_file.read().decode('utf-8')
