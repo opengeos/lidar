@@ -27,7 +27,7 @@ lidar
         :target: https://www.buymeacoffee.com/giswqs
 
 
-Author: Qiusheng Wu (https://wetlands.io | wqs@binghamton.edu)
+Author: Qiusheng Wu (https://wetlands.io)
 
 
 **lidar** is a toolset for terrain and hydrological analysis using digital elevation models (DEMs). It is particularly useful for analyzing high-resolution topographic data, such as DEMs derived from Light Detection and Ranging (LiDAR) data.
