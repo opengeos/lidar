@@ -10,7 +10,7 @@ before_install:
   - export CPLUS_INCLUDE_PATH=/usr/include/gdal
   - gdal-config --version
   - gdalinfo --version
-install: pip install -U tox-travis pygdal==2.2.2.5
+install: pip install -U tox-travis
 script: tox
 #deploy:
 #  provider: pypi
