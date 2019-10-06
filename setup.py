@@ -42,8 +42,13 @@ with io.open(op.join(here, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
 
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
-if platform.system() != "Windows":
+# if platform.system() != "Windows":
+#     install_requires.append('pygdal==' + PYGDAL_VERSION)
+
+# install pygdal for travis CI
+if GDAL_VERSION == '2.2.2':
     install_requires.append('pygdal==' + PYGDAL_VERSION)
+
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
 requirements = ['Click>=6.0', ]
