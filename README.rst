@@ -70,10 +70,13 @@ Features
 
 Installation
 ------------
-**lidar** supports a variety of platforms, including Microsoft Windows, macOS, and Linux operating systems. Note that you will need to have **Python 3.x** installed. Python 2.x is not supported. The **lidar** Python package can be installed using the following command. If you encounter any errors, please check the Dependencies_ section below.
+**lidar** supports a variety of platforms, including Microsoft Windows, macOS, and Linux operating systems. Note that you will need to have **Python 3.x** installed. Python 2.x is not supported. The **lidar** Python package can be installed using the following command. If you encounter any errors, please check the Dependencies_ section below. The instruction below assumes that you have installed Anaconda_. Open **Anaconda Prompt** and enter the following commands to create a conda environment and install required packages.
 
 .. code:: python
 
+  conda create -n py37 python=3.7
+  conda activate py37
+  conda install -c conda-forge gdal 
   pip install lidar
 
 
@@ -176,6 +179,9 @@ Once GDAL has been installed, you can then proceed to install the **lidar** Pyth
 
 .. code:: python
 
+  conda create -n py37 python=3.7
+  conda activate py37
+  conda install -c conda-forge gdal 
   pip install lidar
 
 
@@ -238,8 +244,8 @@ The instruction below assumes that you have installed Anaconda_. Open **Anaconda
 
 .. code:: python
 
-  conda create -n py36 python=3.6
-  activate py36
+  conda create -n py36 python=3.7
+  conda activate py36
   conda install -c conda-forge gdal 
   pip install richdem
   pip install lidar
