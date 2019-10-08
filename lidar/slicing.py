@@ -132,7 +132,7 @@ def polygonize(img,shp_path):
     srs = osr.SpatialReference(wkt=prj)
 
     dst_layer = dst_ds.CreateLayer(dst_layername, srs=srs)
-    raster_field = ogr.FieldDefn('level', type_mapping[srcband.DataType])
+    raster_field = ogr.FieldDefn('id', type_mapping[srcband.DataType])
     dst_layer.CreateField(raster_field)
     gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
     del img, ds, srcband, dst_ds, dst_layer
@@ -364,7 +364,7 @@ def write_dep_csv(dep_list, csv_file):
 
 
 # extracting individual level image
-def extract_levels(level_img, min_size, no_data, out_img_dir, out_shp_dir, template, bool_comb=False):
+def extract_levels(level_img, obj_img, min_size, no_data, out_img_dir, out_shp_dir, template, bool_comb=False):
     max_level = int(np.max(level_img))
     combined_images = []
     single_images = []
@@ -383,14 +383,24 @@ def extract_levels(level_img, min_size, no_data, out_img_dir, out_shp_dir, templ
 
         lbl_objects, n_labels = regionGroup(tmp_img, min_size, no_data)
         regs = measure.regionprops(lbl_objects, level_img, coordinates='xy')
+        regs2 = measure.regionprops(lbl_objects, obj_img, coordinates='xy')
+
         sin_img = np.zeros(img.shape)
 
-        for reg in regs:
+        for index, reg in enumerate(regs):
+            uid = regs2[index].min_intensity
             if reg.max_intensity >= i:
                 bbox = reg.bbox
                 tmp_img = np.zeros(reg.image.shape)
-                tmp_img[reg.image] = i
+                tmp_img[reg.image] = uid
                 writeObject(sin_img, tmp_img, bbox)
+
+        # for reg in regs:
+        #     if reg.max_intensity >= i:
+        #         bbox = reg.bbox
+        #         tmp_img = np.zeros(reg.image.shape)
+        #         tmp_img[reg.image] = i
+        #         writeObject(sin_img, tmp_img, bbox)
         del tmp_img
         # single_images.append(np.copy(sin_img))
         filename_single = "Single_level_" + str(i).zfill(digits) + ".shp"
@@ -400,7 +410,7 @@ def extract_levels(level_img, min_size, no_data, out_img_dir, out_shp_dir, templ
         writeRaster(sin_img, out_img_file, template)
         polygonize(out_img_file, out_shp_file)
         # writeRaster(sin_img,out_file,template)
-        del sin_img
+        del sin_img, regs, regs2
 
     del img
     return True
@@ -517,7 +527,6 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
     obj_image = np2rdarray(np.int32(obj_image), no_data_raw, projection, geotransform)
     rd.SaveGDAL(out_obj_file, obj_image)
     print("Write image time:\t\t {:.4f} s".format(time.time() - write_time))
-    del obj_image
 
     # converting object image to polygon
     level_time = time.time()
@@ -528,13 +537,14 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
     # extracting polygons for each individual level
     if bool_level_shp:
         level_time = time.time()
-        extract_levels(level_image, min_size, no_data, out_img_dir, out_shp_dir, in_sink, False)
+        extract_levels(level_image, obj_image, min_size, no_data, out_img_dir, out_shp_dir, in_sink, False)
         print("Extract level time:\t\t {:.4f} s".format(time.time() - level_time))
         shutil.rmtree(out_img_dir)
     else:
         shutil.rmtree(out_shp_dir)
         shutil.rmtree(out_img_dir)
     del level_image
+    del obj_image
 
     end_time = time.time()
     print("Total run time:\t\t\t {:.4f} s".format(end_time - init_time))
@@ -546,13 +556,13 @@ if __name__ == '__main__':
 
     # ************************ change the following parameters if needed ******************************** #
     # set input files
-    in_dem = "data/dem.tif"
-    in_sink = "data/sink.tif"
+    in_dem = os.path.join(os.getcwd(), "lidar/data/dem.tif")
+    in_sink = os.path.join(os.getcwd(), "lidar/data/sink.tif")
     # parameters for level set method
     min_size = 1000         # minimum number of pixels as a depression
     min_depth = 0.3         # minimum depression depth
     interval = 0.3          # slicing interval, top-down approach
-    bool_level_shp = False  # whether or not to extract polygons for each individual level
+    bool_level_shp = True  # whether or not to extract polygons for each individual level
     # set output directory
     out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
     # **************************************************************************************************#
