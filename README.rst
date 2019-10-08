@@ -122,7 +122,7 @@ A Quick Example
   min_size = 1000      # minimum number of pixels as a depression
   min_depth = 0.5      # minimum depth as a depression
   interval = 0.3       # slicing interval for the level-set method
-  bool_shp = False     # output shapefiles for each individual level
+  bool_shp = True     # output shapefiles for each individual level
 
   # extracting sinks based on user-defined minimum depression size
   out_dem = os.path.join(out_dir, "median.tif")
@@ -244,8 +244,8 @@ The instruction below assumes that you have installed Anaconda_. Open **Anaconda
 
 .. code:: python
 
-  conda create -n py36 python=3.7
-  conda activate py36
+  conda create -n py37 python=3.7
+  conda activate py37
   conda install -c conda-forge gdal 
   pip install richdem
   pip install lidar
@@ -278,7 +278,7 @@ References
 ----------
 The level-set algorithm in the **lidar** package has been published in the following article:
 
-* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2018). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. DOI: `10.1111/1752-1688.12689`_ (in press) preprint_
+* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. DOI: `10.1111/1752-1688.12689`_ (preprint_)
 
 Applications of the level-set and contour-tree methods for feature extraction from LiDAR data:
 
