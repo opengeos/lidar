@@ -177,7 +177,8 @@ def ExtractSinks(in_dem, min_size, out_dir):
     del dem_diff, depth
 
     print("Computing properties ...")
-    objects = measure.regionprops(label_objects, dem, coordinates='xy')
+    # objects = measure.regionprops(label_objects, dem, coordinates='xy')
+    objects = measure.regionprops(label_objects, dem)
     dep_list = get_dep_props(objects, cell_size)
     write_dep_csv(dep_list, out_csv_file)
     del objects, dep_list
@@ -214,7 +215,7 @@ if __name__ == '__main__':
 
     # ************************ change the following parameters if needed ******************************** #
     # set input files
-    in_dem = "data/dem.tif"
+    in_dem = os.path.join(os.path.dirname(__file__), "data/dem.tif")
     # parameters for depression filling
     min_size = 1000        # minimum number of pixels as a depression
     min_depth = 0.3        # minimum depression depth
