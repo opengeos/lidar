@@ -1,8 +1,8 @@
 Click>=6.0
 scikit-image
 numpy
-matplotlib
+matplotlib-base
 scipy
 richdem
-PySimpleGUI
+PySimpleGUI==2.30.0
 #pygdal==2.3.1.4 (GDAL >= 1.11.2)

@@ -14,12 +14,16 @@ lidar
 .. image:: https://pepy.tech/badge/lidar
         :target: https://pepy.tech/project/lidar
 
+.. image:: https://img.shields.io/conda/vn/conda-forge/lidar.svg
+        :target: https://anaconda.org/conda-forge/lidar
+
 .. image:: https://img.shields.io/travis/giswqs/lidar.svg
         :target: https://travis-ci.org/giswqs/lidar
 
 .. image:: https://readthedocs.org/projects/lidar/badge/?version=latest
         :target: https://lidar.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
+
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
         :target: https://opensource.org/licenses/MIT
 
@@ -74,10 +78,9 @@ Installation
 
 .. code:: python
 
-  conda create -n py37 python=3.7
-  conda activate py37
-  conda install -c conda-forge gdal 
-  pip install lidar
+  conda create -n pylidar python
+  conda activate pylidar
+  conda install -c conda-forge lidar 
 
 
 If you have installed **lidar** before and want to upgrade to the latest version, you can use the following command:
