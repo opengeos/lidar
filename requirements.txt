@@ -1,7 +1,7 @@
 Click>=6.0
 scikit-image
 numpy
-matplotlib-base
+matplotlib
 scipy
 richdem
 PySimpleGUI==2.30.0
