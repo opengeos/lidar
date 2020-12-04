@@ -17,8 +17,8 @@ lidar
 .. image:: https://img.shields.io/conda/vn/conda-forge/lidar.svg
         :target: https://anaconda.org/conda-forge/lidar
 
-.. image:: https://img.shields.io/travis/giswqs/lidar.svg
-        :target: https://travis-ci.org/giswqs/lidar
+.. image:: https://github.com/giswqs/lidar/workflows/build/badge.svg
+        :target: https://github.com/giswqs/lidar/actions?query=workflow%3Abuild
 
 .. image:: https://readthedocs.org/projects/lidar/badge/?version=latest
         :target: https://lidar.readthedocs.io/en/latest/?badge=latest
