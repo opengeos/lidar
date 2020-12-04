@@ -36,10 +36,6 @@ jobs:
                   pip install --user --no-cache-dir Cython
                   pip install --user -r requirements.txt
                   pip install --user -r requirements_dev.txt
-            - name: LOAD EE CREDENTIALS
-              run: python ./.github/ee_token.py
-              env:
-                  EARTHENGINE_TOKEN: ${{ secrets.EARTHENGINE_TOKEN }}
-            - name: eefolium-TEST
+            - name: lidar-TEST
               run: |
                   python -m unittest discover tests/
