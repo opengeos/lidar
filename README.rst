@@ -27,6 +27,9 @@ lidar
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
         :target: https://opensource.org/licenses/MIT
 
+.. image:: https://img.shields.io/twitter/follow/giswqs?style=social   
+        :target: https://twitter.com/giswqs
+
 .. image:: https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg
         :target: https://www.buymeacoffee.com/giswqs
 
@@ -38,7 +41,7 @@ Author: Qiusheng Wu (https://wetlands.io)
 
 
 * GitHub repo: https://github.com/giswqs/lidar
-* Documentation: https://lidar.readthedocs.io.
+* Documentation: https://lidar.readthedocs.io
 * PyPI: https://pypi.org/project/lidar/
 * Binder: https://gishub.org/lidar-cloud
 * Free software: `MIT license`_
@@ -74,13 +77,14 @@ Features
 
 Installation
 ------------
-**lidar** supports a variety of platforms, including Microsoft Windows, macOS, and Linux operating systems. Note that you will need to have **Python 3.x** installed. Python 2.x is not supported. The **lidar** Python package can be installed using the following command. If you encounter any errors, please check the Dependencies_ section below. The instruction below assumes that you have installed Anaconda_. Open **Anaconda Prompt** and enter the following commands to create a conda environment and install required packages.
+**lidar** supports a variety of platforms, including Microsoft Windows, macOS, and Linux operating systems. Note that you will need to have **Python 3.x** (< 3.9) installed. Python 2.x is not supported. The **lidar** Python package can be installed using the following command. If you encounter any errors, please check the Dependencies_ section below. The instruction below assumes that you have installed Anaconda_. Open **Anaconda Prompt** and enter the following commands to create a conda environment and install required packages.
 
 .. code:: python
 
-  conda create -n pylidar python
-  conda activate pylidar
-  conda install -c conda-forge lidar 
+  conda create -n py38 python=3.8
+  conda activate py38
+  conda install -c conda-forge mamba
+  mamba install -c conda-forge lidar 
 
 
 If you have installed **lidar** before and want to upgrade to the latest version, you can use the following command:
@@ -182,8 +186,8 @@ Once GDAL has been installed, you can then proceed to install the **lidar** Pyth
 
 .. code:: python
 
-  conda create -n py37 python=3.7
-  conda activate py37
+  conda create -n py38 python=3.8
+  conda activate py38
   conda install -c conda-forge gdal 
   pip install lidar
 
@@ -247,8 +251,8 @@ The instruction below assumes that you have installed Anaconda_. Open **Anaconda
 
 .. code:: python
 
-  conda create -n py37 python=3.7
-  conda activate py37
+  conda create -n py38 python=3.8
+  conda activate py38
   conda install -c conda-forge gdal 
   pip install richdem
   pip install lidar
