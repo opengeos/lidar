@@ -46,6 +46,6 @@ jobs:
                   pip install pygdal==3.0.4.6
               #   pip install --user -r requirements_dev.txt
               #   python -m pip install --upgrade pip
-            # - name: lidar-TEST
-            #   run: |
-            #       python -m unittest discover tests/
+            - name: lidar-TEST
+              run: |
+                  python -m unittest discover tests/
