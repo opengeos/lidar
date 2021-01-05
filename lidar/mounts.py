@@ -1,3 +1,7 @@
+"""Module for delineating the nested hierarcy of elevated features (i.e., mounts).
+
+"""
+
 import os
 import pkg_resources
 import richdem as rd
@@ -7,9 +11,15 @@ from .filling import ExtractSinks
 from .slicing import DelineateDepressions
 
 
-# get min, max, and no_data of dem
 def get_min_max_nodata(dem):
+    """Gets the minimum, maximum, and no_data value of a numpy array.
 
+    Args:
+        dem (np.array): The numpy array containing the image. 
+
+    Returns:
+        tuple: The minimum, maximum, and no_data value.
+    """
     no_data = dem.no_data
     max_elev = np.float(np.max(dem[dem != no_data]))
     min_elev = np.float(np.min(dem[dem != no_data]))
@@ -17,9 +27,17 @@ def get_min_max_nodata(dem):
     return min_elev, max_elev, no_data
 
 
-# flip the dem
 def FlipDEM(dem, delta=100, out_file=None):
+    """Flips the DEM.
 
+    Args:
+        dem (np.array): The numpy array containing the image.
+        delta (int, optional): The base value to be added to the flipped DEM. Defaults to 100.
+        out_file (str, optional): File path to the output image. Defaults to None.
+
+    Returns:
+        np.array: The numpy array containing the flipped DEM.
+    """
     # get min and max elevation of the dem
     no_data = dem.no_data
     max_elev = np.float(np.max(dem[dem != no_data]))
@@ -36,15 +54,26 @@ def FlipDEM(dem, delta=100, out_file=None):
     return dem
 
 
-# delineate mounts
 def DelineateMounts(in_dem, min_size, min_height, interval, out_dir, bool_shp=False):
+    """Delineates the nested hierarchy of elevated features (i.e., mounts).
 
+    Args:
+        in_dem (str): File path to the input DEM.
+        min_size (int): The minimum number of pixels to be considered as an object.
+        min_height (float): The minimum depth of the feature to be considered as an object.
+        interval (float): The slicing interval.
+        out_dir (str): The output directory.
+        bool_shp (bool, optional): Whether to generate shapefiles. Defaults to False.
+
+    Returns:
+        tuple: File paths to the depression ID and level. 
+    """
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
 
     print("Loading data ...")
     dem = rd.LoadGDAL(in_dem)
-    projection = dem.projection
+    # projection = dem.projection
     geotransform = dem.geotransform
     cell_size = np.round(geotransform[1], decimals=3)
 
