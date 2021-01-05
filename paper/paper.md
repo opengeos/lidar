@@ -49,6 +49,6 @@ The **lidar** Python package has a C library dependency called [GDAL](https://gd
 
 # Acknowledgments
 
-The author would like to thank the open-source community, especially the developers of the numpy and scikit-image packages, which empower the **lidar** Python package.
+The author would like to thank the open-source community, especially the developers of numpy [@Harris2020], scipy [@Virtanen2020], scikit-image [@Van_der_Walt2014], matplotlib [@Hunter2007], and richDEM [@Barnes2018]. These open-source packages empower the **lidar** Python package.
 
 # References
