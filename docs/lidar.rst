@@ -4,7 +4,7 @@ lidar package
 Submodules
 ----------
 
-lidar.filtering module
+filtering module
 ----------------------
 
 .. automodule:: lidar.filtering
@@ -12,7 +12,7 @@ lidar.filtering module
    :undoc-members:
    :show-inheritance:
 
-lidar.filling module
+filling module
 --------------------
 
 .. automodule:: lidar.filling
@@ -20,7 +20,7 @@ lidar.filling module
    :undoc-members:
    :show-inheritance:
 
-lidar.slicing module
+slicing module
 --------------------
 
 .. automodule:: lidar.slicing
@@ -28,7 +28,7 @@ lidar.slicing module
    :undoc-members:
    :show-inheritance:
 
-lidar.mounts module
+mounts module
 -------------------
 
 .. automodule:: lidar.mounts

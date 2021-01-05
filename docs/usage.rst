@@ -42,4 +42,4 @@ To use lidar in a project:
   dep_id_fig = rd.rdShow(dep_id, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
   dep_level_path = rd.rdShow(dep_level, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
 
-Check the example.py_ for more details.
+Check the example.py for more details.

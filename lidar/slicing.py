@@ -1,3 +1,6 @@
+"""Module for the level-set algorithm.
+
+"""
 import os
 import math
 import time
@@ -9,8 +12,9 @@ from skimage import measure
 from osgeo import gdal, ogr, osr
 
 
-# class for true depression
 class Depression:
+    """The class for storing depression info.
+    """      
     def __init__(self, id, level, count, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, regionId,
                  perimeter, major_axis, minor_axis, elongatedness, eccentricity, orientation, area_bbox_ratio):
         self.id = id
@@ -33,8 +37,15 @@ class Depression:
         self.area_bbox_ratio = area_bbox_ratio
 
 
-# get min and max elevation of a dem
 def get_min_max_nodata(image):
+    """Gets the minimum, maximum, and no_data value of a numpy array.
+
+    Args:
+        dem (np.array): The numpy array containing the image. 
+
+    Returns:
+        tuple: The minimum, maximum, and no_data value.
+    """
     max_elev = np.max(image)
     nodata = pow(10, math.floor(math.log10(np.max(image))) + 2) - 1  # assign no data value
     image[image <= 0] = nodata  # change no data value
@@ -44,6 +55,18 @@ def get_min_max_nodata(image):
 
 # set input image parameters for level set method
 def set_image_paras(no_data, min_size, min_depth, interval, resolution):
+    """Sets the input image parameters for level-set method.
+
+    Args:
+        no_data (float): The no_data value of the input DEM.
+        min_size (int): The minimum nuber of pixels to be considered as a depressioin.
+        min_depth (float): The minimum depth to be considered as a depression.
+        interval (float): The slicing interval.
+        resolution (float): The spatial resolution of the DEM.
+
+    Returns:
+        dict: A dictionary containing image parameters.
+    """    
     image_paras = {}
     image_paras["no_data"] = no_data
     image_paras["min_size"] = min_size
@@ -53,8 +76,15 @@ def set_image_paras(no_data, min_size, min_depth, interval, resolution):
     return image_paras
 
 
-# get image parameters
 def get_image_paras(image_paras):
+    """Gets image parameters.
+
+    Args:
+        image_paras (dict): The dictionary containing image parameters.
+
+    Returns:
+        tuple: A tuple containing no_data, min_size, min_depth, interval, resolution.
+    """    
     no_data = image_paras["no_data"]
     min_size = image_paras["min_size"]
     min_depth = image_paras["min_depth"]
@@ -63,8 +93,17 @@ def get_image_paras(image_paras):
     return no_data, min_size, min_depth, interval, resolution
 
 
-# identify regions based on region growing method
 def regionGroup(img_array, min_size, no_data):
+    """IdentifIies regions based on region growing method
+
+    Args:
+        img_array (np.array): The numpy array containing the image.
+        min_size (int): The minimum number of pixels to be considered as a depression.
+        no_data (float): The no_data value of the image.
+
+    Returns:
+        tuple: The labelled objects and total number of labels. 
+    """       
     img_array[img_array == no_data] = 0
     label_objects, nb_labels = ndimage.label(img_array)
     sizes = np.bincount(label_objects.ravel())
@@ -76,8 +115,17 @@ def regionGroup(img_array, min_size, no_data):
     return label_objects, nb_labels
 
 
-# write output depression raster
 def writeObject(img_array, obj_array, bbox):
+    """Writes depression objects to the original image.
+
+    Args:
+        img_array (np.array): The output image array.
+        obj_array (np.array): The numpy array containing depression objects.
+        bbox (list): The bounding box of the depression object.
+
+    Returns:
+        np.array: The numpy array containing the depression objects.
+    """    
     min_row, min_col, max_row, max_col = bbox
     roi = img_array[min_row:max_row, min_col:max_col]
     roi[obj_array > 0] = obj_array[obj_array > 0]
@@ -85,6 +133,16 @@ def writeObject(img_array, obj_array, bbox):
 
 
 def writeRaster(arr, out_path, template):
+    """Saves an numpy array as a GeoTIFF.
+
+    Args:
+        arr (np.array): The numpy array containing the image.
+        out_path (str): The file path to the output GeoTIFF.
+        template (str): The file path to the template image containing projection info. 
+
+    Returns:
+        np.array: The numpy array containing the image.
+    """
     no_data = 0
     # First of all, gather some information from the template file
     data = gdal.Open(template)
@@ -108,8 +166,13 @@ def writeRaster(arr, out_path, template):
     return arr
 
 
-# raster to vector
-def polygonize(img,shp_path):
+def polygonize(img, shp_path):
+    """Converts a raster image to vector.
+
+    Args:
+        img (str): File path to the input image.
+        shp_path (str): File path to the output shapefile.
+    """      
     # mapping between gdal type and ogr field type
     type_mapping = {gdal.GDT_Byte: ogr.OFTInteger,
                     gdal.GDT_UInt16: ogr.OFTInteger,
@@ -138,8 +201,13 @@ def polygonize(img,shp_path):
     del img, ds, srcband, dst_ds, dst_layer
 
 
-# convert images in a selected folder to shapefiles
 def img_to_shp(in_img_dir, out_shp_dir):
+    """Converts images in a selected folder to shapefiles
+
+    Args:
+        in_img_dir (str): The input iimage directory.
+        out_shp_dir (str): The output shapefile directory. 
+    """    
     img_files = os.listdir(in_img_dir)
     for img_file in img_files:
         if img_file.endswith(".tif"):
@@ -148,21 +216,31 @@ def img_to_shp(in_img_dir, out_shp_dir):
             polygonize(img_filename, shp_filename)
 
 
-# parallel processing
-def task(region, out_image, no_data, min_size, min_depth, interval, resolution):
-    label_id = region.label
-    img = region.intensity_image
-    # img[img == 0] = no_data
-    bbox = region.bbox
-    # out_obj = identifyDepression(img,label_id,no_data,min_size,min_depth)
-    # writeObject(out_image,out_obj,bbox)
-    out_obj = levelSet(img, label_id, no_data, min_size, min_depth, interval, resolution)
-    writeObject(out_image, out_obj, bbox)
+# # parallel processing
+# def task(region, out_image, no_data, min_size, min_depth, interval, resolution):
+
+#     label_id = region.label
+#     img = region.intensity_image
+#     # img[img == 0] = no_data
+#     bbox = region.bbox
+#     # out_obj = identifyDepression(img,label_id,no_data,min_size,min_depth)
+#     # writeObject(out_image,out_obj,bbox)
+#     out_obj = levelSet(img, label_id, no_data, min_size, min_depth, interval, resolution)
+#     writeObject(out_image, out_obj, bbox)
 
 
-# identify nested depressions using level-set method
 def levelSet(img, region_id, obj_uid, image_paras):
+    """Identifies nested depressions using level-set method.
 
+    Args:
+        img (np.array): The numpy array containing the image.
+        region_id (int): The unique id of the region.
+        obj_uid (int): The object id of the region.
+        image_paras (dict): The dictionary containing image parameters.
+
+    Returns:
+        tuple: (level image, depression list)
+    """
     # unzip input parameters from dict
     no_data, min_size, min_depth, interval, resolution = get_image_paras(image_paras)
 
@@ -315,8 +393,16 @@ def levelSet(img, region_id, obj_uid, image_paras):
     return level_img, dep_list
 
 
-# update the inner neighbors of each depression
 def updateLevel(dep_list, obj_uid):
+    """Updates the inner neighbors of each depression.
+
+    Args:
+        dep_list (list): A list containing depression info.
+        obj_uid (int): The unique id of an object.
+
+    Returns:
+        list: A list containing depression info.
+    """    
     for dep in reversed(dep_list):
         if len(dep.inNbrId) == 0:
             dep.level = 1
@@ -329,8 +415,16 @@ def updateLevel(dep_list, obj_uid):
     return dep_list
 
 
-# derive depression level image based on the depression id image and depression list
 def obj_to_level(obj_img, dep_list):
+    """Derives depression level image based on the depression id image and depression list.
+
+    Args:
+        obj_img (np.array): The numpy array containing the object image.
+        dep_list (list): A list containing depression info.
+
+    Returns:
+        np.array: The numpy array containing the object level image.
+    """    
     level_img = np.copy(obj_img)
 
     max_id = int(np.max(level_img))
@@ -345,8 +439,14 @@ def obj_to_level(obj_img, dep_list):
     return level_img
 
 
-# save the depression list info to csv
 def write_dep_csv(dep_list, csv_file):
+    """Saves the depression list to a CSV file.
+
+
+    Args:
+        dep_list (list): A list containing depression info. 
+        csv_file (str): File path to the output CSV file.
+    """    
     csv = open(csv_file, "w")
     header = "id" +","+"level"+","+"count"+","+"area"+","+"volume"+","+"avg-depth"+","+"max-depth"+","+\
              "min-elev"+","+"max-elev"+","+"children-id"+","+"region-id" + "," + "perimeter" + "," + "major-axis" + \
@@ -364,8 +464,22 @@ def write_dep_csv(dep_list, csv_file):
     csv.close()
 
 
-# extracting individual level image
 def extract_levels(level_img, obj_img, min_size, no_data, out_img_dir, out_shp_dir, template, bool_comb=False):
+    """Extracts individual level image.
+
+    Args:
+        level_img (np.array): The numpy array containing the level image.
+        obj_img (np.array): The numpy array containing the object image.
+        min_size (int): The minimum number of pixels to be considered as a depression.
+        no_data (float): The no_data value of the image.
+        out_img_dir (str): The output image directory.
+        out_shp_dir (str): The output shapefile directory.
+        template (str): The file path to the template image.
+        bool_comb (bool, optional): Whether to extract combined level image. Defaults to False.
+
+    Returns:
+        tuple: The single level image, properties of region grouped level image, properties of region grouped object image.
+    """    
     max_level = int(np.max(level_img))
     combined_images = []
     single_images = []
@@ -419,8 +533,15 @@ def extract_levels(level_img, obj_img, min_size, no_data, out_img_dir, out_shp_d
     return True
 
 
-# get rdarray metadata
 def getMetadata(img):
+    """Gets rdarray metadata.
+
+    Args:
+        img (rdarray): The richDEM array containing the image.
+
+    Returns:
+        tuple: no_data, projection, geotransform, cell_size
+    """    
     no_data = img.no_data
     projection = img.projection
     geotransform = img.geotransform
@@ -428,17 +549,38 @@ def getMetadata(img):
     return no_data, projection, geotransform, cell_size
 
 
-# convert numpy array to rdarray
 def np2rdarray(in_array, no_data, projection, geotransform):
+    """Converts numpy array to rdarray.
+
+    Args:
+        in_array (np.array): The input numpy array containing the image.
+        no_data (float): The no_data value of the image.
+        projection (str): The projection coordinate system of the image.
+        geotransform (str): The geotransform of the image.
+
+    Returns:
+        rdarray: The richDEM array containing the image.
+    """    
     out_array = rd.rdarray(in_array, no_data=no_data)
     out_array.projection = projection
     out_array.geotransform = geotransform
     return out_array
 
 
-# delineate nested depressions
 def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp=False):
+    """Delineates nested depressions.
 
+    Args:
+        in_sink (str): The file path to the sink image.
+        min_size (int): The minimum number of pixels to be considered as a depression.
+        min_depth (float): The minimum depth to be considered as a depression.
+        interval (float): The slicing interval.
+        out_dir (str): The file path to the output directory.
+        bool_level_shp (bool, optional): Whether to generate shapefiles for each individual level. Defaults to False.
+
+    Returns:
+        tuple: The output level image, and the output object image.
+    """
     # The following parameters can be used by default
     interval = interval * (-1)  # convert slicing interval to negative value
 

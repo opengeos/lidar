@@ -1,3 +1,7 @@
+"""Module for filling surface depressions.
+
+"""
+
 import os
 import time
 import numpy as np
@@ -7,10 +11,27 @@ from skimage import measure
 from osgeo import gdal, ogr, osr
 
 
-# class for true depression
 class Depression:
-    def __init__(self, id, count, size, volume, meanDepth, maxDepth, minElev, bndElev, perimeter, major_axis,
-                 minor_axis, elongatedness, eccentricity, orientation, area_bbox_ratio):
+    """The class for storing depression info."""
+
+    def __init__(
+        self,
+        id,
+        count,
+        size,
+        volume,
+        meanDepth,
+        maxDepth,
+        minElev,
+        bndElev,
+        perimeter,
+        major_axis,
+        minor_axis,
+        elongatedness,
+        eccentricity,
+        orientation,
+        area_bbox_ratio,
+    ):
         self.id = id
         self.count = count
         self.size = size
@@ -28,8 +49,17 @@ class Depression:
         self.area_bbox_ratio = area_bbox_ratio
 
 
-# identify regions based on region growing method
 def regionGroup(img_array, min_size, no_data):
+    """IdentifIies regions based on region growing method
+
+    Args:
+        img_array (np.array): The numpy array containing the image.
+        min_size (int): The minimum number of pixels to be considered as a depression.
+        no_data (float): The no_data value of the image.
+
+    Returns:
+        tuple: The labelled objects and total number of labels.
+    """
     img_array[img_array == no_data] = 0
     label_objects, nb_labels = ndimage.label(img_array)
     sizes = np.bincount(label_objects.ravel())
@@ -41,16 +71,34 @@ def regionGroup(img_array, min_size, no_data):
     return label_objects, nb_labels
 
 
-# convert numpy array to rdarray
 def np2rdarray(in_array, no_data, projection, geotransform):
+    """Converts an numpy array to rdarray.
+
+    Args:
+        in_array (np.array): The input numpy array.
+        no_data (float): The no_data value of the array.
+        projection (str): The projection of the image.
+        geotransform (str): The geotransform of the image.
+
+    Returns:
+        object: The richDEM array.
+    """
     out_array = rd.rdarray(in_array, no_data=no_data)
     out_array.projection = projection
     out_array.geotransform = geotransform
     return out_array
 
 
-# compute depression attributes
 def get_dep_props(objects, resolution):
+    """Computes depression attributes.
+
+    Args:
+        objects (object): The labeled objects.
+        resolution (float): The spatial reoslution of the image.
+
+    Returns:
+        list: A list of depression objects with attributes.
+    """
     dep_list = []
 
     for object in objects:
@@ -60,7 +108,9 @@ def get_dep_props(objects, resolution):
         min_elev = np.float(object.min_intensity)  # depression min elevation
         max_elev = np.float(object.max_intensity)  # depression max elevation
         max_depth = max_elev - min_elev  # depression max depth
-        mean_depth = np.float((max_elev * count - np.sum(object.intensity_image)) / count)  # depression mean depth
+        mean_depth = np.float(
+            (max_elev * count - np.sum(object.intensity_image)) / count
+        )  # depression mean depth
         volume = mean_depth * count * pow(resolution, 2)  # depression volume
         perimeter = object.perimeter * resolution
         major_axis = object.major_axis_length * resolution
@@ -72,43 +122,113 @@ def get_dep_props(objects, resolution):
         orientation = object.orientation / 3.1415 * 180
         area_bbox_ratio = object.extent
 
-        dep_list.append(Depression(unique_id, count, size, volume, mean_depth, max_depth, min_elev, max_elev, perimeter,
-                                   major_axis, minor_axis, elongatedness, eccentricity, orientation, area_bbox_ratio))
+        dep_list.append(
+            Depression(
+                unique_id,
+                count,
+                size,
+                volume,
+                mean_depth,
+                max_depth,
+                min_elev,
+                max_elev,
+                perimeter,
+                major_axis,
+                minor_axis,
+                elongatedness,
+                eccentricity,
+                orientation,
+                area_bbox_ratio,
+            )
+        )
 
     return dep_list
 
 
-# save the depression list info to csv
 def write_dep_csv(dep_list, csv_file):
+    """Saves the depression list info to a CSV file.
+
+    Args:
+        dep_list (list): A list of depression objects with attributes.
+        csv_file (str): File path to the output CSV file.
+    """
     csv = open(csv_file, "w")
-    header = "region-id" + "," + "count"+"," + "area" + "," + "volume" + "," + "avg-depth" + "," + "max-depth" + \
-             "," + "min-elev" + "," + "max-elev" + "," + "perimeter" + "," + "major-axis" + "," + "minor-axis" + \
-             "," + "elongatedness" + "," + "eccentricity" + "," + "orientation" + "," + "area-bbox-ratio"
+    header = (
+        "region-id"
+        + ","
+        + "count"
+        + ","
+        + "area"
+        + ","
+        + "volume"
+        + ","
+        + "avg-depth"
+        + ","
+        + "max-depth"
+        + ","
+        + "min-elev"
+        + ","
+        + "max-elev"
+        + ","
+        + "perimeter"
+        + ","
+        + "major-axis"
+        + ","
+        + "minor-axis"
+        + ","
+        + "elongatedness"
+        + ","
+        + "eccentricity"
+        + ","
+        + "orientation"
+        + ","
+        + "area-bbox-ratio"
+    )
 
     csv.write(header + "\n")
     for dep in dep_list:
-        line = "{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}, {:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}".\
-            format(dep.id, dep.count, dep.size, dep.volume,dep.meanDepth, dep.maxDepth, dep.minElev, dep.bndElev,
-            dep.perimeter, dep.major_axis, dep.minor_axis, dep.elongatedness, dep.eccentricity, dep.orientation,
-            dep.area_bbox_ratio)
+        line = "{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}, {:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}".format(
+            dep.id,
+            dep.count,
+            dep.size,
+            dep.volume,
+            dep.meanDepth,
+            dep.maxDepth,
+            dep.minElev,
+            dep.bndElev,
+            dep.perimeter,
+            dep.major_axis,
+            dep.minor_axis,
+            dep.elongatedness,
+            dep.eccentricity,
+            dep.orientation,
+            dep.area_bbox_ratio,
+        )
         csv.write(line + "\n")
     csv.close()
 
 
-# raster to vector
-def polygonize(img,shp_path):
+def polygonize(img, shp_path):
+    """Converts a raster image to vector.
+
+    Args:
+        img (str): File path to the input image.
+        shp_path (str): File path to the output shapefile.
+    """
     # mapping between gdal type and ogr field type
-    type_mapping = {gdal.GDT_Byte: ogr.OFTInteger,
-                    gdal.GDT_UInt16: ogr.OFTInteger,
-                    gdal.GDT_Int16: ogr.OFTInteger,
-                    gdal.GDT_UInt32: ogr.OFTInteger,
-                    gdal.GDT_Int32: ogr.OFTInteger,
-                    gdal.GDT_Float32: ogr.OFTReal,
-                    gdal.GDT_Float64: ogr.OFTReal,
-                    gdal.GDT_CInt16: ogr.OFTInteger,
-                    gdal.GDT_CInt32: ogr.OFTInteger,
-                    gdal.GDT_CFloat32: ogr.OFTReal,
-                    gdal.GDT_CFloat64: ogr.OFTReal}
+    type_mapping = {
+        gdal.GDT_Byte: ogr.OFTInteger,
+        gdal.GDT_UInt16: ogr.OFTInteger,
+        gdal.GDT_Int16: ogr.OFTInteger,
+        gdal.GDT_UInt32: ogr.OFTInteger,
+        gdal.GDT_Int32: ogr.OFTInteger,
+        gdal.GDT_Float32: ogr.OFTReal,
+        gdal.GDT_Float64: ogr.OFTReal,
+        gdal.GDT_CInt16: ogr.OFTInteger,
+        gdal.GDT_CInt32: ogr.OFTInteger,
+        gdal.GDT_CFloat32: ogr.OFTReal,
+        gdal.GDT_CFloat64: ogr.OFTReal,
+    }
 
     ds = gdal.Open(img)
     prj = ds.GetProjection()
@@ -121,15 +241,23 @@ def polygonize(img,shp_path):
 
     dst_layer = dst_ds.CreateLayer(dst_layername, srs=srs)
     # raster_field = ogr.FieldDefn('id', type_mapping[srcband.DataType])
-    raster_field = ogr.FieldDefn('id', type_mapping[gdal.GDT_Int32])
+    raster_field = ogr.FieldDefn("id", type_mapping[gdal.GDT_Int32])
     dst_layer.CreateField(raster_field)
     gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
     del img, ds, srcband, dst_ds, dst_layer
 
 
-# extract sinks from dem
 def ExtractSinks(in_dem, min_size, out_dir):
+    """Extract sinks (e.g., maximum depression extent) from a DEM.
 
+    Args:
+        in_dem (str): File path to the input DEM.
+        min_size (int): The minimum number of pixels to be considered as a sink.
+        out_dir (str): File path to the output directory.
+
+    Returns:
+        object: The richDEM array containing sinks.
+    """
     start_time = time.time()
 
     out_dem = os.path.join(out_dir, "dem.tif")
@@ -156,7 +284,11 @@ def ExtractSinks(in_dem, min_size, out_dir):
     # get min and max elevation of the dem
     max_elev = np.float(np.max(dem))
     min_elev = np.float(np.min(dem[dem > 0]))
-    print("min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}".format(min_elev, max_elev, no_data, cell_size))
+    print(
+        "min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}".format(
+            min_elev, max_elev, no_data, cell_size
+        )
+    )
 
     # depression filling
     print("Depression filling ...")
@@ -172,7 +304,9 @@ def ExtractSinks(in_dem, min_size, out_dir):
     print("Region grouping ...")
     label_objects, nb_labels = regionGroup(dem_diff, min_size, no_data)
     dem_diff[label_objects == 0] = 0
-    depth = np2rdarray(dem_diff, no_data=0, projection=projection, geotransform=geotransform)
+    depth = np2rdarray(
+        dem_diff, no_data=0, projection=projection, geotransform=geotransform
+    )
     rd.SaveGDAL(out_depth, depth)
     del dem_diff, depth
 
@@ -184,7 +318,9 @@ def ExtractSinks(in_dem, min_size, out_dir):
     del objects, dep_list
 
     # convert numpy to richdem data format
-    region = np2rdarray(label_objects, no_data=0, projection=projection, geotransform=geotransform)
+    region = np2rdarray(
+        label_objects, no_data=0, projection=projection, geotransform=geotransform
+    )
     del label_objects
 
     print("Saving sink dem ...")
@@ -197,7 +333,9 @@ def ExtractSinks(in_dem, min_size, out_dir):
     print("Saving refined dem ...")
     dem_refined = dem_filled
     dem_refined[region > 0] = dem[region > 0]
-    dem_refined = np2rdarray(dem_refined, no_data=no_data, projection=projection, geotransform=geotransform)
+    dem_refined = np2rdarray(
+        dem_refined, no_data=no_data, projection=projection, geotransform=geotransform
+    )
     rd.SaveGDAL(out_dem, dem_refined)
     rd.SaveGDAL(out_region, region)
     del dem_refined, region, dem
@@ -211,22 +349,28 @@ def ExtractSinks(in_dem, min_size, out_dir):
     return out_sink
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # ************************ change the following parameters if needed ******************************** #
     # set input files
     in_dem = os.path.join(os.path.dirname(__file__), "data/dem.tif")
     # parameters for depression filling
-    min_size = 1000        # minimum number of pixels as a depression
-    min_depth = 0.3        # minimum depression depth
+    min_size = 1000  # minimum number of pixels as a depression
+    min_depth = 0.3  # minimum depression depth
     # set output directory
-    out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
+    out_dir = os.path.join(
+        os.path.expanduser("~"), "temp"
+    )  # create a temp folder under user home directory
     # ************************************************************************************************** #
 
     sink_path = ExtractSinks(in_dem, min_size=min_size, out_dir=out_dir)
     dem = rd.LoadGDAL(in_dem)
     sink = rd.LoadGDAL(sink_path)
-    demfig = rd.rdShow(dem, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
-    sinkfig = rd.rdShow(sink, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
+    demfig = rd.rdShow(
+        dem, ignore_colours=[0], axes=False, cmap="jet", figsize=(6, 5.5)
+    )
+    sinkfig = rd.rdShow(
+        sink, ignore_colours=[0], axes=False, cmap="jet", figsize=(6, 5.5)
+    )
 
     print("Results are saved in: {}".format(out_dir))

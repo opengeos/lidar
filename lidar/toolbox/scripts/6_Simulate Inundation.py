@@ -8,7 +8,7 @@ import time
 import os
 import shutil
 import copy
-from osgeo import gdal,ogr,osr
+from osgeo import gdal, ogr, osr
 import arcpy
 
 # from joblib import Parallel, delayed
@@ -18,7 +18,19 @@ import arcpy
 
 ## class for true depression
 class Depression:
-    def __init__(self, id, level, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, nbrId=0):
+    def __init__(
+        self,
+        id,
+        level,
+        size,
+        volume,
+        meanDepth,
+        maxDepth,
+        minElev,
+        bndElev,
+        inNbrId,
+        nbrId=0,
+    ):
         self.id = id
         self.size = size
         self.level = level
@@ -34,8 +46,10 @@ class Depression:
 # get min and max elevation of a dem
 def get_min_max_nodata(img_array):
     max_elev = np.max(img_array)
-    nodata = pow(10, math.floor(math.log10(np.max(image)))+2) -1  # based on the max value of the image, assign no data value
-    image[image <= 0] = nodata  #change no data value
+    nodata = (
+        pow(10, math.floor(math.log10(np.max(image))) + 2) - 1
+    )  # based on the max value of the image, assign no data value
+    image[image <= 0] = nodata  # change no data value
     min_elev = np.min(img_array)
     return min_elev, max_elev, nodata
 
@@ -51,6 +65,7 @@ def regionGroup(img_array, min_size, no_data):
     label_objects, nb_labels = ndimage.label(image_cleaned)
     # nb_labels is the total number of objects. 0 represents background object.
     return label_objects, nb_labels
+
 
 # extract a subset of the raster
 def extractByRegion(img_array, obj_array, obj_id, no_data):
@@ -88,7 +103,7 @@ def writeRaster(arr, out_path, template):
     outdriver = gdal.GetDriverByName("GTiff")
     # http://www.gdal.org/gdal_8h.html
     # GDT_Byte = 1, GDT_UInt16 = 2, GDT_UInt32 = 4, GDT_Int32 = 5, GDT_Float32 = 6,
-    outdata   = outdriver.Create(str(out_path), rows, cols, 1, gdal.GDT_UInt32)
+    outdata = outdriver.Create(str(out_path), rows, cols, 1, gdal.GDT_UInt32)
     # Write the array to the file, which is the original array in this example
     outdata.GetRasterBand(1).WriteArray(arr)
     # Set a no data value if required
@@ -101,19 +116,21 @@ def writeRaster(arr, out_path, template):
 
 
 # raster to vector
-def polygonize(img,shp_path):
+def polygonize(img, shp_path):
     # mapping between gdal type and ogr field type
-    type_mapping = {gdal.GDT_Byte: ogr.OFTInteger,
-                    gdal.GDT_UInt16: ogr.OFTInteger,
-                    gdal.GDT_Int16: ogr.OFTInteger,
-                    gdal.GDT_UInt32: ogr.OFTInteger,
-                    gdal.GDT_Int32: ogr.OFTInteger,
-                    gdal.GDT_Float32: ogr.OFTReal,
-                    gdal.GDT_Float64: ogr.OFTReal,
-                    gdal.GDT_CInt16: ogr.OFTInteger,
-                    gdal.GDT_CInt32: ogr.OFTInteger,
-                    gdal.GDT_CFloat32: ogr.OFTReal,
-                    gdal.GDT_CFloat64: ogr.OFTReal}
+    type_mapping = {
+        gdal.GDT_Byte: ogr.OFTInteger,
+        gdal.GDT_UInt16: ogr.OFTInteger,
+        gdal.GDT_Int16: ogr.OFTInteger,
+        gdal.GDT_UInt32: ogr.OFTInteger,
+        gdal.GDT_Int32: ogr.OFTInteger,
+        gdal.GDT_Float32: ogr.OFTReal,
+        gdal.GDT_Float64: ogr.OFTReal,
+        gdal.GDT_CInt16: ogr.OFTInteger,
+        gdal.GDT_CInt32: ogr.OFTInteger,
+        gdal.GDT_CFloat32: ogr.OFTReal,
+        gdal.GDT_CFloat64: ogr.OFTReal,
+    }
 
     tif = os.path.split(img)[1]
     # print("reading {}...".format(tif))
@@ -129,7 +146,7 @@ def polygonize(img,shp_path):
     srs = osr.SpatialReference(wkt=prj)
 
     dst_layer = dst_ds.CreateLayer(dst_layername, srs=srs)
-    raster_field = ogr.FieldDefn('level', type_mapping[srcband.DataType])
+    raster_field = ogr.FieldDefn("level", type_mapping[srcband.DataType])
     dst_layer.CreateField(raster_field)
     gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
 
@@ -138,20 +155,33 @@ def img_to_shp(in_img_dir, out_shp_dir):
     img_files = os.listdir(in_img_dir)
     for img_file in img_files:
         if img_file.endswith(".tif"):
-            img_filename = os.path.join(in_img_dir,img_file)
-            shp_filename = os.path.join(out_shp_dir,img_file.replace("tif","shp"))
-            polygonize(img_filename,shp_filename)
+            img_filename = os.path.join(in_img_dir, img_file)
+            shp_filename = os.path.join(out_shp_dir, img_file.replace("tif", "shp"))
+            polygonize(img_filename, shp_filename)
 
 
 def task(region, out_image, no_data, min_size, min_depth, interval, resolution):
     label_id = region.label
     img = region.intensity_image
     bbox = region.bbox
-    out_obj = levelSet(img, label_id, no_data, min_size, min_depth, interval, resolution)
+    out_obj = levelSet(
+        img, label_id, no_data, min_size, min_depth, interval, resolution
+    )
     writeObject(out_image, out_obj, bbox)
 
 
-def levelSet(img, obj_id, no_data, min_size, min_depth, interval, resolution, catchment_img, rain_intensity, rain_time):
+def levelSet(
+    img,
+    obj_id,
+    no_data,
+    min_size,
+    min_depth,
+    interval,
+    resolution,
+    catchment_img,
+    rain_intensity,
+    rain_time,
+):
     level_img = np.copy(img)
     level_img[level_img != 0] = 0
     obj_img = np.copy(level_img)
@@ -169,7 +199,7 @@ def levelSet(img, obj_id, no_data, min_size, min_depth, interval, resolution, ca
     for elev in np.arange(max_elev, min_elev, interval):
         img[img > elev] = 0
         label_objects, nb_labels = regionGroup(img, min_size, no_data)
-        if nb_labels == 0:   # if slicing results in no objects, quit
+        if nb_labels == 0:  # if slicing results in no objects, quit
             break
 
         objects = measure.regionprops(label_objects, img)
@@ -180,30 +210,47 @@ def levelSet(img, obj_id, no_data, min_size, min_depth, interval, resolution, ca
                 cells = object.area
                 size = cells * pow(resolution, 2)
                 max_depth = object.max_intensity - object.min_intensity
-                mean_depth = (object.max_intensity * cells - np.sum(object.intensity_image)) / cells
+                mean_depth = (
+                    object.max_intensity * cells - np.sum(object.intensity_image)
+                ) / cells
                 volume = mean_depth * cells * pow(resolution, 2)
-                spill_elev = object.max_intensity   # to be implemented
+                spill_elev = object.max_intensity  # to be implemented
                 min_elev = object.min_intensity
                 max_elev = object.max_intensity
                 unique_id += 1
                 level = 1
-                dep_list.append(Depression(unique_id,level,size,volume,mean_depth,max_depth,min_elev,max_elev,[],0))
+                dep_list.append(
+                    Depression(
+                        unique_id,
+                        level,
+                        size,
+                        volume,
+                        mean_depth,
+                        max_depth,
+                        min_elev,
+                        max_elev,
+                        [],
+                        0,
+                    )
+                )
                 parent_ids[unique_id] = 0  # number of inner neighbors
-                nbr_ids[unique_id] = []   # ids of inner neighbors
+                nbr_ids[unique_id] = []  # ids of inner neighbors
                 tmp_img = np.zeros(object.image.shape)
                 tmp_img[object.image] = unique_id
-                writeObject(level_img, tmp_img, bbox)  # write the object to the final image
+                writeObject(
+                    level_img, tmp_img, bbox
+                )  # write the object to the final image
 
                 # determine inundation area
                 if catchment_img is not None:
-                    catchment_area = catchment_img[row,col]
+                    catchment_area = catchment_img[row, col]
                     flood_volume = catchment_area * rain_intensity * rain_time
                     if flood_volume >= volume and flood_img[row, col] == 0:
                         tmp_img = np.zeros(object.image.shape)
                         tmp_img[object.image] = 1
                         writeObject(flood_img, tmp_img, bbox)
             else:  # identify inner neighbors of upper level depressions
-                parent_id = level_img[row,col]
+                parent_id = level_img[row, col]
                 parent_ids[parent_id] += 1
                 nbr_ids[parent_id].append(i)
 
@@ -212,7 +259,9 @@ def levelSet(img, obj_id, no_data, min_size, min_depth, interval, resolution, ca
                     cells = object.area
                     size = cells * pow(resolution, 2)
                     # max_depth = object.max_intensity - object.min_intensity
-                    mean_depth = (object.max_intensity * cells - np.sum(object.intensity_image)) / cells
+                    mean_depth = (
+                        object.max_intensity * cells - np.sum(object.intensity_image)
+                    ) / cells
                     volume = mean_depth * cells * pow(resolution, 2)
                     # spill_elev = object.max_intensity   # to be implemented
                     # min_elev = object.min_intensity
@@ -223,7 +272,11 @@ def levelSet(img, obj_id, no_data, min_size, min_depth, interval, resolution, ca
                         tmp_img[object.image] = 1
                         writeObject(flood_img, tmp_img, bbox)
 
-        for key in parent_ids.copy():  # check how many inner neighbors each upper level depression has
+        for (
+            key
+        ) in (
+            parent_ids.copy()
+        ):  # check how many inner neighbors each upper level depression has
             if parent_ids[key] > 1:  # if the parent has two or more children
                 new_parent_keys = nbr_ids[key]
                 for new_key in new_parent_keys:
@@ -231,7 +284,9 @@ def levelSet(img, obj_id, no_data, min_size, min_depth, interval, resolution, ca
                     cells = object.area
                     size = cells * pow(resolution, 2)
                     max_depth = object.max_intensity - object.min_intensity
-                    mean_depth = (object.max_intensity * cells - np.sum(object.intensity_image)) / cells
+                    mean_depth = (
+                        object.max_intensity * cells - np.sum(object.intensity_image)
+                    ) / cells
                     volume = mean_depth * cells * pow(resolution, 2)
                     # spill_elev = object.max_intensity
                     min_elev = object.min_intensity
@@ -239,8 +294,20 @@ def levelSet(img, obj_id, no_data, min_size, min_depth, interval, resolution, ca
                     unique_id += 1
                     level = 1
                     dep_list.append(
-                        Depression(unique_id, level, size, volume, mean_depth, max_depth, min_elev, max_elev, [], 0))
-                    dep_list[key-1].inNbrId.append(unique_id)
+                        Depression(
+                            unique_id,
+                            level,
+                            size,
+                            volume,
+                            mean_depth,
+                            max_depth,
+                            min_elev,
+                            max_elev,
+                            [],
+                            0,
+                        )
+                    )
+                    dep_list[key - 1].inNbrId.append(unique_id)
                     parent_ids[unique_id] = 0
                     nbr_ids[unique_id] = []
                     bbox = object.bbox
@@ -264,8 +331,8 @@ def updateLevel(dep_list):
         else:
             max_children_level = 0
             for id in dep.inNbrId:
-                if dep_list[id-1].level > max_children_level:
-                    max_children_level = dep_list[id-1].level
+                if dep_list[id - 1].level > max_children_level:
+                    max_children_level = dep_list[id - 1].level
             dep.level = max_children_level + 1
     return dep_list
 
@@ -273,10 +340,11 @@ def updateLevel(dep_list):
 def obj_to_level(obj_img, dep_list):
     level_img = np.copy(obj_img)
     max_id = int(np.max(level_img))
-    for i in range(1, max_id+1):
-        level_img[level_img == i] = dep_list[i-1].level + max_id
+    for i in range(1, max_id + 1):
+        level_img[level_img == i] = dep_list[i - 1].level + max_id
     level_img = level_img - max_id
     return level_img
+
 
 # extracting individual level image
 def extract_levels(level_img, min_size, no_data, out_dir, template, bool_comb):
@@ -284,16 +352,18 @@ def extract_levels(level_img, min_size, no_data, out_dir, template, bool_comb):
     combined_images = []
     single_images = []
     img = np.copy(level_img)
-    digits = int(math.log10(max_level)) + 1  # determine the level number of output file name
+    digits = (
+        int(math.log10(max_level)) + 1
+    )  # determine the level number of output file name
     for i in range(1, max_level + 1):
-        img[(img > 0) & (img <= i) ] = i
+        img[(img > 0) & (img <= i)] = i
         tmp_img = np.copy(img)
         tmp_img[tmp_img > i] = 0
         if bool_comb == True:
             combined_images.append(np.copy(tmp_img))
             filename_combined = "Combined_level_" + str(i).zfill(digits) + ".tif"
             out_file = os.path.join(out_dir, filename_combined)
-            writeRaster(tmp_img,out_file,template)
+            writeRaster(tmp_img, out_file, template)
         lbl_objects, n_labels = regionGroup(tmp_img, min_size, no_data)
         regs = measure.regionprops(lbl_objects, level_img)
         sin_img = np.zeros(img.shape)
@@ -306,7 +376,7 @@ def extract_levels(level_img, min_size, no_data, out_dir, template, bool_comb):
         single_images.append(np.copy(sin_img))
         filename_single = "Single_level_" + str(i).zfill(digits) + ".tif"
         out_file = os.path.join(out_dir, filename_single)
-        writeRaster(sin_img,out_file,template)
+        writeRaster(sin_img, out_file, template)
     return True
 
 
@@ -316,7 +386,7 @@ def maxPlotWindow():
 
 
 ######################################  main script
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # input files
     # in_sink = "../../data/sink_full.tif"   # input dem image
@@ -360,11 +430,13 @@ if __name__ == '__main__':
     #     shutil.rmtree(out_flood_dir)
     # os.mkdir(out_flood_dir)
 
-    with TiffFile(in_sink) as tif:   # read dem file as numpy array
+    with TiffFile(in_sink) as tif:  # read dem file as numpy array
         raw_image = tif.asarray()
 
     image = np.copy(raw_image)  # store original DEM
-    min_elev, max_elev, no_data = get_min_max_nodata(image)  # set nodata value to a large value, e.g., 9999
+    min_elev, max_elev, no_data = get_min_max_nodata(
+        image
+    )  # set nodata value to a large value, e.g., 9999
 
     with TiffFile(in_catchment) as catchment:  # read catchment file as numpy array
         catchment_img = catchment.asarray()
@@ -376,14 +448,18 @@ if __name__ == '__main__':
     arcpy.AddMessage("Data preparation time: {}".format(prep_time - init_time))
     arcpy.AddMessage("Total number of regions: {}".format(nb_labels))
 
-    digits = int(math.log10(rain_time/step)) + 1  # determine the level number of output file name
-    for i, rain in enumerate(np.arange(step,rain_time+0.0001,step)):
+    digits = (
+        int(math.log10(rain_time / step)) + 1
+    )  # determine the level number of output file name
+    for i, rain in enumerate(np.arange(step, rain_time + 0.0001, step)):
         iter_start = time.time()
         iter_number = i + 1
         rain_duration = step * (iter_number)
         arcpy.AddMessage("Iteration: {} ( H = {} )".format(iter_number, rain_duration))
         # print("Time step: H = {} ".format(rain_duration))
-        flood_image = np.copy(image)  # output depression image with unique id for each nested depression
+        flood_image = np.copy(
+            image
+        )  # output depression image with unique id for each nested depression
         flood_image[flood_image > 0] = 0  # set default value to 0
 
         out_flood_name = "flood_" + str(iter_number).zfill(digits) + ".tif"
@@ -393,12 +469,24 @@ if __name__ == '__main__':
             label_id = region.label
             img = region.intensity_image  # dem
             bbox = region.bbox
-            reg_catchment = catchment_img[bbox[0]:bbox[2], bbox[1]:bbox[3]]   # extract the corresponding catchment
-            out_obj, dep_list, flood_obj = levelSet(img, label_id, no_data, min_size, min_depth, interval, resolution, reg_catchment, rain_intensity, rain_duration)
+            reg_catchment = catchment_img[
+                bbox[0] : bbox[2], bbox[1] : bbox[3]
+            ]  # extract the corresponding catchment
+            out_obj, dep_list, flood_obj = levelSet(
+                img,
+                label_id,
+                no_data,
+                min_size,
+                min_depth,
+                interval,
+                resolution,
+                reg_catchment,
+                rain_intensity,
+                rain_duration,
+            )
             flood_image = writeObject(flood_image, flood_obj, bbox)
         arcpy.AddMessage("Iteration time: {:.4f}".format(time.time() - iter_start))
         writeRaster(flood_image, out_flood_file, in_sink)
 
     end_time = time.time()
     arcpy.AddMessage("Total run time: {:.4f}".format(end_time - init_time))
-
