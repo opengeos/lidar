@@ -28,6 +28,9 @@ plugins:
 
 markdown_extensions:
     - attr_list
+    - pymdownx.superfences
+    - pymdownx.highlight:
+          linenums: true
     - toc:
           permalink: true
 
