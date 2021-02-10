@@ -33,11 +33,15 @@ lidar
 .. image:: https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg
         :target: https://www.buymeacoffee.com/giswqs
 
+.. image:: https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88facc/status.svg
+        :target: https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88fac
 
 Author: Qiusheng Wu (https://wetlands.io)
 
 
-**lidar** is a toolset for terrain and hydrological analysis using digital elevation models (DEMs). It is particularly useful for analyzing high-resolution topographic data, such as DEMs derived from Light Detection and Ranging (LiDAR) data.
+**lidar** is Python package for delineating the nested hierarchy of surface depressions 
+in digital elevation models (DEMs). It is particularly useful for analyzing high-resolution 
+topographic data, such as DEMs derived from Light Detection and Ranging (LiDAR) data.
 
 
 * GitHub repo: https://github.com/giswqs/lidar
@@ -51,6 +55,8 @@ Author: Qiusheng Wu (https://wetlands.io)
 
 **Contents**
 
+- `Introduction`_
+- `Statement of Need`_
 - `Features`_
 - `Installation`_
 - `Tutorials`_
@@ -60,6 +66,34 @@ Author: Qiusheng Wu (https://wetlands.io)
 - `References`_
 - `Reporting Bugs`_
 - `Credits`_
+
+
+Introduction
+------------
+
+**lidar** is a Python package for delineating the nested hierarchy of surface depressions 
+in digital elevation models (DEMs). In traditional hydrological modeling, surface depressions 
+in a DEM are commonly treated as artifacts and thus filled and removed to create a depressionless DEM,
+which can then be used to generate continuous stream networks. In reality, however, surface depressions 
+in DEMs are commonly a combination of spurious and actual terrain features. 
+Fine-resolution DEMs derived from Light Detection and Ranging (LiDAR) data can capture and represent 
+actual surface depressions, especially in glaciated and karst landscapes. 
+During the past decades, various algorithms have been developed to identify and delineate surface depressions, 
+such as depression filling, depression breaching, hybrid breaching-filling, 
+and contour tree method. More recently, a level-set method based on graph theory was proposed to delineate 
+the nested hierarchy of surface depressions. The **lidar** Python package implements the level-set method 
+and makes it possible for delineating the nested hierarchy of surface depressions as well as elevated terrain features. 
+It also provides an interactive Graphical User Interface (GUI) that allows users to run the program with minimal coding.
+
+Statement of Need
+-----------------
+
+The **lidar** package is intended for scientists and researchers who would like to integrate surface depressions 
+into hydrological modeling. It can also facilitate the identification and delineation of depressional features, 
+such as sinkholes, detention basins, and prairie potholes. The detailed topological and geometric properties of 
+surface depressions can be useful for terrain analysis and hydrological modeling, including the size, volume, 
+mean depth, maximum depth, lowest elevation, spill elevation, perimeter, major axis length, minor axis length, 
+elongatedness.
 
 
 Features
@@ -285,7 +319,7 @@ References
 ----------
 The level-set algorithm in the **lidar** package has been published in the following article:
 
-* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. DOI: `10.1111/1752-1688.12689`_ (preprint_)
+* **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen, J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression Hierarchy in Digital Elevation Models for Hydrological Analysis Using Level-Set Method. *Journal of the American Water Resources Association*. DOI: `10.1111/1752-1688.12689`_ (`PDF <https://spatial.utk.edu/pubs/2019_JAWRA.pdf>`__)
 
 Applications of the level-set and contour-tree methods for feature extraction from LiDAR data:
 

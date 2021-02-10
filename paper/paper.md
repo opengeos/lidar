@@ -16,13 +16,13 @@ authors:
 affiliations:
     - name: Department of Geography, University of Tennessee, Knoxville, TN 37996, United States
       index: 1
-date: 7 December 2020
+date: 9 February 2021
 bibliography: paper.bib
 ---
 
 # Summary
 
-**lidar** is a Python package for terrain and hydrological analysis using digital elevation models (DEMs).
+**lidar** is a Python package for delineating the nested hierarchy of surface depressions in digital elevation models (DEMs).
 In traditional hydrological modeling, surface depressions in a DEM are commonly treated as artifacts and thus filled and removed to create a depressionless DEM, which can then be used to generate continuous stream networks. In reality, however, surface depressions in DEMs are commonly a combination of spurious and actual terrain features [@Lindsay2006]. Fine-resolution DEMs derived from Light Detection and Ranging (LiDAR) data can capture and represent actual surface depressions, especially in glaciated [@Wu2016-ub] and karst landscapes [@Wu2016]. During the past decades, various algorithms have been developed to identify and delineate surface depressions, such as depression filling [@Wang2006], depression breaching [@Lindsay2015], hybrid breaching-filling [@Lindsay2016], and contour tree method [@Wu2015]. More recently, a level-set method based on graph theory was proposed to delineate the nested hierarchy of surface depressions [@Wu2019]. The **lidar** Python package implements the level-set method and makes it possible for delineating the nested hierarchy of surface depressions as well as elevated terrain features. It also provides an interactive Graphical User Interface (GUI) that allows users to run the program with minimal coding.
 
 # Statement of Need
