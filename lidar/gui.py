@@ -6,11 +6,12 @@ from .filling import ExtractSinks
 from .slicing import DelineateDepressions
 from .mounts import DelineateMounts
 
-# from lidar import *
 import PySimpleGUI as sg
 
 
-def main():
+def gui():
+    """An interactive Graphical User Interface (GUI) for the lidar package."""
+
     # identify the sample data directory of the package
     package_name = "lidar"
     data_dir = pkg_resources.resource_filename(package_name, "data/")
@@ -81,7 +82,6 @@ def main():
             display,
             out_dir,
         ) = form.LayoutAndRead(form_rows)
-        # sg.Popup(button, source_filename)
 
         if button == "Submit":
 
@@ -163,15 +163,3 @@ def main():
                 )
 
             sg.Popup("Success!", "The results are saved in: {}".format(out_dir))
-
-
-def GUI():
-    main()
-
-
-def gui():
-    main()
-
-
-if __name__ == "__main__":
-    main()

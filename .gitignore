@@ -5,6 +5,7 @@ __pycache__/
 .idea/
 .vscode/
 docs/_static
+testing/
 
 # exclude files
 lidar/levelset.py

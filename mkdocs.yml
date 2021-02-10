@@ -1,0 +1,53 @@
+site_name: lidar
+
+site_url: https://lidar.github.org
+
+repo_url: https://github.com/giswqs/lidar
+
+theme:
+    palette:
+        scheme: preference
+    name: material
+    icon:
+        repo: fontawesome/brands/github
+    features:
+        - navigation.instant
+        # - navigation.expand
+        # - navigation.tabs
+        - search.highlight
+    custom_dir: "docs/overrides"
+
+plugins:
+    - search
+    - mkdocstrings
+    - git-revision-date
+    # - pdf-export
+    - mkdocs-jupyter:
+          include_source: True
+          # execute: True
+
+markdown_extensions:
+    - attr_list
+    - toc:
+          permalink: true
+
+# google_analytics:
+#     - UA-186406134-1
+#     - auto
+
+nav:
+    - Home: index.md
+    - Installation: installation.md
+    - Get Started: get-started.md
+    - Usage: usage.md
+    - Contributing: contributing.md
+    - Citations: citations.md
+    - FAQ: faq.md
+    - Changelog: changelog.md
+    - Report Issues: https://github.com/giswqs/lidar/issues
+    - API Reference:
+          - filling module: filling.md
+          - filtering module: filtering.md
+          - mounts module: mounts.md
+          - slicing module: slicing.md
+          - utilities module: utilities.md

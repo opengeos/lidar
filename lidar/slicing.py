@@ -41,7 +41,7 @@ def get_min_max_nodata(image):
     """Gets the minimum, maximum, and no_data value of a numpy array.
 
     Args:
-        dem (np.array): The numpy array containing the image. 
+        image (np.array): The numpy array containing the image. 
 
     Returns:
         tuple: The minimum, maximum, and no_data value.
@@ -695,28 +695,3 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
     end_time = time.time()
     print("Total run time:\t\t\t {:.4f} s".format(end_time - init_time))
     return out_obj_file, out_level_file
-
-
-# #####################################  main script
-if __name__ == '__main__':
-
-    # ************************ change the following parameters if needed ******************************** #
-    # set input files
-    in_dem = os.path.join(os.getcwd(), "lidar/data/dem.tif")
-    in_sink = os.path.join(os.getcwd(), "lidar/data/sink.tif")
-    # parameters for level set method
-    min_size = 1000         # minimum number of pixels as a depression
-    min_depth = 0.3         # minimum depression depth
-    interval = 0.3          # slicing interval, top-down approach
-    bool_level_shp = True  # whether or not to extract polygons for each individual level
-    # set output directory
-    out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
-    # **************************************************************************************************#
-
-    dep_id_path, dep_level_path = DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp)
-    print("Results are saved in: {}".format(out_dir))
-
-    dep_id = rd.LoadGDAL(dep_id_path)
-    dep_id_fig = rd.rdShow(dep_id, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))
-    dep_level = rd.LoadGDAL(dep_level_path)
-    dep_level_fig = rd.rdShow(dep_level, ignore_colours=[0], axes=False, cmap='jet', figsize=(6, 5.5))

@@ -347,30 +347,3 @@ def ExtractSinks(in_dem, min_size, out_dir):
     print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
 
     return out_sink
-
-
-if __name__ == "__main__":
-
-    # ************************ change the following parameters if needed ******************************** #
-    # set input files
-    in_dem = os.path.join(os.path.dirname(__file__), "data/dem.tif")
-    # parameters for depression filling
-    min_size = 1000  # minimum number of pixels as a depression
-    min_depth = 0.3  # minimum depression depth
-    # set output directory
-    out_dir = os.path.join(
-        os.path.expanduser("~"), "temp"
-    )  # create a temp folder under user home directory
-    # ************************************************************************************************** #
-
-    sink_path = ExtractSinks(in_dem, min_size=min_size, out_dir=out_dir)
-    dem = rd.LoadGDAL(in_dem)
-    sink = rd.LoadGDAL(sink_path)
-    demfig = rd.rdShow(
-        dem, ignore_colours=[0], axes=False, cmap="jet", figsize=(6, 5.5)
-    )
-    sinkfig = rd.rdShow(
-        sink, ignore_colours=[0], axes=False, cmap="jet", figsize=(6, 5.5)
-    )
-
-    print("Results are saved in: {}".format(out_dir))
