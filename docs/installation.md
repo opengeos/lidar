@@ -12,18 +12,21 @@ below. The instruction below assumes that you have installed
 following commands to create a conda environment and install required
 packages.
 
-    conda create -n py38 python=3.8
-    conda activate py38
-    conda install -c conda-forge mamba
-    mamba install -c conda-forge lidar 
+```console
+conda create -n py38 python=3.8
+conda activate py38
+conda install -c conda-forge mamba
+mamba install -c conda-forge lidar 
+```
 
 ## pip
 
 If you have installed **lidar** before and want to upgrade to the latest
 version, you can use the following command:
 
-    pip install lidar -U
-
+```console
+pip install lidar -U
+```
 
 ## Dependencies
 
@@ -41,10 +44,12 @@ environment. Check [managing Python environment] for more information.
 Once GDAL has been installed, you can then proceed to install the
 **lidar** Python package using the following command:
 
-    conda create -n py38 python=3.8
-    conda activate py38
-    conda install -c conda-forge gdal 
-    pip install lidar
+```console
+conda create -n py38 python=3.8
+conda activate py38
+conda install -c conda-forge gdal 
+pip install lidar
+```    
 
 ### Linux
 
@@ -53,16 +58,20 @@ Once GDAL has been installed, you can then proceed to install the
 The following commands can be used to install GDAL for Debian-based
 Linux distributions (e.g., Ubuntu, Linux Mint).
 
-    sudo add-apt-repository ppa:ubuntugis/ppa
-    sudo apt-get update
-    sudo apt-get install gdal-bin libgdal-dev
-    pip install lidar
+```console
+sudo add-apt-repository ppa:ubuntugis/ppa
+sudo apt-get update
+sudo apt-get install gdal-bin libgdal-dev
+pip install lidar
+```  
 
 If you encounter any compiling errors, try the following commands.
 
-    sudo apt-get install --reinstall build-essential
-    sudo apt-get install python3-dev
-    pip install wheel
+```console
+sudo apt-get install --reinstall build-essential
+sudo apt-get install python3-dev
+pip install wheel
+``` 
 
 #### Pacman-based Linux
 
@@ -70,17 +79,21 @@ The following commands can be used to install GDAL for Pacman-based
 Linux distributions (e.g., Arch Linux, Manjaro). You might need to use
 **sudo** if you encounter permission errors.
 
-    sudo pacman -S yaourt --noconfirm
-    yaourt -S gdal --noconfirm
-    yaourt -S python-gdal --noconfirm
-    pip install lidar
+```console
+sudo pacman -S yaourt --noconfirm
+yaourt -S gdal --noconfirm
+yaourt -S python-gdal --noconfirm
+pip install lidar
+```  
 
 ### macOS
 
 For a Homebrew based Python environment, do the following.
 
-    brew update
-    brew install gdal
+```console
+brew update
+brew install gdal
+```  
 
 Alternatively, you can install GDAL binaries from [kyngchaos](http://www.kyngchaos.com/software/frameworks#gdal_complete). You will
 then need to add the installed location
@@ -92,11 +105,13 @@ The instruction below assumes that you have installed [Anaconda](https://www.ana
 **Anaconda Prompt** and enter the following commands to create a conda
 environment and install required packages
 
-    conda create -n py38 python=3.8
-    conda activate py38
-    conda install -c conda-forge gdal 
-    pip install richdem
-    pip install lidar
+```console
+conda create -n py38 python=3.8
+conda activate py38
+conda install -c conda-forge gdal 
+pip install richdem
+pip install lidar
+```  
 
 When installing the **richdem** package, if you encounter an error
 saying 'Microsoft Visual C++ 14.0 is required', please follow the steps

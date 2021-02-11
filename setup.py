@@ -29,10 +29,10 @@ if not GDAL_VERSION_NUM.isdigit():
 else:
     PYGDAL_VERSION = GDAL_VERSION + '.5'
 
-with open('README.rst', mode = 'rb') as readme_file:
+with open('README.md', mode = 'rb') as readme_file:
     readme = readme_file.read().decode('utf-8')
 
-with open('HISTORY.rst', mode = 'rb') as history_file:
+with open('changelog.md', mode = 'rb') as history_file:
     history = history_file.read().decode('utf-8')
 
 here = op.abspath(op.dirname(__file__))
@@ -65,12 +65,10 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Terrain and hydrological analysis using LiDAR-derived digital elevation models (DEM)",
+    description="A Python package for delineating nested surface depressions in digital elevation data",
     entry_points={
         'console_scripts': [
             'lidar=lidar.cli:main',

@@ -1,7 +1,6 @@
 # Welcome to the lidar package
 
-[![image](https://mybinder.org/badge_logo.svg)](https://gishub.org/lidar-cloud)
-[![image](https://binder.pangeo.io/badge.svg)](https://binder.pangeo.io/v2/gh/giswqs/lidar/master?filepath=examples%2Flidar.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/giswqs/lidar/blob/master/examples/lidar_colab.ipynb)
 [![image](https://img.shields.io/pypi/v/lidar.svg)](https://pypi.python.org/pypi/lidar)
 [![image](https://pepy.tech/badge/lidar)](https://pepy.tech/project/lidar)
 [![image](https://img.shields.io/conda/vn/conda-forge/lidar.svg)](https://anaconda.org/conda-forge/lidar)
@@ -17,7 +16,7 @@ particularly useful for analyzing high-resolution topographic data, such as DEMs
 
 -   GitHub repo: <https://github.com/giswqs/lidar>
 -   Documentation: <https://lidar.gishub.org>
--   PyPI: <https://pypi.org/project/lidar/>
+-   PyPI: <https://pypi.org/project/lidar>
 -   Conda-forge: <https://anaconda.org/conda-forge/lidar>
 -   Binder: <https://gishub.org/lidar-cloud>
 -   Free software: [MIT license](https://opensource.org/licenses/MIT)
@@ -56,14 +55,14 @@ modeling, including the size, volume, mean depth, maximum depth, lowest
 elevation, spill elevation, perimeter, major axis length, minor axis
 length, elongatedness.
 
-## Features
+## Key Features
 
--   Smoothing DEMs using mean, median, and Gaussian filters (see [filtering](https://lidar.gishub.org/filtering))
--   Extracting depressions from DEMs (see [filling](https://lidar.gishub.org/filling)).
--   Filtering out small artifact depressions based on user-specified minimum depression size (see [filling](https://lidar.gishub.org/filling/)).
--   Generating refined DEMs with small depressions filled but larger depressions kept intact (see [filling](https://lidar.gishub.org/filling/)).
--   Delineating depression nested hierarchy using the level-set method (see [slicing](https://lidar.gishub.org/slicing/)).
--   Delineating mount nested hierarchy using the level-set method (see [mounts](https://lidar.gishub.org/mounts/)).
+-   Smoothing DEMs using mean, median, and Gaussian filters.
+-   Extracting depressions from DEMs.
+-   Filtering out small artifact depressions based on user-specified minimum depression size.
+-   Generating refined DEMs with small depressions filled but larger depressions kept intact.
+-   Delineating depression nested hierarchy using the level-set method.
+-   Delineating mount nested hierarchy using the level-set method.
 -   Computing topological and geometric properties of depressions, including size, volume, mean depth, maximum depth, lowest elevation,
-    spill elevation, perimeter, major axis length, minor axis length, elongatedness, eccentricity, orientation, and area-bbox-ratio (see [slicing](https://lidar.gishub.org/slicing/)).
--   Exporting depression properties as a csv file (see [slicing](https://lidar.gishub.org/slicing/)).
+    spill elevation, perimeter, major axis length, minor axis length, elongatedness, eccentricity, orientation, and area-bbox-ratio.
+-   Exporting depression properties as a csv file.

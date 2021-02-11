@@ -45,7 +45,6 @@ nav:
     - Usage: usage.md
     - Contributing: contributing.md
     - Citations: citations.md
-    - FAQ: faq.md
     - Changelog: changelog.md
     - Report Issues: https://github.com/giswqs/lidar/issues
     - API Reference:

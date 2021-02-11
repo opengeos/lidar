@@ -1,8 +1,7 @@
-include AUTHORS.rst
-include CONTRIBUTING.rst
-include HISTORY.rst
+include contributing.md
+include changelog.md
 include LICENSE
-include README.rst
+include README.md
 include requirements.txt
 include lidar/data/*.*
 

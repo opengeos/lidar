@@ -1,5 +1,4 @@
-The level-set algorithm in the **lidar** package has been published in
-the following article:
+The level-set algorithm was proposed by **Wu** et al. (2019):
 
 -   **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen,
     J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression

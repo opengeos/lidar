@@ -45,7 +45,7 @@ The **lidar** Python package has a C library dependency called [GDAL](https://gd
 
 -   Try it out with Binder: <https://gishub.org/lidar-binder>
 -   Try it out with Google Colab: <https://gishub.org/lidar-colab>
--   Help documentation: <https://lidar.readthedocs.io>
+-   Help documentation: <https://lidar.gishub.org>
 
 # Acknowledgments
 
