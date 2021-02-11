@@ -18,16 +18,16 @@ particularly useful for analyzing high-resolution topographic data, such as DEMs
 -   Documentation: <https://lidar.gishub.org>
 -   PyPI: <https://pypi.org/project/lidar>
 -   Conda-forge: <https://anaconda.org/conda-forge/lidar>
--   Binder: <https://gishub.org/lidar-cloud>
+-   Open in Colab: <https://gishub.org/lidar-colab>
 -   Free software: [MIT license](https://opensource.org/licenses/MIT)
 
 **Contents**
 
 - [Introduction](#introduction)
 - [Statement of Need](#statement-of-need)
-- [KeyFeatures](#key-features)
+- [Key Features](#key-features)
 - [Installation](#installation)
-- [Usage](http://localhost:6419/#usage)
+- [Usage](#usage)
 - [Dependencies](#dependencies)
 - [References](#references)
 - [Contributing](#contributing)

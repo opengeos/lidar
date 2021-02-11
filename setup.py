@@ -32,8 +32,8 @@ else:
 with open('README.md', mode = 'rb') as readme_file:
     readme = readme_file.read().decode('utf-8')
 
-with open('changelog.md', mode = 'rb') as history_file:
-    history = history_file.read().decode('utf-8')
+# with open('changelog.md', mode = 'rb') as history_file:
+#     history = history_file.read().decode('utf-8')
 
 here = op.abspath(op.dirname(__file__))
 
@@ -77,7 +77,7 @@ setup(
     install_requires=install_requires,
     dependency_links=dependency_links,
     license="MIT license",
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     include_package_data=True,
     keywords='lidar',
     name='lidar',
