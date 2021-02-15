@@ -1,5 +1,5 @@
 ---
-title: "lidar: A Python package for terrain and hydrological analysis using digital elevation models"
+title: "lidar: A Python package for delineating nested surface depressions from digital elevation data"
 tags:
     - Python
     - Terrain analysis
