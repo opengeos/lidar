@@ -52,6 +52,12 @@ lidar.gui()
 
 ## ArcGIS Toolbox
 
-[**Delineating nested surface depressions catchments using ArcMap**](https://youtu.be/PpF8sfvCATE)
+[**Delineating nested surface depressions and catchments using ArcGIS Pro**](https://youtu.be/PpF8sfvCATE)
+
+[![demo](http://img.youtube.com/vi/W9PFHNV3cT0/0.jpg)](http://www.youtube.com/watch?v=W9PFHNV3cT0)
+
+[**Delineating nested surface depressions and catchments using ArcMap**](https://youtu.be/PpF8sfvCATE)
 
 [![demo](http://img.youtube.com/vi/PpF8sfvCATE/0.jpg)](http://www.youtube.com/watch?v=PpF8sfvCATE)
+
+
