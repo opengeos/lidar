@@ -3,12 +3,13 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import division
 import sys
-from skimage.external.tifffile import TiffFile
+# from skimage.external.tifffile import TiffFile
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 import os
 from scipy import ndimage
+from skimage import io
 import arcpy
 import matplotlib as mpl
 from matplotlib.colors import rgb_to_hsv, hsv_to_rgb
@@ -443,8 +444,9 @@ def visual(background, img_path, interval, iterations):
             if i > 0:
                 layer.remove()
             img_file = os.path.join(img_path, img)
-            with TiffFile(img_file) as tif:
-                img_arr = tif.asarray()
+            # with TiffFile(img_file) as tif:
+                # img_arr = tif.asarray()
+            img_arr = io.imread(img_file)
             img_arr = np.ma.masked_where(img_arr == 0, img_arr)
             layer = plt.imshow(img_arr, alpha=0.5)
             if iter % 2 != 0:
@@ -476,8 +478,9 @@ if __name__ == "__main__":
     desc = arcpy.Describe(in_dem)
     in_dem = desc.catalogPath
 
-    with TiffFile(in_dem) as tif:
-        bk_img = tif.asarray()
+    # with TiffFile(in_dem) as tif:
+    #     bk_img = tif.asarray()
+    bk_img = io.imread(in_dem)
 
     interval = 0.0001
     # iterations = 3

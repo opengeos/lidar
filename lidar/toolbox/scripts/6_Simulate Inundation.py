@@ -1,7 +1,7 @@
-from skimage.external.tifffile import TiffFile
+# from skimage.external.tifffile import TiffFile
 import matplotlib.pyplot as plt
 from scipy import ndimage
-from skimage import measure
+from skimage import measure, io
 import numpy as np
 import math
 import time
@@ -430,16 +430,18 @@ if __name__ == "__main__":
     #     shutil.rmtree(out_flood_dir)
     # os.mkdir(out_flood_dir)
 
-    with TiffFile(in_sink) as tif:  # read dem file as numpy array
-        raw_image = tif.asarray()
+    # with TiffFile(in_sink) as tif:  # read dem file as numpy array
+    #     raw_image = tif.asarray()
+    raw_image = io.imread(in_sink)
 
     image = np.copy(raw_image)  # store original DEM
     min_elev, max_elev, no_data = get_min_max_nodata(
         image
     )  # set nodata value to a large value, e.g., 9999
 
-    with TiffFile(in_catchment) as catchment:  # read catchment file as numpy array
-        catchment_img = catchment.asarray()
+    # with TiffFile(in_catchment) as catchment:  # read catchment file as numpy array
+    #     catchment_img = catchment.asarray()
+    catchment_img = io.imread(in_catchment)
 
     # nb_labels is the total number of objects. 0 represents background object.
     label_objects, nb_labels = regionGroup(image, min_size, no_data)

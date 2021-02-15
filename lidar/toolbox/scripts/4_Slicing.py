@@ -1,11 +1,11 @@
 import sys
 
 # sys.path.append("./hill_shading")
-from skimage.external.tifffile import TiffFile
+# from skimage.external.tifffile import TiffFile
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from scipy import ndimage
-from skimage import measure
+from skimage import measure, io
 import numpy as np
 import math
 import time
@@ -483,8 +483,9 @@ if __name__ == "__main__":
     desc = arcpy.Describe(sink)
     in_sink = desc.catalogPath
 
-    with TiffFile(in_sink) as tif:  # read the dem file as numpy array
-        raw_image = tif.asarray()
+    # with TiffFile(in_sink) as tif:  # read the dem file as numpy array
+    #     raw_image = tif.asarray()
+    raw_image = io.imread(in_sink)
 
     image = np.copy(raw_image)  # store original DEM
     min_elev, max_elev, no_data = get_min_max_nodata(

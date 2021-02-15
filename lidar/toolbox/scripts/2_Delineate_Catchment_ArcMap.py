@@ -1,8 +1,7 @@
 import arcpy
 import os
 import time
-from arcpy.mp import *
-# from arcpy.mapping import *
+from arcpy.mapping import *
 
 
 def delineate_catchment(in_dem, in_sink, out_catchment):

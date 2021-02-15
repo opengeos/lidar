@@ -3,8 +3,7 @@ import os
 import time
 import shutil
 from arcpy import env
-from arcpy.mp import *
-#from arcpy.mapping import *
+from arcpy.mapping import *
 
 
 def extract_sink(in_dem, min_size, min_depth, buffer_dist, out_sink):
@@ -119,28 +118,17 @@ def extract_sink(in_dem, min_size, min_depth, buffer_dist, out_sink):
         arcpy.CopyRaster_management(dem_sink_buffer, sink_buffer_img)
 
     # add output data to map
-    # arcpy.AddMessage("Adding data to map ...")
-    # mxd = MapDocument("CURRENT")
-    # df = ListDataFrames(mxd, "*")[0]
-    # lyr_fully_filled_dem = Layer(os.path.join(workspace, dem_filled_name))
-    # AddLayer(df, lyr_fully_filled_dem)
-    # lyr_partially_filled_dem = Layer(
-    #     os.path.join(workspace, "dem_partially_filled" + img_ext)
-    # )
-    # AddLayer(df, lyr_partially_filled_dem)
-    # lyr_sink_dem = Layer(os.path.join(workspace, "sink" + img_ext))
-    # AddLayer(df, lyr_sink_dem)
-
-    # add output data to map
     arcpy.AddMessage("Adding data to map ...")
-    p = arcpy.mp.ArcGISProject("CURRENT")
-    m = p.listMaps("*")[0]
-    lyr_fully_filled_dem = os.path.join(workspace, dem_filled_name)
-    m.addDataFromPath(lyr_fully_filled_dem)
-    lyr_partially_filled_dem = os.path.join(workspace, "dem_partially_filled" + img_ext)
-    m.addDataFromPath(lyr_partially_filled_dem)
-    lyr_sink_dem = os.path.join(workspace, "sink" + img_ext)
-    m.addDataFromPath(lyr_sink_dem)
+    mxd = MapDocument("CURRENT")
+    df = ListDataFrames(mxd, "*")[0]
+    lyr_fully_filled_dem = Layer(os.path.join(workspace, dem_filled_name))
+    AddLayer(df, lyr_fully_filled_dem)
+    lyr_partially_filled_dem = Layer(
+        os.path.join(workspace, "dem_partially_filled" + img_ext)
+    )
+    AddLayer(df, lyr_partially_filled_dem)
+    lyr_sink_dem = Layer(os.path.join(workspace, "sink" + img_ext))
+    AddLayer(df, lyr_sink_dem)
 
     arcpy.AddMessage("Deleting temporary data ...")
     arcpy.Delete_management(region_poly_name)
