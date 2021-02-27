@@ -9,7 +9,7 @@
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![image](https://img.shields.io/twitter/follow/giswqs?style=social)](https://twitter.com/giswqs)
 [![image](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
-[![image](https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88facc/status.svg)](https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88fac)
+[![image](https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88facc/status.svg)](https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88facc)
 
 **lidar** is Python package for delineating the nested hierarchy of surface depressions in digital elevation models (DEMs). It is
 particularly useful for analyzing high-resolution topographic data, such as DEMs derived from Light Detection and Ranging (LiDAR) data.
@@ -25,6 +25,7 @@ particularly useful for analyzing high-resolution topographic data, such as DEMs
 
 - [Introduction](#introduction)
 - [Statement of Need](#statement-of-need)
+- [State of the Field](#state-of-the-field)
 - [Key Features](#key-features)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -65,6 +66,10 @@ depressions can be useful for terrain analysis and hydrological
 modeling, including the size, volume, mean depth, maximum depth, lowest
 elevation, spill elevation, perimeter, major axis length, minor axis
 length, elongatedness.
+
+## State of the Field
+
+Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as [RichDEM](https://richdem.readthedocs.io/) and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools). However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar**  Python package is intended for filling this gap. 
 
 ## Key Features
 
@@ -431,5 +436,5 @@ Before you submit a pull request, check that it meets these guidelines:
 
 ## Credits
 
-- The algorithms are built on [richdem](https://github.com/r-barnes/richdem), [numpy](https://www.numpy.org), [scipy](https://www.scipy.org), [scikit-image](https://scikit-image.org), and [pygdal](https://github.com/nextgis/pygdal).
+- The algorithms are built on [RichDEM](https://github.com/r-barnes/richdem), [numpy](https://www.numpy.org), [scipy](https://www.scipy.org), [scikit-image](https://scikit-image.org), and [pygdal](https://github.com/nextgis/pygdal).
 - This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage) project template.

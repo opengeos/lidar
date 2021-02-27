@@ -16,7 +16,7 @@ authors:
 affiliations:
     - name: Department of Geography, University of Tennessee, Knoxville, TN 37996, United States
       index: 1
-date: 9 February 2021
+date: 27 February 2021
 bibliography: paper.bib
 ---
 
@@ -27,7 +27,11 @@ In traditional hydrological modeling, surface depressions in a DEM are commonly 
 
 # Statement of Need
 
-The **lidar** package is intended for scientists and researchers who would like to integrate surface depressions into hydrological modeling. It can also facilitate the identification and delineation of depressional features, such as sinkholes, detention basins, and prairie potholes. The detailed topological and geometric properties of surface depressions can be useful for terrain analysis and hydrological modeling, including the size, volume, mean depth, maximum depth, lowest elevation, spill elevation, perimeter, major axis length, minor axis length, elongatedness.
+The **lidar** package is intended for scientists and researchers who would like to integrate surface depressions into hydrological modeling. It can also facilitate the identification and delineation of depressional features, such as sinkholes, detention basins, and prairie potholes. The detailed topological and geometric properties of surface depressions can be useful for terrain analysis and hydrological modeling, including the size, volume, mean depth, maximum depth, lowest elevation, spill elevation, perimeter, major axis length, minor axis length, elongatedness. 
+
+# State of the Field
+
+Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as RichDEM [@Barnes2018] and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools) [@Lindsay2018]. However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar**  Python package is intended for filling this gap. 
 
 # lidar Functionality
 
@@ -46,6 +50,10 @@ The **lidar** Python package has a C library dependency called [GDAL](https://gd
 -   Try it out with Binder: <https://gishub.org/lidar-binder>
 -   Try it out with Google Colab: <https://gishub.org/lidar-colab>
 -   Help documentation: <https://lidar.gishub.org>
+
+The **lidar** package also provides an ArcGIS toolbox for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. Video tutorials for using the toolbox are available at <https://lidar.gishub.org/get-started/#arcgis-toolbox>.
+
+![toolbox](https://raw.githubusercontent.com/giswqs/lidar/master/images/toolbox_0.png)
 
 # Acknowledgments
 
