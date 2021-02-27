@@ -4,7 +4,7 @@
 
 __author__ = """Qiusheng Wu"""
 __email__ = "giswqs@gmail.com"
-__version__ = "__version__ = '0.5.3'"
+__version__ = "__version__ = '0.6.0'"
 
 from .filling import ExtractSinks
 from .slicing import DelineateDepressions
