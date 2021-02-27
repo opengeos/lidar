@@ -195,14 +195,14 @@ def csv_to_shp(in_csv, out_shp, latitude="latitude", longitude="longitude"):
 
 
 def clone_repo(out_dir=".", unzip=True):
-    """Clones the geemap GitHub repository.
+    """Clones the lidar GitHub repository.
 
     Args:
         out_dir (str, optional): Output folder for the repo. Defaults to '.'.
         unzip (bool, optional): Whether to unzip the repository. Defaults to True.
     """
-    url = "https://github.com/giswqs/geemap/archive/master.zip"
-    filename = "geemap-master.zip"
+    url = "https://github.com/giswqs/lidar/archive/master.zip"
+    filename = "lidar-master.zip"
     download_from_url(url, out_file_name=filename, out_dir=out_dir, unzip=unzip)
 
 
@@ -228,7 +228,7 @@ def check_install(package):
 
 
 def update_package():
-    """Updates the geemap package from the geemap GitHub repository without the need to use pip or conda.
+    """Updates the lidar package from the lidar GitHub repository without the need to use pip or conda.
     In this way, I don't have to keep updating pypi and conda-forge with every minor update of the package.
 
     """
@@ -240,7 +240,7 @@ def update_package():
             os.makedirs(download_dir)
         clone_repo(out_dir=download_dir)
 
-        pkg_dir = os.path.join(download_dir, "geemap-master")
+        pkg_dir = os.path.join(download_dir, "lidar-master")
         work_dir = os.getcwd()
         os.chdir(pkg_dir)
 
@@ -253,7 +253,7 @@ def update_package():
         os.chdir(work_dir)
 
         print(
-            "\nPlease comment out 'geemap.update_package()' and restart the kernel to take effect:\nJupyter menu -> Kernel -> Restart & Clear Output"
+            "\nPlease comment out 'lidar.update_package()' and restart the kernel to take effect:\nJupyter menu -> Kernel -> Restart & Clear Output"
         )
 
     except Exception as e:

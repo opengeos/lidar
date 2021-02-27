@@ -1,55 +1,57 @@
 # Installation
 
-## conda-forge
-
 **lidar** supports a variety of platforms, including Microsoft Windows,
 macOS, and Linux operating systems. Note that you will need to have
-**Python 3.x** (&lt; 3.9) installed. Python 2.x is not supported. The
-**lidar** Python package can be installed using the following command.
-If you encounter any errors, please check the [Dependencies](#dependencies) section
-below. The instruction below assumes that you have installed
-[Anaconda](https://www.anaconda.com/download). Open **Anaconda Prompt** and enter the
-following commands to create a conda environment and install required
-packages.
+**Python 3.x** (&lt; 3.9) installed. Python 2.x is not supported. 
+**lidar** is available on both [PyPI](https://pypi.python.org/pypi/lidar) and [conda-forge](https://anaconda.org/conda-forge/lidar). 
+lidar has a [GDAL](https://gdal.org/) dependency, which can be challenging to install using pip on Windows. 
+Therefore, it is highly recommended to install lidar from the conda-forge channel. 
+If you encounter any errors, please check the [Dependencies](#dependencies) section below.
+## Install from PyPI
+
+To install **lidar** from PyPI, run this command in your terminal:
+
+```console
+pip install lidar
+```
+
+## Install from conda-forage
+
+If you have [Anaconda](https://www.anaconda.com/distribution/#download-section) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) 
+installed on your computer, you can create a fresh conda environment to install lidar:
 
 ```console
 conda create -n py38 python=3.8
 conda activate py38
-conda install -c conda-forge mamba
-mamba install -c conda-forge lidar 
+conda install lidar -c conda-forge
 ```
 
-## pip
+## Upgrade lidar
 
-If you have installed **lidar** before and want to upgrade to the latest
-version, you can use the following command:
+If you have installed lidar before and want to upgrade to the latest version, you can run the following command in your terminal:
 
 ```console
-pip install lidar -U
+pip install -U lidar
+```
+
+If you use conda, you can update lidar to the latest version by running the following command in your terminal:
+
+```console
+conda update lidar -c conda-forge
+```
+
+To install the development version from GitHub directly using Git, run the following code:
+
+```console
+pip install git+https://github.com/giswqs/lidar
 ```
 
 ## Dependencies
 
-lidar's Python dependencies are listed in its requirements.txt file. In
+lidar's Python dependencies are listed in its [requirements.txt](https://github.com/giswqs/lidar/blob/master/requirements.txt) file. In
 addition, lidar has a C library dependency: GDAL &gt;=1.11.2. How to
 install GDAL in different operating systems will be explained below.
 More informaton about GDAL can be found [here](https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries).
-
-It is highly recommended that you use a Python virtual environment
-(e.g., conda) to test the lidar package. Please follow the [conda user
-guide] to install conda if necessary. Once you have conda installed, you
-can use Terminal or an Anaconda Prompt to create a Python virtual
-environment. Check [managing Python environment] for more information.
-
-Once GDAL has been installed, you can then proceed to install the
-**lidar** Python package using the following command:
-
-```console
-conda create -n py38 python=3.8
-conda activate py38
-conda install -c conda-forge gdal 
-pip install lidar
-```    
 
 ### Linux
 
@@ -62,7 +64,6 @@ Linux distributions (e.g., Ubuntu, Linux Mint).
 sudo add-apt-repository ppa:ubuntugis/ppa
 sudo apt-get update
 sudo apt-get install gdal-bin libgdal-dev
-pip install lidar
 ```  
 
 If you encounter any compiling errors, try the following commands.
@@ -83,7 +84,6 @@ Linux distributions (e.g., Arch Linux, Manjaro). You might need to use
 sudo pacman -S yaourt --noconfirm
 yaourt -S gdal --noconfirm
 yaourt -S python-gdal --noconfirm
-pip install lidar
 ```  
 
 ### macOS
@@ -108,15 +108,13 @@ environment and install required packages
 ```console
 conda create -n py38 python=3.8
 conda activate py38
-conda install -c conda-forge gdal 
-pip install richdem
-pip install lidar
+conda install lidar -c conda-forge
 ```  
 
-When installing the **richdem** package, if you encounter an error
-saying 'Microsoft Visual C++ 14.0 is required', please follow the steps
-below to fix the error and reinstall **richdem**. More infomration can
-be found at this link Fix [Python 3 on Windows error - Microsoft Visual C++ 14.0 is required](https://www.scivision.co/python-windows-visual-c++-14-required/).
+When installing the **lidar** package, if you encounter an error
+saying `Microsoft Visual C++ 14.0 is required`, please follow the steps
+below to fix the error and reinstall **lidar**. More infomration can
+be found at this link [Fix Python 3 on Windows error - Microsoft Visual C++ 14.0 is required](https://www.scivision.co/python-windows-visual-c++-14-required/).
 
 * Download [Microsoft Build Tools for Visual Studio 2017](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=15)
 * Double click to install the downloaded installer - **Microsoft Build Tools for Visual Studio 2017**.

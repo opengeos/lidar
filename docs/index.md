@@ -5,7 +5,7 @@
 [![image](https://pepy.tech/badge/lidar)](https://pepy.tech/project/lidar)
 [![image](https://img.shields.io/conda/vn/conda-forge/lidar.svg)](https://anaconda.org/conda-forge/lidar)
 [![image](https://github.com/giswqs/lidar/workflows/build/badge.svg)](https://github.com/giswqs/lidar/actions?query=workflow%3Abuild)
-[![image](https://github.com/giswqs/geemap/workflows/docs/badge.svg)](https://lidar.gishub.org)
+[![image](https://github.com/giswqs/lidar/workflows/docs/badge.svg)](https://lidar.gishub.org)
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![image](https://img.shields.io/twitter/follow/giswqs?style=social)](https://twitter.com/giswqs)
 [![image](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
