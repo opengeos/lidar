@@ -53,7 +53,7 @@ The **lidar** Python package has a C library dependency called [GDAL](https://gd
 
 The **lidar** package also provides an ArcGIS toolbox for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. Video tutorials for using the toolbox are available at <https://lidar.gishub.org/get-started/#arcgis-toolbox>.
 
-![toolbox](https://raw.githubusercontent.com/giswqs/lidar/master/images/toolbox_0.png)
+![The ArcGIS toolbox for the lidar Python package](https://raw.githubusercontent.com/giswqs/lidar/master/images/toolbox_0.png)
 
 # Acknowledgments
 

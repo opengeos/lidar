@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.0 - February 27, 2021
+
+- Improved documentation
+- Added ArcGIS toolbox tutorials 
+- Addressed JOSS review comments
+
 ## v0.5.3 - February 10, 2021
 
 - Fixed PyPI markdown rendering error
