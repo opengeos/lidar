@@ -9,7 +9,7 @@
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![image](https://img.shields.io/twitter/follow/giswqs?style=social)](https://twitter.com/giswqs)
 [![image](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
-[![image](https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88facc/status.svg)](https://joss.theoj.org/papers/005bf3e6f47840e74e71678d8e88facc)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02965/status.svg)](https://doi.org/10.21105/joss.02965)
 
 **lidar** is Python package for delineating the nested hierarchy of surface depressions in digital elevation models (DEMs). It is
 particularly useful for analyzing high-resolution topographic data, such as DEMs derived from Light Detection and Ranging (LiDAR) data.
@@ -20,6 +20,14 @@ particularly useful for analyzing high-resolution topographic data, such as DEMs
 -   Conda-forge: <https://anaconda.org/conda-forge/lidar>
 -   Open in Colab: <https://gishub.org/lidar-colab>
 -   Free software: [MIT license](https://opensource.org/licenses/MIT)
+
+**Citations**
+-   **Wu, Q.**, (2021). lidar: A Python package for delineating nested surface depressions from digital elevation data. _Journal of Open Source Software_, 6(59), 2965, <https://doi.org/10.21105/joss.02965>
+-   **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen,
+    J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression
+    Hierarchy in Digital Elevation Models for Hydrological Analysis
+    Using Level-Set Method. *Journal of the American Water Resources
+    Association*. <https://doi.org/10.1111/1752-1688.12689> ([PDF](https://spatial.utk.edu/pubs/2019_JAWRA.pdf))
 
 **Contents**
 
