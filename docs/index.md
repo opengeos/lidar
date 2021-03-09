@@ -22,7 +22,9 @@ particularly useful for analyzing high-resolution topographic data, such as DEMs
 -   Free software: [MIT license](https://opensource.org/licenses/MIT)
 
 **Citations**
+
 -   **Wu, Q.**, (2021). lidar: A Python package for delineating nested surface depressions from digital elevation data. _Journal of Open Source Software_, 6(59), 2965, <https://doi.org/10.21105/joss.02965>
+
 -   **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen,
     J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression
     Hierarchy in Digital Elevation Models for Hydrological Analysis
