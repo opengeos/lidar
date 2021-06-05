@@ -282,7 +282,7 @@ def ExtractSinks(in_dem, min_size, out_dir):
     cell_size = np.round(geotransform[1], decimals=2)
 
     # get min and max elevation of the dem
-    max_elev = np.float(np.max(dem))
+    max_elev = np.float(np.max(dem[dem != no_data]))
     min_elev = np.float(np.min(dem[dem > 0]))
     print(
         "min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}".format(

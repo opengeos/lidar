@@ -247,7 +247,7 @@ def levelSet(img, region_id, obj_uid, image_paras):
     level_img = np.zeros(img.shape)     # init output level image
     # flood_img = np.zeros(img.shape)     # init output flood time image
 
-    max_elev = np.max(img)
+    max_elev = np.max(img[img != no_data])
     img[img == 0] = no_data
     min_elev = np.min(img)
 
