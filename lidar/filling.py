@@ -247,13 +247,14 @@ def polygonize(img, shp_path):
     del img, ds, srcband, dst_ds, dst_layer
 
 
-def ExtractSinks(in_dem, min_size, out_dir):
+def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     """Extract sinks (e.g., maximum depression extent) from a DEM.
 
     Args:
         in_dem (str): File path to the input DEM.
         min_size (int): The minimum number of pixels to be considered as a sink.
         out_dir (str): File path to the output directory.
+        fill_dem (str, optional): The filled DEM.
 
     Returns:
         object: The richDEM array containing sinks.
@@ -261,14 +262,16 @@ def ExtractSinks(in_dem, min_size, out_dir):
     start_time = time.time()
 
     out_dem = os.path.join(out_dir, "dem.tif")
-    out_dem_filled = os.path.join(out_dir, "dem_filled.tif")
     out_dem_diff = os.path.join(out_dir, "dem_diff.tif")
     out_sink = os.path.join(out_dir, "sink.tif")
     out_region = os.path.join(out_dir, "region.tif")
     out_depth = os.path.join(out_dir, "depth.tif")
     out_csv_file = os.path.join(out_dir, "regions_info.csv")
     out_vec_file = os.path.join(out_dir, "regions.shp")
-
+    if filled_dem is None:
+        out_dem_filled = os.path.join(out_dir, "dem_filled.tif")
+    else:
+        out_dem_filled = filled_dem 
     # create output folder if nonexistent
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
@@ -291,13 +294,17 @@ def ExtractSinks(in_dem, min_size, out_dir):
     )
 
     # depression filling
-    print("Depression filling ...")
-    dem_filled = rd.FillDepressions(dem, in_place=False)
+    if filled_dem is None:
+        print("Depression filling ...")
+        dem_filled = rd.FillDepressions(dem, in_place=False)
+    else:
+        dem_filled = rd.LoadGDAL(filled_dem)
     dem_diff = dem_filled - dem
     dem_diff.no_data = 0
 
-    print("Saving filled dem ...")
-    rd.SaveGDAL(out_dem_filled, dem_filled)
+    if filled_dem is None:
+        print("Saving filled dem ...")
+        rd.SaveGDAL(out_dem_filled, dem_filled)
     rd.SaveGDAL(out_dem_diff, dem_diff)
 
     # nb_labels is the total number of objects. 0 represents background object.
