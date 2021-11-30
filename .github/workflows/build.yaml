@@ -44,7 +44,8 @@ jobs:
                   pip install wheel
                   pip install --user --no-cache-dir Cython
                   pip install --user -r requirements.txt
-                  pip install pygdal==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
+                  pip install pygdal==3.3.2.10
+              #   pip install pygdal==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
               #   pip install --user -r requirements_dev.txt
               #   python -m pip install --upgrade pip
             - name: lidar-TEST
