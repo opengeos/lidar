@@ -20,6 +20,7 @@ jobs:
                     # - { os: ubuntu-latest, py: "3.6" }
                     - { os: ubuntu-latest, py: "3.7" }
                     - { os: ubuntu-latest, py: "3.8" }
+                    - { os: ubuntu-latest, py: "3.9" }
 
         env:
             SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
@@ -43,7 +44,7 @@ jobs:
                   pip install wheel
                   pip install --user --no-cache-dir Cython
                   pip install --user -r requirements.txt
-                  pip install pygdal==3.2.1.6
+                  pip install pygdal==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
               #   pip install --user -r requirements_dev.txt
               #   python -m pip install --upgrade pip
             - name: lidar-TEST
