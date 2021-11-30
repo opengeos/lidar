@@ -6,5 +6,4 @@ scipy
 richdem
 pyshp
 PySimpleGUI==2.30.0
-#pygdal==2.3.1.4 (GDAL >= 1.11.2)
 whitebox

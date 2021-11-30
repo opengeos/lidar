@@ -2,38 +2,46 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-import os, platform
-from os import path as op
 import io
+import json
+import os
+from os import path as op
+import urllib.request
 from setuptools import setup, find_packages
+
+# Find available package versions
+def pkg_versions(package_name):
+    url = "https://pypi.python.org/pypi/%s/json" % (package_name,)
+    text = urllib.request.urlopen(url).read()
+    data = json.loads(text)
+    versions = data["releases"].keys()
+    return list(versions)
+
+
+# Find a matching version
+def find_version(version, version_list):
+    match_version = None
+    for v in version_list:
+        if v.startswith(version):
+            match_version = v
+            return match_version
+            
+    return match_version
 
 # check GDAL version installed in the system
 # GDAL_VERSION = os.popen("gdal-config --version").read().rstrip()
 GDAL_INFO = os.popen("gdalinfo --version").read().rstrip()
 GDAL_VERSION = GDAL_INFO.split(',')[0].replace('GDAL', '').lstrip()
 GDAL_VERSION_NUM = str(GDAL_VERSION.replace(".", ""))
-PYGDAL_VERSION = '2.2.2.3' # default pygdal version to install
+PYGDAL_VERSION = find_version(GDAL_VERSION, pkg_versions('pygdal'))
 
+if PYGDAL_VERSION is None:
+    print("GDAL version not found in PyPI. Please install GDAL version %s or higher." % (GDAL_VERSION,))
+    exit(1)
 
-# pygdal version to install based on the GDAL version
-# GDAL version history: https://trac.osgeo.org/gdal/wiki/DownloadSource
-# pygdal version history: https://pypi.org/project/pygdal/#history
-if not GDAL_VERSION_NUM.isdigit():
-    print("GDAL cannot be detected in your system. Please install GDAL first!")
-# elif GDAL_VERSION[:3] == '2.3':
-#     PYGDAL_VERSION = GDAL_VERSION + '.5'
-# elif GDAL_VERSION[:3] == '2.4':
-#     PYGDAL_VERSION = GDAL_VERSION + '.5'    
-# elif GDAL_VERSION[:3] == '3.0':
-#     PYGDAL_VERSION = GDAL_VERSION + '.5' 
-else:
-    PYGDAL_VERSION = GDAL_VERSION + '.5'
 
 with open('README.md', mode = 'rb') as readme_file:
     readme = readme_file.read().decode('utf-8')
-
-# with open('changelog.md', mode = 'rb') as history_file:
-#     history = history_file.read().decode('utf-8')
 
 here = op.abspath(op.dirname(__file__))
 
@@ -42,12 +50,8 @@ with io.open(op.join(here, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
 
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
-# if platform.system() != "Windows":
-#     install_requires.append('pygdal==' + PYGDAL_VERSION)
 
-# install pygdal for travis CI
-if GDAL_VERSION == '2.2.2':
-    install_requires.append('pygdal==' + PYGDAL_VERSION)
+install_requires.append('pygdal==' + PYGDAL_VERSION)
 
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
@@ -67,6 +71,7 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     description="A Python package for delineating nested surface depressions in digital elevation data",
     entry_points={
