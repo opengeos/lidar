@@ -7,3 +7,4 @@ richdem
 pyshp
 PySimpleGUI==2.30.0
 whitebox
+# poppler<0.62
