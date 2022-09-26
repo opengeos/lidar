@@ -10,6 +10,8 @@ import urllib.request
 from setuptools import setup, find_packages
 
 # Find available package versions
+
+
 def pkg_versions(package_name):
     url = "https://pypi.python.org/pypi/%s/json" % (package_name,)
     text = urllib.request.urlopen(url).read()
@@ -55,9 +57,10 @@ with io.open(op.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
 
-install_requires.append('pygdal==' + PYGDAL_VERSION)
+# install_requires.append('pygdal==' + PYGDAL_VERSION)
 
-dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
+dependency_links = [x.strip().replace('git+', '')
+                    for x in all_reqs if 'git+' not in x]
 
 requirements = [
     'Click>=6.0',
