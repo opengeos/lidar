@@ -11,6 +11,6 @@ from .slicing import DelineateDepressions
 from .filtering import MeanFilter, MedianFilter, GaussianFilter
 from .mounts import DelineateMounts
 from .gui import gui
-from .utils import *
+from .common import *
 
 # from .mounts import DelineateMounts

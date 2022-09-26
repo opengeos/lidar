@@ -48,8 +48,8 @@ nav:
     - Changelog: changelog.md
     - Report Issues: https://github.com/giswqs/lidar/issues
     - API Reference:
+          - common module: common.md
           - filling module: filling.md
           - filtering module: filtering.md
           - mounts module: mounts.md
           - slicing module: slicing.md
-          - utils module: utils.md

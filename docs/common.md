@@ -1,3 +1,3 @@
 # utilities module
 
-::: lidar.utils
+::: lidar.common
