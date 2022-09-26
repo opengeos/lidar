@@ -23,6 +23,7 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install wheel
                   pip install --user --no-cache-dir Cython
+                  pip install --find-links=https://girder.github.io/large_image_wheels --no-cache GDAL
                   pip install --user -r requirements.txt
               #   pip install pygdal==3.3.2.10
             - run: pip install mkdocs-material mkdocstrings mkdocs-git-revision-date-plugin mkdocs-jupyter mkdocs-pdf-export-plugin
