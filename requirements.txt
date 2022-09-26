@@ -1,9 +1,10 @@
 Click>=6.0
-scikit-image
-numpy
+gdown
 matplotlib
-scipy
+numpy
 richdem
+scikit-image
+scipy
 pyshp
 PySimpleGUI==2.30.0
 whitebox

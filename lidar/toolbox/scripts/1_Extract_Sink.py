@@ -4,7 +4,8 @@ import time
 import shutil
 from arcpy import env
 from arcpy.mp import *
-#from arcpy.mapping import *
+
+# from arcpy.mapping import *
 
 
 def extract_sink(in_dem, min_size, min_depth, buffer_dist, out_sink):

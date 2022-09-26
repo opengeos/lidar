@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import division
 import sys
+
 # from skimage.external.tifffile import TiffFile
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
@@ -59,7 +60,8 @@ def weighted_intensity(
     rel_intensities = [np.ones_like(terrain)]
     weights = [ambient_weight]
     for azim, elev, lmpw in zip(azimuths, elevations, lamp_weights):
-        rel_int = relative_surface_intensity(terrain, azimuth=azim, elevation=elev)
+        rel_int = relative_surface_intensity(
+            terrain, azimuth=azim, elevation=elev)
         rel_intensities.append(rel_int)
         weights.append(lmpw)
 
@@ -68,7 +70,8 @@ def weighted_intensity(
 
     # The actual weighted-average calculation
     unit_weights = weights / np.sum(weights)
-    surface_intensity = np.average(rel_intensities, axis=2, weights=unit_weights)
+    surface_intensity = np.average(
+        rel_intensities, axis=2, weights=unit_weights)
     return surface_intensity
 
 
@@ -91,8 +94,10 @@ def relative_surface_intensity(terrain, azimuth=DEF_AZIMUTH, elevation=DEF_ELEVA
             1.0,
             err_msg="sanity check: light vector should have length 1",
         )
-        assert np.all(intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
-        assert np.all(intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
+        assert np.all(
+            intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
+        assert np.all(
+            intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
 
     # Where the dot product is smaller than 0 the angle between the light source and the surface
     # is larger than 90 degrees. These pixels receive no light so we clip the intensity to 0.
@@ -117,7 +122,8 @@ def surface_unit_normals(terrain):
     )  # shape = (n_rows, n_cols, 3)
 
     # The surface normals can be calculated as the cross product of those vector pairs
-    surface_normals = np.cross(vr, vc)  # surface_normals.shape = (n_rows, n_cols, 3)
+    # surface_normals.shape = (n_rows, n_cols, 3)
+    surface_normals = np.cross(vr, vc)
 
     # Divide the normals by their magnitude to get unit vectors.
     # (Add artificial dimension of length 1 so that we can use broadcasting)
@@ -200,8 +206,10 @@ def mpl_surface_intensity(
     )
 
     if DO_SANITY_CHECKS:
-        assert np.all(intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
-        assert np.all(intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
+        assert np.all(
+            intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
+        assert np.all(
+            intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
 
     # The matplotlib source just normalizes the intensities. However, I believe that their
     # intensities are the same as mine so that, where they are < 0 the angle between the light
@@ -209,7 +217,8 @@ def mpl_surface_intensity(
     # they should be clipped. This is done when the normalize parameter is set to False.
 
     if normalize:
-        intensity = (intensity - intensity.min()) / (intensity.max() - intensity.min())
+        intensity = (intensity - intensity.min()) / \
+            (intensity.max() - intensity.min())
     else:
         intensity = np.clip(intensity, 0.0, 1.0)
 
@@ -217,7 +226,7 @@ def mpl_surface_intensity(
 
 
 def is_non_finite_mask(array):
-    "Returns mask with ones where the data is infite or Nan"
+    "Returns mask with ones where the data is infinite or Nan"
     np.logical_not(np.isfinite(array))
 
 
@@ -313,7 +322,7 @@ def pegtop_blending(rgba, norm_intensities):
     d = norm_intensities.repeat(3).reshape(rgb.shape)
 
     # simulate illumination based on pegtop algorithm.
-    return 2 * d * rgb + (rgb ** 2) * (1 - 2 * d)
+    return 2 * d * rgb + (rgb**2) * (1 - 2 * d)
 
 
 def hill_shade(
@@ -370,7 +379,8 @@ def hill_shade(
         terrain = data
 
     assert data.ndim == 2, "data must be 2 dimensional"
-    assert terrain.shape == data.shape, "{} != {}".format(terrain.shape, data.shape)
+    assert terrain.shape == data.shape, "{} != {}".format(
+        terrain.shape, data.shape)
 
     surface_intensity = weighted_intensity(
         terrain,
@@ -415,7 +425,8 @@ def display_image(img, title, legend="", max_plot=False):
             for i in range(len(values))
         ]
         # put those patched as legend-handles into the legend
-        plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+        plt.legend(handles=patches, bbox_to_anchor=(
+            1.05, 1), loc=2, borderaxespad=0.0)
     # plt.show()
     return True
 
@@ -445,7 +456,7 @@ def visual(background, img_path, interval, iterations):
                 layer.remove()
             img_file = os.path.join(img_path, img)
             # with TiffFile(img_file) as tif:
-                # img_arr = tif.asarray()
+            # img_arr = tif.asarray()
             img_arr = io.imread(img_file)
             img_arr = np.ma.masked_where(img_arr == 0, img_arr)
             layer = plt.imshow(img_arr, alpha=0.5)

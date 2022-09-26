@@ -25,8 +25,9 @@ def find_version(version, version_list):
         if v.startswith(version):
             match_version = v
             return match_version
-            
+
     return match_version
+
 
 # check GDAL version installed in the system
 # GDAL_VERSION = os.popen("gdal-config --version").read().rstrip()
@@ -36,11 +37,14 @@ GDAL_VERSION_NUM = str(GDAL_VERSION.replace(".", ""))
 PYGDAL_VERSION = find_version(GDAL_VERSION, pkg_versions('pygdal'))
 
 if PYGDAL_VERSION is None:
-    print("GDAL version not found in PyPI. Please install GDAL version %s or higher." % (GDAL_VERSION,))
+    print(
+        "GDAL version not found in PyPI. Please install GDAL version %s or higher."
+        % (GDAL_VERSION,)
+    )
     exit(1)
 
 
-with open('README.md', mode = 'rb') as readme_file:
+with open('README.md', mode='rb') as readme_file:
     readme = readme_file.read().decode('utf-8')
 
 here = op.abspath(op.dirname(__file__))
@@ -55,11 +59,13 @@ install_requires.append('pygdal==' + PYGDAL_VERSION)
 
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
-requirements = ['Click>=6.0', ]
+requirements = [
+    'Click>=6.0',
+]
 
-setup_requirements = [ ]
+setup_requirements = []
 
-test_requirements = [ ]
+test_requirements = []
 
 setup(
     author="Qiusheng Wu",

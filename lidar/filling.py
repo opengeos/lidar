@@ -271,7 +271,7 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     if filled_dem is None:
         out_dem_filled = os.path.join(out_dir, "dem_filled.tif")
     else:
-        out_dem_filled = filled_dem 
+        out_dem_filled = filled_dem
     # create output folder if nonexistent
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
