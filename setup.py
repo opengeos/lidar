@@ -38,12 +38,12 @@ GDAL_VERSION = GDAL_INFO.split(',')[0].replace('GDAL', '').lstrip()
 GDAL_VERSION_NUM = str(GDAL_VERSION.replace(".", ""))
 PYGDAL_VERSION = find_version(GDAL_VERSION, pkg_versions('pygdal'))
 
-if PYGDAL_VERSION is None:
-    print(
-        "GDAL version not found in PyPI. Please install GDAL version %s or higher."
-        % (GDAL_VERSION,)
-    )
-    exit(1)
+# if PYGDAL_VERSION is None:
+#     print(
+#         "GDAL version not found in PyPI. Please install GDAL version %s or higher."
+#         % (GDAL_VERSION,)
+#     )
+#     exit(1)
 
 
 with open('README.md', mode='rb') as readme_file:
