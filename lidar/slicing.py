@@ -13,10 +13,29 @@ from osgeo import gdal, ogr, osr
 
 
 class Depression:
-    """The class for storing depression info.
-    """      
-    def __init__(self, id, level, count, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, regionId,
-                 perimeter, major_axis, minor_axis, elongatedness, eccentricity, orientation, area_bbox_ratio):
+    """The class for storing depression info."""
+
+    def __init__(
+        self,
+        id,
+        level,
+        count,
+        size,
+        volume,
+        meanDepth,
+        maxDepth,
+        minElev,
+        bndElev,
+        inNbrId,
+        regionId,
+        perimeter,
+        major_axis,
+        minor_axis,
+        elongatedness,
+        eccentricity,
+        orientation,
+        area_bbox_ratio,
+    ):
         self.id = id
         self.level = level
         self.count = count
@@ -41,13 +60,15 @@ def get_min_max_nodata(image):
     """Gets the minimum, maximum, and no_data value of a numpy array.
 
     Args:
-        image (np.array): The numpy array containing the image. 
+        image (np.array): The numpy array containing the image.
 
     Returns:
         tuple: The minimum, maximum, and no_data value.
     """
     max_elev = np.max(image)
-    nodata = pow(10, math.floor(math.log10(np.max(image))) + 2) - 1  # assign no data value
+    nodata = (
+        pow(10, math.floor(math.log10(np.max(image))) + 2) - 1
+    )  # assign no data value
     image[image <= 0] = nodata  # change no data value
     min_elev = np.min(image)
     return min_elev, max_elev, nodata
@@ -59,14 +80,14 @@ def set_image_paras(no_data, min_size, min_depth, interval, resolution):
 
     Args:
         no_data (float): The no_data value of the input DEM.
-        min_size (int): The minimum nuber of pixels to be considered as a depressioin.
+        min_size (int): The minimum number of pixels to be considered as a depression.
         min_depth (float): The minimum depth to be considered as a depression.
         interval (float): The slicing interval.
         resolution (float): The spatial resolution of the DEM.
 
     Returns:
         dict: A dictionary containing image parameters.
-    """    
+    """
     image_paras = {}
     image_paras["no_data"] = no_data
     image_paras["min_size"] = min_size
@@ -84,7 +105,7 @@ def get_image_paras(image_paras):
 
     Returns:
         tuple: A tuple containing no_data, min_size, min_depth, interval, resolution.
-    """    
+    """
     no_data = image_paras["no_data"]
     min_size = image_paras["min_size"]
     min_depth = image_paras["min_depth"]
@@ -102,8 +123,8 @@ def regionGroup(img_array, min_size, no_data):
         no_data (float): The no_data value of the image.
 
     Returns:
-        tuple: The labelled objects and total number of labels. 
-    """       
+        tuple: The labelled objects and total number of labels.
+    """
     img_array[img_array == no_data] = 0
     label_objects, nb_labels = ndimage.label(img_array)
     sizes = np.bincount(label_objects.ravel())
@@ -125,7 +146,7 @@ def writeObject(img_array, obj_array, bbox):
 
     Returns:
         np.array: The numpy array containing the depression objects.
-    """    
+    """
     min_row, min_col, max_row, max_col = bbox
     roi = img_array[min_row:max_row, min_col:max_col]
     roi[obj_array > 0] = obj_array[obj_array > 0]
@@ -138,7 +159,7 @@ def writeRaster(arr, out_path, template):
     Args:
         arr (np.array): The numpy array containing the image.
         out_path (str): The file path to the output GeoTIFF.
-        template (str): The file path to the template image containing projection info. 
+        template (str): The file path to the template image containing projection info.
 
     Returns:
         np.array: The numpy array containing the image.
@@ -154,7 +175,7 @@ def writeRaster(arr, out_path, template):
     outdriver = gdal.GetDriverByName("GTiff")
     # http://www.gdal.org/gdal_8h.html
     # GDT_Byte = 1, GDT_UInt16 = 2, GDT_UInt32 = 4, GDT_Int32 = 5, GDT_Float32 = 6,
-    outdata   = outdriver.Create(str(out_path), rows, cols, 1, gdal.GDT_UInt32)
+    outdata = outdriver.Create(str(out_path), rows, cols, 1, gdal.GDT_UInt32)
     # Write the array to the file, which is the original array in this example
     outdata.GetRasterBand(1).WriteArray(arr)
     # Set a no data value if required
@@ -172,19 +193,21 @@ def polygonize(img, shp_path):
     Args:
         img (str): File path to the input image.
         shp_path (str): File path to the output shapefile.
-    """      
+    """
     # mapping between gdal type and ogr field type
-    type_mapping = {gdal.GDT_Byte: ogr.OFTInteger,
-                    gdal.GDT_UInt16: ogr.OFTInteger,
-                    gdal.GDT_Int16: ogr.OFTInteger,
-                    gdal.GDT_UInt32: ogr.OFTInteger,
-                    gdal.GDT_Int32: ogr.OFTInteger,
-                    gdal.GDT_Float32: ogr.OFTReal,
-                    gdal.GDT_Float64: ogr.OFTReal,
-                    gdal.GDT_CInt16: ogr.OFTInteger,
-                    gdal.GDT_CInt32: ogr.OFTInteger,
-                    gdal.GDT_CFloat32: ogr.OFTReal,
-                    gdal.GDT_CFloat64: ogr.OFTReal}
+    type_mapping = {
+        gdal.GDT_Byte: ogr.OFTInteger,
+        gdal.GDT_UInt16: ogr.OFTInteger,
+        gdal.GDT_Int16: ogr.OFTInteger,
+        gdal.GDT_UInt32: ogr.OFTInteger,
+        gdal.GDT_Int32: ogr.OFTInteger,
+        gdal.GDT_Float32: ogr.OFTReal,
+        gdal.GDT_Float64: ogr.OFTReal,
+        gdal.GDT_CInt16: ogr.OFTInteger,
+        gdal.GDT_CInt32: ogr.OFTInteger,
+        gdal.GDT_CFloat32: ogr.OFTReal,
+        gdal.GDT_CFloat64: ogr.OFTReal,
+    }
 
     ds = gdal.Open(img)
     prj = ds.GetProjection()
@@ -206,8 +229,8 @@ def img_to_shp(in_img_dir, out_shp_dir):
 
     Args:
         in_img_dir (str): The input iimage directory.
-        out_shp_dir (str): The output shapefile directory. 
-    """    
+        out_shp_dir (str): The output shapefile directory.
+    """
     img_files = os.listdir(in_img_dir)
     for img_file in img_files:
         if img_file.endswith(".tif"):
@@ -244,7 +267,7 @@ def levelSet(img, region_id, obj_uid, image_paras):
     # unzip input parameters from dict
     no_data, min_size, min_depth, interval, resolution = get_image_paras(image_paras)
 
-    level_img = np.zeros(img.shape)     # init output level image
+    level_img = np.zeros(img.shape)  # init output level image
     # flood_img = np.zeros(img.shape)     # init output flood time image
 
     max_elev = np.max(img[img != no_data])
@@ -258,7 +281,7 @@ def levelSet(img, region_id, obj_uid, image_paras):
     nbr_ids = {}  # store the inner-neighbor ids of current parent depressions
     dep_list = []  # list for storing depressions
     (rows, cols) = img.shape
-    if rows == 1 or cols == 1:      # if the depression is a horizontal or vertical line
+    if rows == 1 or cols == 1:  # if the depression is a horizontal or vertical line
         cells = rows * cols
         size = cells * pow(resolution, 2)  # depression size
         max_depth = max_elev - min_elev
@@ -279,18 +302,39 @@ def levelSet(img, region_id, obj_uid, image_paras):
             eccentricity = 1
             orientation = 90
 
-        dep_list.append(Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [],
-                                   region_id, perimeter, major_axis, minor_axis, elongatedness, eccentricity,
-                                   orientation, area_bbox_ratio))
+        dep_list.append(
+            Depression(
+                unique_id,
+                level,
+                cells,
+                size,
+                volume,
+                mean_depth,
+                max_depth,
+                min_elev,
+                max_elev,
+                [],
+                region_id,
+                perimeter,
+                major_axis,
+                minor_axis,
+                elongatedness,
+                eccentricity,
+                orientation,
+                area_bbox_ratio,
+            )
+        )
         level_img = np.ones(img.shape)
         del img
         return level_img, dep_list
 
-    for elev in np.arange(max_elev, min_elev, interval):  # slicing operation using top-down approach
+    for elev in np.arange(
+        max_elev, min_elev, interval
+    ):  # slicing operation using top-down approach
         img[img > elev] = 0  # set elevation higher than xy-plane to zero
         label_objects, nb_labels = regionGroup(img, min_size, no_data)
         # print('slicing elev = {:.2f}, number of objects = {}'.format(elev, nb_labels))
-        if nb_labels == 0:   # if slicing results in no objects, quit
+        if nb_labels == 0:  # if slicing results in no objects, quit
             break
 
         # objects = measure.regionprops(label_objects, img, coordinates='xy')
@@ -303,12 +347,16 @@ def levelSet(img, region_id, obj_uid, image_paras):
                 # print("This is the maximum depression extent.")
                 cells = object.area
                 size = cells * pow(resolution, 2)  # depression size
-                max_depth = object.max_intensity - object.min_intensity  # depression max depth
-                mean_depth = (object.max_intensity * cells - np.sum(object.intensity_image)) / cells  # depression mean depth
+                max_depth = (
+                    object.max_intensity - object.min_intensity
+                )  # depression max depth
+                mean_depth = (
+                    object.max_intensity * cells - np.sum(object.intensity_image)
+                ) / cells  # depression mean depth
                 volume = mean_depth * cells * pow(resolution, 2)  # depression volume
                 # spill_elev = object.max_intensity   # to be implemented
-                min_elev = object.min_intensity   # depression min elevation
-                max_elev = object.max_intensity     # depression max elevation
+                min_elev = object.min_intensity  # depression min elevation
+                max_elev = object.max_intensity  # depression max elevation
                 # print("size = {}, max depth = {:.2f}, mean depth = {:.2f}, volume = {:.2f}, spill elev = {:.2f}".format(
                 #     size, max_depth, mean_depth, volume, spill_elev))
                 unique_id += 1
@@ -322,23 +370,48 @@ def levelSet(img, region_id, obj_uid, image_paras):
                 eccentricity = object.eccentricity
                 orientation = object.orientation / 3.1415 * 180
                 area_bbox_ratio = object.extent
-                dep_list.append(Depression(unique_id,level,cells,size,volume,mean_depth,max_depth,min_elev,max_elev,[],
-                                           region_id, perimeter, major_axis, minor_axis, elongatedness, eccentricity,
-                                           orientation, area_bbox_ratio))
+                dep_list.append(
+                    Depression(
+                        unique_id,
+                        level,
+                        cells,
+                        size,
+                        volume,
+                        mean_depth,
+                        max_depth,
+                        min_elev,
+                        max_elev,
+                        [],
+                        region_id,
+                        perimeter,
+                        major_axis,
+                        minor_axis,
+                        elongatedness,
+                        eccentricity,
+                        orientation,
+                        area_bbox_ratio,
+                    )
+                )
                 parent_ids[unique_id] = 0  # number of inner neighbors
-                nbr_ids[unique_id] = []   # ids of inner neighbors
+                nbr_ids[unique_id] = []  # ids of inner neighbors
                 tmp_img = np.zeros(object.image.shape)
                 tmp_img[object.image] = unique_id
-                writeObject(level_img, tmp_img, bbox)  # write the object to the final image
+                writeObject(
+                    level_img, tmp_img, bbox
+                )  # write the object to the final image
 
             else:  # identify inner neighbors of parent depressions
                 # print("current id: {}".format(parent_ids.keys()))
                 # (row, col) = object.coords[0]
-                parent_id = level_img[row,col]
+                parent_id = level_img[row, col]
                 parent_ids[parent_id] += 1
                 nbr_ids[parent_id].append(i)
 
-        for key in parent_ids.copy():  # check how many inner neighbors each upper level depression has
+        for (
+            key
+        ) in (
+            parent_ids.copy()
+        ):  # check how many inner neighbors each upper level depression has
             if parent_ids[key] > 1:  # if the parent has two or more children
                 # print("Object id: {} has split into {} objects".format(key, parent_ids[key]))
                 new_parent_keys = nbr_ids[key]
@@ -347,7 +420,9 @@ def levelSet(img, region_id, obj_uid, image_paras):
                     cells = object.area
                     size = cells * pow(resolution, 2)
                     max_depth = object.max_intensity - object.min_intensity
-                    mean_depth = (object.max_intensity * cells - np.sum(object.intensity_image)) / cells
+                    mean_depth = (
+                        object.max_intensity * cells - np.sum(object.intensity_image)
+                    ) / cells
                     volume = mean_depth * cells * pow(resolution, 2)
                     spill_elev = object.max_intensity
                     min_elev = object.min_intensity
@@ -366,10 +441,28 @@ def levelSet(img, region_id, obj_uid, image_paras):
                     orientation = object.orientation / 3.1415 * 180
                     area_bbox_ratio = object.extent
                     dep_list.append(
-                        Depression(unique_id, level, cells, size, volume, mean_depth, max_depth, min_elev, max_elev, [],
-                                   region_id, perimeter, major_axis, minor_axis, elongatedness, eccentricity,
-                                   orientation, area_bbox_ratio))
-                    dep_list[key-1-obj_uid].inNbrId.append(unique_id)
+                        Depression(
+                            unique_id,
+                            level,
+                            cells,
+                            size,
+                            volume,
+                            mean_depth,
+                            max_depth,
+                            min_elev,
+                            max_elev,
+                            [],
+                            region_id,
+                            perimeter,
+                            major_axis,
+                            minor_axis,
+                            elongatedness,
+                            eccentricity,
+                            orientation,
+                            area_bbox_ratio,
+                        )
+                    )
+                    dep_list[key - 1 - obj_uid].inNbrId.append(unique_id)
                     parent_ids[unique_id] = 0
                     nbr_ids[unique_id] = []
                     bbox = object.bbox
@@ -377,15 +470,17 @@ def levelSet(img, region_id, obj_uid, image_paras):
                     tmp_img[object.image] = unique_id
                     writeObject(level_img, tmp_img, bbox)
 
-                if key in parent_ids.keys():    # remove parent id that has split
+                if key in parent_ids.keys():  # remove parent id that has split
                     parent_ids.pop(key)
             else:
-                parent_ids[key] = 0     # if a parent depression has not split, keep it
+                parent_ids[key] = 0  # if a parent depression has not split, keep it
                 nbr_ids[key] = []
 
     # for dep in dep_list:
     #     print("id: {} has children {}".format(dep.id, dep.inNbrId))
-    dep_list = updateLevel(dep_list, obj_uid)   # update the inner neighbors of each depression
+    dep_list = updateLevel(
+        dep_list, obj_uid
+    )  # update the inner neighbors of each depression
     # for dep in dep_list:
     #     print("id: {} is level {}".format(dep.id, dep.level))
     del img
@@ -402,15 +497,15 @@ def updateLevel(dep_list, obj_uid):
 
     Returns:
         list: A list containing depression info.
-    """    
+    """
     for dep in reversed(dep_list):
         if len(dep.inNbrId) == 0:
             dep.level = 1
         else:
             max_children_level = 0
             for id in dep.inNbrId:
-                if dep_list[id-1-obj_uid].level > max_children_level:
-                    max_children_level = dep_list[id-1-obj_uid].level
+                if dep_list[id - 1 - obj_uid].level > max_children_level:
+                    max_children_level = dep_list[id - 1 - obj_uid].level
             dep.level = max_children_level + 1
     return dep_list
 
@@ -424,7 +519,7 @@ def obj_to_level(obj_img, dep_list):
 
     Returns:
         np.array: The numpy array containing the object level image.
-    """    
+    """
     level_img = np.copy(obj_img)
 
     max_id = int(np.max(level_img))
@@ -432,8 +527,8 @@ def obj_to_level(obj_img, dep_list):
     if max_id > 0:
         min_id = int(np.min(level_img[np.nonzero(level_img)]))
         # print("min_id = " + str(min_id))
-        for i in range(min_id, max_id+1):
-            level_img[level_img == i] = dep_list[i-1].level + max_id
+        for i in range(min_id, max_id + 1):
+            level_img[level_img == i] = dep_list[i - 1].level + max_id
     level_img = level_img - max_id
 
     return level_img
@@ -444,27 +539,87 @@ def write_dep_csv(dep_list, csv_file):
 
 
     Args:
-        dep_list (list): A list containing depression info. 
+        dep_list (list): A list containing depression info.
         csv_file (str): File path to the output CSV file.
-    """    
+    """
     csv = open(csv_file, "w")
-    header = "id" +","+"level"+","+"count"+","+"area"+","+"volume"+","+"avg-depth"+","+"max-depth"+","+\
-             "min-elev"+","+"max-elev"+","+"children-id"+","+"region-id" + "," + "perimeter" + "," + "major-axis" + \
-             "," + "minor-axis" + "," + "elongatedness" + "," + "eccentricity" + "," + "orientation" + "," + \
-             "area-bbox-ratio"
+    header = (
+        "id"
+        + ","
+        + "level"
+        + ","
+        + "count"
+        + ","
+        + "area"
+        + ","
+        + "volume"
+        + ","
+        + "avg-depth"
+        + ","
+        + "max-depth"
+        + ","
+        + "min-elev"
+        + ","
+        + "max-elev"
+        + ","
+        + "children-id"
+        + ","
+        + "region-id"
+        + ","
+        + "perimeter"
+        + ","
+        + "major-axis"
+        + ","
+        + "minor-axis"
+        + ","
+        + "elongatedness"
+        + ","
+        + "eccentricity"
+        + ","
+        + "orientation"
+        + ","
+        + "area-bbox-ratio"
+    )
     csv.write(header + "\n")
     for dep in dep_list:
         # id, level, size, volume, meanDepth, maxDepth, minElev, bndElev, inNbrId, nbrId = 0
-        line = "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}," \
-               "{:.2f}".format(dep.id, dep.level, dep.count, dep.size, dep.volume, dep.meanDepth, dep.maxDepth,
-                               dep.minElev,dep.bndElev, str(dep.inNbrId).replace(",",":"), dep.regionId, dep.perimeter,
-                               dep.major_axis, dep.minor_axis, dep.elongatedness, dep.eccentricity, dep.orientation,
-                               dep.area_bbox_ratio)
+        line = (
+            "{},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{},{},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},"
+            "{:.2f}".format(
+                dep.id,
+                dep.level,
+                dep.count,
+                dep.size,
+                dep.volume,
+                dep.meanDepth,
+                dep.maxDepth,
+                dep.minElev,
+                dep.bndElev,
+                str(dep.inNbrId).replace(",", ":"),
+                dep.regionId,
+                dep.perimeter,
+                dep.major_axis,
+                dep.minor_axis,
+                dep.elongatedness,
+                dep.eccentricity,
+                dep.orientation,
+                dep.area_bbox_ratio,
+            )
+        )
         csv.write(line + "\n")
     csv.close()
 
 
-def extract_levels(level_img, obj_img, min_size, no_data, out_img_dir, out_shp_dir, template, bool_comb=False):
+def extract_levels(
+    level_img,
+    obj_img,
+    min_size,
+    no_data,
+    out_img_dir,
+    out_shp_dir,
+    template,
+    bool_comb=False,
+):
     """Extracts individual level image.
 
     Args:
@@ -479,22 +634,24 @@ def extract_levels(level_img, obj_img, min_size, no_data, out_img_dir, out_shp_d
 
     Returns:
         tuple: The single level image, properties of region grouped level image, properties of region grouped object image.
-    """    
+    """
     max_level = int(np.max(level_img))
     combined_images = []
     single_images = []
     img = np.copy(level_img)
 
-    digits = int(math.log10(max_level)) + 1  # determine the level number of output file name
+    digits = (
+        int(math.log10(max_level)) + 1
+    )  # determine the level number of output file name
     for i in range(1, max_level + 1):
-        img[(img > 0) & (img <= i) ] = i
+        img[(img > 0) & (img <= i)] = i
         tmp_img = np.copy(img)
         tmp_img[tmp_img > i] = 0
         if bool_comb == True:  # whether to extract combined level image
             combined_images.append(np.copy(tmp_img))
             filename_combined = "Combined_level_" + str(i).zfill(digits) + ".tif"
             out_file = os.path.join(out_shp_dir, filename_combined)
-            writeRaster(tmp_img,out_file,template)
+            writeRaster(tmp_img, out_file, template)
 
         lbl_objects, n_labels = regionGroup(tmp_img, min_size, no_data)
         # regs = measure.regionprops(lbl_objects, level_img, coordinates='xy')
@@ -541,7 +698,7 @@ def getMetadata(img):
 
     Returns:
         tuple: no_data, projection, geotransform, cell_size
-    """    
+    """
     no_data = img.no_data
     projection = img.projection
     geotransform = img.geotransform
@@ -560,14 +717,16 @@ def np2rdarray(in_array, no_data, projection, geotransform):
 
     Returns:
         rdarray: The richDEM array containing the image.
-    """    
+    """
     out_array = rd.rdarray(in_array, no_data=no_data)
     out_array.projection = projection
     out_array.geotransform = geotransform
     return out_array
 
 
-def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp=False):
+def DelineateDepressions(
+    in_sink, min_size, min_depth, interval, out_dir, bool_level_shp=False
+):
     """Delineates nested depressions.
 
     Args:
@@ -613,9 +772,13 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
     print("Pixel resolution: " + str(resolution))
     print("Read data time: {:.4f} seconds".format(time.time() - read_time))
 
-    min_elev, max_elev, no_data = get_min_max_nodata(image)  # set nodata value to a large value, e.g., 9999
+    min_elev, max_elev, no_data = get_min_max_nodata(
+        image
+    )  # set nodata value to a large value, e.g., 9999
     # initialize output image
-    obj_image = np.zeros(image.shape)  # output depression image with unique id for each nested depression
+    obj_image = np.zeros(
+        image.shape
+    )  # output depression image with unique id for each nested depression
     level_image = np.zeros(image.shape)  # output depression level image
 
     # nb_labels is the total number of objects. 0 represents background object.
@@ -639,7 +802,9 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
         bbox = region.bbox
 
         # save all input parameters needed for level set methods as a dict
-        image_paras = set_image_paras(no_data, min_size, min_depth, interval, resolution)
+        image_paras = set_image_paras(
+            no_data, min_size, min_depth, interval, resolution
+        )
 
         # execute level set methods
         out_obj, dep_list = levelSet(img, region_id, obj_uid, image_paras)
@@ -650,7 +815,7 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
         obj_uid += len(dep_list)
 
         level_obj = obj_to_level(out_obj, global_dep_list)
-        obj_image = writeObject(obj_image, out_obj, bbox)       # write region to whole image
+        obj_image = writeObject(obj_image, out_obj, bbox)  # write region to whole image
         level_image = writeObject(level_image, level_obj, bbox)
 
         del out_obj, level_obj, region
@@ -668,7 +833,9 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
     # writeRaster(obj_image, out_obj_file, in_sink)
     # writeRaster(level_image, out_level_file, in_sink)
     # SaveGDAL function can only save data as floating point
-    level_image = np2rdarray(np.int32(level_image), no_data_raw, projection, geotransform)
+    level_image = np2rdarray(
+        np.int32(level_image), no_data_raw, projection, geotransform
+    )
     rd.SaveGDAL(out_level_file, level_image)
     obj_image = np2rdarray(np.int32(obj_image), no_data_raw, projection, geotransform)
     rd.SaveGDAL(out_obj_file, obj_image)
@@ -683,7 +850,16 @@ def DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_l
     # extracting polygons for each individual level
     if bool_level_shp:
         level_time = time.time()
-        extract_levels(level_image, obj_image, min_size, no_data, out_img_dir, out_shp_dir, in_sink, False)
+        extract_levels(
+            level_image,
+            obj_image,
+            min_size,
+            no_data,
+            out_img_dir,
+            out_shp_dir,
+            in_sink,
+            False,
+        )
         print("Extract level time:\t\t {:.4f} s".format(time.time() - level_time))
         shutil.rmtree(out_img_dir)
     else:

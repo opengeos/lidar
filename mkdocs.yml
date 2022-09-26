@@ -52,4 +52,4 @@ nav:
           - filtering module: filtering.md
           - mounts module: mounts.md
           - slicing module: slicing.md
-          - utilities module: utilities.md
+          - utils module: utils.md

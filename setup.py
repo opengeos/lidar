@@ -10,6 +10,8 @@ import urllib.request
 from setuptools import setup, find_packages
 
 # Find available package versions
+
+
 def pkg_versions(package_name):
     url = "https://pypi.python.org/pypi/%s/json" % (package_name,)
     text = urllib.request.urlopen(url).read()
@@ -25,8 +27,9 @@ def find_version(version, version_list):
         if v.startswith(version):
             match_version = v
             return match_version
-            
+
     return match_version
+
 
 # check GDAL version installed in the system
 # GDAL_VERSION = os.popen("gdal-config --version").read().rstrip()
@@ -35,12 +38,15 @@ GDAL_VERSION = GDAL_INFO.split(',')[0].replace('GDAL', '').lstrip()
 GDAL_VERSION_NUM = str(GDAL_VERSION.replace(".", ""))
 PYGDAL_VERSION = find_version(GDAL_VERSION, pkg_versions('pygdal'))
 
-if PYGDAL_VERSION is None:
-    print("GDAL version not found in PyPI. Please install GDAL version %s or higher." % (GDAL_VERSION,))
-    exit(1)
+# if PYGDAL_VERSION is None:
+#     print(
+#         "GDAL version not found in PyPI. Please install GDAL version %s or higher."
+#         % (GDAL_VERSION,)
+#     )
+#     exit(1)
 
 
-with open('README.md', mode = 'rb') as readme_file:
+with open('README.md', mode='rb') as readme_file:
     readme = readme_file.read().decode('utf-8')
 
 here = op.abspath(op.dirname(__file__))
@@ -51,15 +57,18 @@ with io.open(op.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
 
-install_requires.append('pygdal==' + PYGDAL_VERSION)
+# install_requires.append('pygdal==' + PYGDAL_VERSION)
 
-dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
+dependency_links = [x.strip().replace('git+', '')
+                    for x in all_reqs if 'git+' not in x]
 
-requirements = ['Click>=6.0', ]
+requirements = [
+    'Click>=6.0',
+]
 
-setup_requirements = [ ]
+setup_requirements = []
 
-test_requirements = [ ]
+test_requirements = []
 
 setup(
     author="Qiusheng Wu",

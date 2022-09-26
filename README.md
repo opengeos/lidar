@@ -22,24 +22,25 @@ particularly useful for analyzing high-resolution topographic data, such as DEMs
 -   Free software: [MIT license](https://opensource.org/licenses/MIT)
 
 **Citations**
+
 -   **Wu, Q.**, (2021). lidar: A Python package for delineating nested surface depressions from digital elevation data. _Journal of Open Source Software_, 6(59), 2965, <https://doi.org/10.21105/joss.02965>
 -   **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen,
     J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression
     Hierarchy in Digital Elevation Models for Hydrological Analysis
-    Using Level-Set Method. *Journal of the American Water Resources
-    Association*. <https://doi.org/10.1111/1752-1688.12689> ([PDF](https://spatial.utk.edu/pubs/2019_JAWRA.pdf))
+    Using Level-Set Method. _Journal of the American Water Resources
+    Association_. <https://doi.org/10.1111/1752-1688.12689> ([PDF](https://spatial.utk.edu/pubs/2019_JAWRA.pdf))
 
 **Contents**
 
-- [Introduction](#introduction)
-- [Statement of Need](#statement-of-need)
-- [State of the Field](#state-of-the-field)
-- [Key Features](#key-features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [References](#references)
-- [Contributing](#contributing)
-- [Credits](#credits)
+-   [Introduction](#introduction)
+-   [Statement of Need](#statement-of-need)
+-   [State of the Field](#state-of-the-field)
+-   [Key Features](#key-features)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [References](#references)
+-   [Contributing](#contributing)
+-   [Credits](#credits)
 
 ## Introduction
 
@@ -77,7 +78,7 @@ length, elongatedness.
 
 ## State of the Field
 
-Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as [RichDEM](https://richdem.readthedocs.io/) and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools). However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar**  Python package is intended for filling this gap. 
+Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as [RichDEM](https://richdem.readthedocs.io/) and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools). However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar** Python package is intended for filling this gap.
 
 ## Key Features
 
@@ -95,11 +96,12 @@ Currently, there are a few open-source Python packages that can perform depressi
 
 **lidar** supports a variety of platforms, including Microsoft Windows,
 macOS, and Linux operating systems. Note that you will need to have
-**Python 3.x** (&lt; 3.9) installed. Python 2.x is not supported. 
-**lidar** is available on both [PyPI](https://pypi.python.org/pypi/lidar) and [conda-forge](https://anaconda.org/conda-forge/lidar). 
-lidar has a [GDAL](https://gdal.org/) dependency, which can be challenging to install using pip on Windows. 
-Therefore, it is highly recommended to install lidar from the conda-forge channel. 
+**Python 3.x** (&lt; 3.9) installed. Python 2.x is not supported.
+**lidar** is available on both [PyPI](https://pypi.python.org/pypi/lidar) and [conda-forge](https://anaconda.org/conda-forge/lidar).
+lidar has a [GDAL](https://gdal.org/) dependency, which can be challenging to install using pip on Windows.
+Therefore, it is highly recommended to install lidar from the conda-forge channel.
 If you encounter any errors, please check the [Dependencies](#dependencies) section below.
+
 ### Install from PyPI
 
 To install **lidar** from PyPI, run this command in your terminal:
@@ -110,7 +112,7 @@ pip install lidar
 
 ### Install from conda-forage
 
-If you have [Anaconda](https://www.anaconda.com/distribution/#download-section) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) 
+If you have [Anaconda](https://www.anaconda.com/distribution/#download-section) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 installed on your computer, you can create a fresh conda environment to install lidar:
 
 ```console
@@ -144,7 +146,7 @@ pip install git+https://github.com/giswqs/lidar
 lidar's Python dependencies are listed in its [requirements.txt](https://github.com/giswqs/lidar/blob/master/requirements.txt) file. In
 addition, lidar has a C library dependency: GDAL &gt;=1.11.2. How to
 install GDAL in different operating systems will be explained below.
-More informaton about GDAL can be found [here](https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries).
+More information about GDAL can be found [here](https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries).
 
 #### Linux
 
@@ -157,7 +159,7 @@ Linux distributions (e.g., Ubuntu, Linux Mint).
 sudo add-apt-repository ppa:ubuntugis/ppa
 sudo apt-get update
 sudo apt-get install gdal-bin libgdal-dev
-```  
+```
 
 If you encounter any compiling errors, try the following commands.
 
@@ -165,7 +167,7 @@ If you encounter any compiling errors, try the following commands.
 sudo apt-get install --reinstall build-essential
 sudo apt-get install python3-dev
 pip install wheel
-``` 
+```
 
 ##### Pacman-based Linux
 
@@ -177,7 +179,7 @@ Linux distributions (e.g., Arch Linux, Manjaro). You might need to use
 sudo pacman -S yaourt --noconfirm
 yaourt -S gdal --noconfirm
 yaourt -S python-gdal --noconfirm
-```  
+```
 
 #### macOS
 
@@ -186,7 +188,7 @@ For a Homebrew based Python environment, do the following.
 ```console
 brew update
 brew install gdal
-```  
+```
 
 Alternatively, you can install GDAL binaries from [kyngchaos](http://www.kyngchaos.com/software/frameworks#gdal_complete). You will
 then need to add the installed location
@@ -202,17 +204,17 @@ environment and install required packages
 conda create -n py38 python=3.8
 conda activate py38
 conda install lidar -c conda-forge
-```  
+```
 
 When installing the **lidar** package, if you encounter an error
 saying `Microsoft Visual C++ 14.0 is required`, please follow the steps
-below to fix the error and reinstall **lidar**. More infomration can
+below to fix the error and reinstall **lidar**. More information can
 be found at this link [Fix Python 3 on Windows error - Microsoft Visual C++ 14.0 is required](https://www.scivision.co/python-windows-visual-c++-14-required/).
 
-* Download [Microsoft Build Tools for Visual Studio 2017](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=15)
-* Double click to install the downloaded installer - **Microsoft Build Tools for Visual Studio 2017**.
-* Open **Microsoft Build Tools for Visual Studio 2017**
-* Select **Workloads --> Visual C++ build tools** and click the install button
+-   Download [Microsoft Build Tools for Visual Studio 2017](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=15)
+-   Double click to install the downloaded installer - **Microsoft Build Tools for Visual Studio 2017**.
+-   Open **Microsoft Build Tools for Visual Studio 2017**
+-   Select **Workloads --> Visual C++ build tools** and click the install button
 
 ## Usage
 
@@ -247,14 +249,15 @@ bool_shp = True      # output shapefiles for each individual level
 out_dem = os.path.join(out_dir, "median.tif")
 in_dem = MedianFilter(in_dem, kernel_size=3, out_file=out_dem)
 sink_path = ExtractSinks(in_dem, min_size, out_dir)
-dep_id_path, dep_level_path = DelineateDepressions(sink_path, 
-                                                   min_size, 
-                                                   min_depth, 
-                                                   interval, 
-                                                   out_dir, 
+dep_id_path, dep_level_path = DelineateDepressions(sink_path,
+                                                   min_size,
+                                                   min_depth,
+                                                   interval,
+                                                   out_dir,
                                                    bool_shp)
 print('Results are saved in: {}'.format(out_dir))
 ```
+
 ### lidar GUI
 
 **lidar** also provides a Graphical User Interface (GUI), which can be
@@ -266,7 +269,6 @@ lidar.gui()
 ```
 
 ![image](https://i.imgur.com/6hLGeV5.png)
-
 
 ## lidar toolbox for ArcGIS Pro
 
@@ -311,40 +313,39 @@ The level-set algorithm was proposed by **Wu** et al. (2019):
 -   **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen,
     J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression
     Hierarchy in Digital Elevation Models for Hydrological Analysis
-    Using Level-Set Method. *Journal of the American Water Resources
-    Association*. DOI: [10.1111/1752-1688.12689](https://doi.org/10.1111/1752-1688.12689) ([PDF](https://spatial.utk.edu/pubs/2019_JAWRA.pdf))
+    Using Level-Set Method. _Journal of the American Water Resources
+    Association_. DOI: [10.1111/1752-1688.12689](https://doi.org/10.1111/1752-1688.12689) ([PDF](https://spatial.utk.edu/pubs/2019_JAWRA.pdf))
 
 Applications of the level-set and contour-tree methods for feature
 extraction from LiDAR data:
 
 -   **Wu, Q.**, & Lane, C.R. (2017). Delineating wetland catchments and
     modeling hydrologic connectivity using LiDAR data and aerial
-    imagery. *Hydrology and Earth System Sciences*. 21: 3579-3595. DOI:
+    imagery. _Hydrology and Earth System Sciences_. 21: 3579-3595. DOI:
     [10.5194/hess-21-3579-2017](https://doi.org/10.5194/hess-21-3579-2017)
 -   **Wu, Q.**, Deng, C., & Chen, Z. (2016). Automated delineation of
     karst sinkholes from LiDAR-derived digital elevation models.
-    *Geomorphology*. 266: 1-10. DOI:
+    _Geomorphology_. 266: 1-10. DOI:
     [10.1016/j.geomorph.2016.05.006](http://dx.doi.org/10.1016/j.geomorph.2016.05.006)
 -   **Wu, Q.**, Su, H., Sherman, D.J., Liu, H., Wozencraft, J.M., Yu,
     B., & Chen, Z. (2016). A graph-based approach for assessing
-    storm-induced coastal changes. *International Journal of Remote
-    Sensing*. 37:4854-4873. DOI:
+    storm-induced coastal changes. _International Journal of Remote
+    Sensing_. 37:4854-4873. DOI:
     [10.1080/01431161.2016.1225180](http://dx.doi.org/10.1080/01431161.2016.1225180)
 -   **Wu, Q.**, & Lane, C.R. (2016). Delineation and quantification of
     wetland depressions in the Prairie Pothole Region of North Dakota.
-    *Wetlands*. 36(2):215–227. DOI:
+    _Wetlands_. 36(2):215–227. DOI:
     [10.1007/s13157-015-0731-6](http://dx.doi.org/10.1007/s13157-015-0731-6)
 -   **Wu, Q.**, Liu, H., Wang, S., Yu, B., Beck, R., & Hinkel, K.
     (2015). A localized contour tree method for deriving geometric and
     topological properties of complex surface depressions based on
-    high-resolution topographic data. *International Journal of
-    Geographical Information Science*. 29(12): 2041-2060. DOI:
+    high-resolution topographic data. _International Journal of
+    Geographical Information Science_. 29(12): 2041-2060. DOI:
     [10.1080/13658816.2015.1038719](http://dx.doi.org/10.1080/13658816.2015.1038719)
 -   **Wu, Q.**, Lane, C.R., & Liu, H. (2014). An effective method for
     detecting potential woodland vernal pools using high-resolution
-    LiDAR data and aerial imagery. *Remote Sensing*. 6(11):11444-11467.
+    LiDAR data and aerial imagery. _Remote Sensing_. 6(11):11444-11467.
     DOI: [10.3390/rs61111444](http://dx.doi.org/10.3390/rs61111444)
-
 
 ## Contributing
 
@@ -359,9 +360,9 @@ Report bugs at <https://github.com/giswqs/lidar/issues>.
 
 If you are reporting a bug, please include:
 
-- Your operating system name and version.
-- Any details about your local setup that might be helpful in troubleshooting.
-- Detailed steps to reproduce the bug.
+-   Your operating system name and version.
+-   Any details about your local setup that might be helpful in troubleshooting.
+-   Detailed steps to reproduce the bug.
 
 #### Fix Bugs
 
@@ -381,9 +382,9 @@ The best way to send feedback is to file an issue at <https://github.com/giswqs/
 
 If you are proposing a feature:
 
-- Explain in detail how it would work.
-- Keep the scope as narrow as possible, to make it easier to implement.
-- Remember that this is a volunteer-driven project, and that contributions are welcome.
+-   Explain in detail how it would work.
+-   Keep the scope as narrow as possible, to make it easier to implement.
+-   Remember that this is a volunteer-driven project, and that contributions are welcome.
 
 ### Get Started
 
@@ -398,7 +399,6 @@ git clone git@github.com:your_name_here/lidar.git
 ```
 
 3. Install your local copy into a conda env. Assuming you have conda installed, this is how you set up your fork for local development:
-
 
 ```console
 conda create -n lidar-test python
@@ -444,5 +444,5 @@ Before you submit a pull request, check that it meets these guidelines:
 
 ## Credits
 
-- The algorithms are built on [RichDEM](https://github.com/r-barnes/richdem), [numpy](https://www.numpy.org), [scipy](https://www.scipy.org), [scikit-image](https://scikit-image.org), and [pygdal](https://github.com/nextgis/pygdal).
-- This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage) project template.
+-   The algorithms are built on [RichDEM](https://github.com/r-barnes/richdem), [numpy](https://www.numpy.org), [scipy](https://www.scipy.org), [scikit-image](https://scikit-image.org), and [pygdal](https://github.com/nextgis/pygdal).
+-   This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage) project template.

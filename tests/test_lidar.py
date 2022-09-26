@@ -18,6 +18,7 @@ import numpy as np
 import time
 import lidar
 
+
 class TestLidar(unittest.TestCase):
     """Tests for `lidar` package."""
 
@@ -44,7 +45,7 @@ class TestLidar(unittest.TestCase):
             os.mkdir(out_dir)
 
         mean_dem = os.path.join(out_dir, "mean.tif")
-        mean = lidar.MeanFilter(in_dem, kernel_size=3)  
+        mean = lidar.MeanFilter(in_dem, kernel_size=3)
         rd.SaveGDAL(mean_dem, mean)
 
         self.assertTrue(os.path.exists(mean_dem))
@@ -63,7 +64,7 @@ class TestLidar(unittest.TestCase):
             os.mkdir(out_dir)
 
         median_dem = os.path.join(out_dir, "median.tif")
-        median = lidar.MedianFilter(in_dem, kernel_size=3)  
+        median = lidar.MedianFilter(in_dem, kernel_size=3)
         rd.SaveGDAL(median_dem, median)
 
         self.assertTrue(os.path.exists(median_dem))
@@ -82,7 +83,7 @@ class TestLidar(unittest.TestCase):
             os.mkdir(out_dir)
 
         gaussian_dem = os.path.join(out_dir, "gaussian.tif")
-        gaussian = lidar.GaussianFilter(in_dem,  sigma=1)  
+        gaussian = lidar.GaussianFilter(in_dem, sigma=1)
         rd.SaveGDAL(gaussian_dem, gaussian)
 
         self.assertTrue(os.path.exists(gaussian_dem))
@@ -114,20 +115,26 @@ class TestLidar(unittest.TestCase):
         # set input files
         # identify the sample data directory of the package
         package_name = "lidar"
-        data_dir = pkg_resources.resource_filename(package_name, "data/")        
+        data_dir = pkg_resources.resource_filename(package_name, "data/")
         # in_dem = os.path.join(data_dir, "dem.tif")
         in_sink = os.path.join(data_dir, "sink.tif")
         # parameters for level set method
-        min_size = 1000         # minimum number of pixels as a depression
-        min_depth = 0.3         # minimum depression depth
-        interval = 0.3          # slicing interval, top-down approach
-        bool_level_shp = True  # whether or not to extract polygons for each individual level
+        min_size = 1000  # minimum number of pixels as a depression
+        min_depth = 0.3  # minimum depression depth
+        interval = 0.3  # slicing interval, top-down approach
+        bool_level_shp = (
+            True  # whether or not to extract polygons for each individual level
+        )
         # set output directory
-        out_dir = os.path.join(os.path.expanduser("~"), "temp")  # create a temp folder under user home directory
+        out_dir = os.path.join(
+            os.path.expanduser("~"), "temp"
+        )  # create a temp folder under user home directory
         if not os.path.exists(out_dir):
             os.mkdir(out_dir)
 
-        dep_id_path, dep_level_path = lidar.DelineateDepressions(in_sink, min_size, min_depth, interval, out_dir, bool_level_shp)
+        dep_id_path, dep_level_path = lidar.DelineateDepressions(
+            in_sink, min_size, min_depth, interval, out_dir, bool_level_shp
+        )
         print("Results are saved in: {}".format(out_dir))
 
         self.assertTrue(os.path.exists(dep_id_path))
@@ -158,4 +165,3 @@ class TestLidar(unittest.TestCase):
         )
         self.assertTrue(os.path.exists(mount_id_path))
         self.assertTrue(os.path.exists(mount_level_path))
-

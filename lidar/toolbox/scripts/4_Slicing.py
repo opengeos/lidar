@@ -153,7 +153,7 @@ def polygonize(img, shp_path):
     #                          callback=prog_func)
 
 
-# convert images in a selected foler to shapefiles
+# convert images in a selected folder to shapefiles
 def img_to_shp(in_img_dir, out_shp_dir):
     img_files = os.listdir(in_img_dir)
     for img_file in img_files:
