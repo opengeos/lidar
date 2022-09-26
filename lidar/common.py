@@ -708,7 +708,13 @@ def download_ned_by_huc(
     Args:
         huc_id (str): The HUC ID, for example, "01010002"
         huc_type (str, optional): The HUC type, e.g., huc2, huc4, huc8. Defaults to "huc8".
-        datasets (str, optional): Comma-delimited list of valid dataset tag names. Defaults to None.
+        datasets (str, optional): Comma-delimited list of valid dataset tag names. The commonly used datasets include:
+            Digital Elevation Model (DEM) 1 meter
+            National Elevation Dataset (NED) 1/3 arc-second Current
+            National Elevation Dataset (NED) 1/9 arc-second Current
+            National Elevation Dataset (NED) 1 arc-second Current
+            For more information, see https://apps.nationalmap.gov/tnmaccess/#/product
+            Defaults to None, which will be the (NED) 1/3 arc-second
         out_dir (str, optional): The output directory. Defaults to None, which will use the current working directory.
         return_url (bool, optional): If True, the URL will be returned instead of downloading the data. Defaults to False.
         download_args (dict, optional): The download arguments to be passed to the download_file function. Defaults to {}.
@@ -770,7 +776,13 @@ def download_ned_by_bbox(
     Args:
         bbox (list): The bounding box in the form [xmin, ymin, xmax, ymax].
         huc_type (str, optional): The HUC type, e.g., huc2, huc4, huc8. Defaults to "huc8".
-        datasets (str, optional): Comma-delimited list of valid dataset tag names. Defaults to None.
+        datasets (str, optional): Comma-delimited list of valid dataset tag names. The commonly used datasets include:
+            Digital Elevation Model (DEM) 1 meter
+            National Elevation Dataset (NED) 1/3 arc-second Current
+            National Elevation Dataset (NED) 1/9 arc-second Current
+            National Elevation Dataset (NED) 1 arc-second Current
+            For more information, see https://apps.nationalmap.gov/tnmaccess/#/product
+            Defaults to None, which will be the (NED) 1/3 arc-second
         out_dir (str, optional): The output directory. Defaults to None, which will use the current working directory.
         return_url (bool, optional): If True, the URL will be returned instead of downloading the data. Defaults to False.
         download_args (dict, optional): The download arguments to be passed to the download_file function. Defaults to {}.
