@@ -409,120 +409,6 @@ def github_raw_url(url):
     return url
 
 
-def download_ned(region, out_dir=None, return_url=False, download_args={}, **kwargs):
-    """Download the US National Elevation Datasets (NED) for a region.
-
-    Args:
-        region (str | list): A filepath to a vector dataset or a list of bounds in the form of [minx, miny, maxx, maxy].
-        out_dir (str, optional): The directory to download the files to. Defaults to None, which uses the current working directory.
-        return_url (bool, optional): Whether to return the download URLs of the files. Defaults to False.
-        download_args (dict, optional): A dictionary of arguments to pass to the download_file function. Defaults to {}.
-
-    Returns:
-        list: A list of the download URLs of the files if return_url is True.
-    """
-    import geopandas as gpd
-    import math
-    import requests
-
-    if out_dir is None:
-        out_dir = os.getcwd()
-    else:
-        out_dir = os.path.abspath(out_dir)
-
-    if isinstance(region, str):
-        if region.startswith("http"):
-            region = github_raw_url(region)
-            region = download_file(region)
-        elif not os.path.exists(region):
-            raise ValueError("region must be a path or a URL to a vector dataset.")
-
-        roi = gpd.read_file(region, **kwargs)
-        roi = roi.to_crs(epsg=4326)
-        bounds = roi.total_bounds
-
-    elif isinstance(region, list):
-        bounds = region
-
-    else:
-        raise ValueError(
-            "region must be a filepath or a list of bounds in the form of [minx, miny, maxx, maxy]."
-        )
-    minx, miny, maxx, maxy = [float(x) for x in bounds]
-    tiles = []
-    left = abs(math.floor(minx))
-    right = abs(math.floor(maxx)) - 1
-    upper = math.ceil(maxy)
-    bottom = math.ceil(miny) - 1
-
-    for y in range(upper, bottom, -1):
-        for x in range(left, right, -1):
-            tile_id = "n{}w{}".format(str(y).zfill(2), str(x).zfill(3))
-            tiles.append(tile_id)
-
-    links = []
-    filepaths = []
-
-    for index, tile in enumerate(tiles):
-        tif_url = f"https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/{tile}/USGS_13_{tile}.tif"
-
-        r = requests.head(tif_url)
-        if r.status_code == 200:
-            tif = os.path.join(out_dir, os.path.basename(tif_url))
-            links.append(tif_url)
-            filepaths.append(tif)
-        else:
-            print(f"{tif_url} does not exist.")
-
-    if return_url:
-        return links
-    else:
-        for index, link in enumerate(links):
-            print(f"Downloading {index + 1} of {len(links)}: {os.path.basename(link)}")
-            download_file(link, filepaths[index], **download_args)
-
-
-def download_ned_by_hu8(
-    hu8, out_dir=None, shp_path=None, return_url=False, download_args={}, **kwargs
-):
-    """Download the US National Elevation Datasets (NED) for a Hydrologic Unit 8 (HU8) region.
-
-    Args:
-        hu8 (str): The HU8 region id.
-        out_dir (str, optional): The directory to download the files to. Defaults to None, which uses the current working directory.
-        shp_path (str, optional): The path to the HU8 shapefile. Defaults to None, which uses the HU8 shapefile in the lidar package.
-        return_url (bool, optional): Whether to return the download URLs of the files. Defaults to False.
-        download_args (dict, optional): A dictionary of arguments to pass to the download_file function. Defaults to {}.
-
-    """
-    import geopandas as gpd
-
-    if shp_path is None:
-        hu8_url = 'https://drive.google.com/file/d/1AVBPVVAzsLs8dnF_bCvFvGMCAEgaPthh/view?usp=sharing'
-        if out_dir is not None:
-            output = os.paht.join(out_dir, "WBDHU8_CONUS.zip")
-        else:
-            output = "WBDHU8_CONUS.zip"
-        shp_path = download_file(hu8_url, output=output, unzip=False)
-
-    if isinstance(shp_path, str):
-        gdf = gpd.read_file(shp_path, **kwargs)
-    elif isinstance(shp_path, gpd.GeoDataFrame):
-        gdf = shp_path
-    else:
-        raise ValueError("shp_path must be a filepath or a GeoDataFrame.")
-
-    selected = gdf[gdf['huc8'] == hu8]
-    bounds = selected.total_bounds
-    download_ned(
-        bounds,
-        out_dir=out_dir,
-        return_url=return_url,
-        download_args=download_args,
-        **kwargs,
-    )
-
-
 def mosaic(images, output, merge_args={}, verbose=True, **kwargs):
     """Mosaics a list of images into a single image. Inspired by https://bit.ly/3A6roDK.
 
@@ -798,11 +684,138 @@ def join_tables(in_shp, in_csv, out_shp):
     dep_df = gpd.read_file(in_shp)
     info_df = pd.read_csv(in_csv)
     if len(info_df) > 0:
-        info_df.columns = [col.replace('-', '_') for col in info_df.columns]
-        info_df['id'] = info_df['region_id']
-        info_df.drop('region_id', axis=1, inplace=True)
-        df = pd.merge(dep_df, info_df, on='id')
+        info_df.columns = [col.replace("-", "_") for col in info_df.columns]
+        info_df["id"] = info_df["region_id"]
+        info_df.drop("region_id", axis=1, inplace=True)
+        df = pd.merge(dep_df, info_df, on="id")
 
         df.to_file(out_shp)
     else:
-        print('No data to join')
+        print("No data to join")
+
+
+def download_ned_by_huc(
+    huc_id,
+    huc_type="huc8",
+    datasets=None,
+    out_dir=None,
+    return_url=False,
+    download_args={},
+    **kwargs,
+):
+    """Download the US National Elevation Datasets (NED) for a Hydrologic Unit region. See https://apps.nationalmap.gov/tnmaccess/#/ for more information.
+
+    Args:
+        huc_id (str): The HUC ID, for example, "01010002"
+        huc_type (str, optional): The HUC type, e.g., huc2, huc4, huc8. Defaults to "huc8".
+        datasets (str, optional): Comma-delimited list of valid dataset tag names. Defaults to None.
+        out_dir (str, optional): The output directory. Defaults to None, which will use the current working directory.
+        return_url (bool, optional): If True, the URL will be returned instead of downloading the data. Defaults to False.
+        download_args (dict, optional): The download arguments to be passed to the download_file function. Defaults to {}.
+
+    Returns:
+        list: The list of downloaded files.
+    """
+
+    import requests
+
+    endpoint = "https://tnmaccess.nationalmap.gov/api/v1/products?"
+
+    if datasets is None:
+        datasets = "National Elevation Dataset (NED) 1/3 arc-second Current"
+
+    if out_dir is None:
+        out_dir = os.getcwd()
+
+    kwargs["datasets"] = datasets
+    kwargs["polyType"] = huc_type
+    kwargs["polyCode"] = huc_id
+
+    result = requests.get(endpoint, params=kwargs).json()
+    if "errorMessage" in result:
+        raise ValueError(result["errorMessage"])
+    else:
+        links = [x["downloadURL"] for x in result["items"]]
+        for index, link in enumerate(links):
+            if "historical" in link:
+                link = link.replace("historical", "current")[:-13] + ".tif"
+                links[index] = link
+
+    if return_url:
+        return links
+    else:
+        for index, link in enumerate(links):
+
+            r = requests.head(link)
+            if r.status_code == 200:
+                filepath = os.path.join(out_dir, os.path.basename(link))
+                print(
+                    f"Downloading {index + 1} of {len(links)}: {os.path.basename(link)}"
+                )
+                download_file(link, filepath, **download_args)
+            else:
+                print(f"{link} does not exist.")
+
+
+def download_ned_by_bbox(
+    bbox,
+    datasets=None,
+    out_dir=None,
+    return_url=False,
+    download_args={},
+    **kwargs,
+):
+    """Download the US National Elevation Datasets (NED) for a bounding box. See https://apps.nationalmap.gov/tnmaccess/#/ for more information.
+
+    Args:
+        bbox (list): The bounding box in the form [xmin, ymin, xmax, ymax].
+        huc_type (str, optional): The HUC type, e.g., huc2, huc4, huc8. Defaults to "huc8".
+        datasets (str, optional): Comma-delimited list of valid dataset tag names. Defaults to None.
+        out_dir (str, optional): The output directory. Defaults to None, which will use the current working directory.
+        return_url (bool, optional): If True, the URL will be returned instead of downloading the data. Defaults to False.
+        download_args (dict, optional): The download arguments to be passed to the download_file function. Defaults to {}.
+
+    Returns:
+        list: The list of downloaded files.
+    """
+
+    import requests
+
+    endpoint = "https://tnmaccess.nationalmap.gov/api/v1/products?"
+
+    if datasets is None:
+        datasets = "National Elevation Dataset (NED) 1/3 arc-second Current"
+
+    if out_dir is None:
+        out_dir = os.getcwd()
+
+    if isinstance(bbox, list):
+        bbox = ",".join([str(x) for x in bbox])
+
+    kwargs["datasets"] = datasets
+    kwargs["bbox"] = bbox
+
+    result = requests.get(endpoint, params=kwargs).json()
+    if "errorMessage" in result:
+        raise ValueError(result["errorMessage"])
+    else:
+        links = [x["downloadURL"] for x in result["items"]]
+        for index, link in enumerate(links):
+            if "historical" in link:
+                link = link.replace("historical", "current")[:-13] + ".tif"
+                links[index] = link
+
+    if return_url:
+        return links
+    else:
+        for index, link in enumerate(links):
+
+            r = requests.head(link)
+            if r.status_code == 200:
+                filepath = os.path.join(out_dir, os.path.basename(link))
+                print(
+                    f"Downloading {index + 1} of {len(links)}: {os.path.basename(link)}"
+                )
+                download_file(link, filepath, **download_args)
+            else:
+                print(f"{link} does not exist.")
