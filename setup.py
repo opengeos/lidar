@@ -5,6 +5,7 @@
 import io
 import json
 import os
+import shutil
 from os import path as op
 import urllib.request
 from setuptools import setup, find_packages
@@ -31,12 +32,17 @@ def find_version(version, version_list):
     return match_version
 
 
+if shutil.which("gdal-config") is None:
+    print("GDAL is not installed. Installing GDAL ...")
+    cmd = "pip install --find-links=https://girder.github.io/large_image_wheels --no-cache GDAL"
+    os.system(cmd)
+
 # check GDAL version installed in the system
 # GDAL_VERSION = os.popen("gdal-config --version").read().rstrip()
 GDAL_INFO = os.popen("gdalinfo --version").read().rstrip()
-GDAL_VERSION = GDAL_INFO.split(',')[0].replace('GDAL', '').lstrip()
+GDAL_VERSION = GDAL_INFO.split(",")[0].replace("GDAL", "").lstrip()
 GDAL_VERSION_NUM = str(GDAL_VERSION.replace(".", ""))
-PYGDAL_VERSION = find_version(GDAL_VERSION, pkg_versions('pygdal'))
+PYGDAL_VERSION = find_version(GDAL_VERSION, pkg_versions("pygdal"))
 
 # if PYGDAL_VERSION is None:
 #     print(
@@ -45,22 +51,23 @@ PYGDAL_VERSION = find_version(GDAL_VERSION, pkg_versions('pygdal'))
 #     )
 #     exit(1)
 
+print("GDAL version: %s" % (GDAL_VERSION,))
 
-with open('README.md', mode='rb') as readme_file:
-    readme = readme_file.read().decode('utf-8')
+
+with open("README.md", mode="rb") as readme_file:
+    readme = readme_file.read().decode("utf-8")
 
 here = op.abspath(op.dirname(__file__))
 
 # get the dependencies and installs
-with io.open(op.join(here, 'requirements.txt'), encoding='utf-8') as f:
-    all_reqs = f.read().split('\n')
+with io.open(op.join(here, "requirements.txt"), encoding="utf-8") as f:
+    all_reqs = f.read().split("\n")
 
-install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
+install_requires = [x.strip() for x in all_reqs if "git+" not in x]
 
 # install_requires.append('pygdal==' + PYGDAL_VERSION)
 
-dependency_links = [x.strip().replace('git+', '')
-                    for x in all_reqs if 'git+' not in x]
+dependency_links = [x.strip().replace("git+", "") for x in all_reqs if "git+" not in x]
 
 
 extras_requires = {
@@ -68,7 +75,7 @@ extras_requires = {
 }
 
 requirements = [
-    'Click>=6.0',
+    "Click>=6.0",
 ]
 
 setup_requirements = []
@@ -77,20 +84,20 @@ test_requirements = []
 
 setup(
     author="Qiusheng Wu",
-    author_email='giswqs@gmail.com',
+    author_email="giswqs@gmail.com",
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     description="A Python package for delineating nested surface depressions in digital elevation data",
     entry_points={
-        'console_scripts': [
-            'lidar=lidar.cli:main',
+        "console_scripts": [
+            "lidar=lidar.cli:main",
         ],
     },
     install_requires=install_requires,
@@ -98,15 +105,15 @@ setup(
     dependency_links=dependency_links,
     license="MIT license",
     long_description=readme,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     include_package_data=True,
-    keywords='lidar',
-    name='lidar',
-    packages=find_packages(include=['lidar']),
+    keywords="lidar",
+    name="lidar",
+    packages=find_packages(include=["lidar"]),
     setup_requires=setup_requirements,
-    test_suite='tests',
+    test_suite="tests",
     tests_require=test_requirements,
-    url='https://github.com/giswqs/lidar',
-    version='0.6.2',
+    url="https://github.com/giswqs/lidar",
+    version="0.6.2",
     zip_safe=False,
 )

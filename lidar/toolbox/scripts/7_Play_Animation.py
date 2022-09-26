@@ -60,8 +60,7 @@ def weighted_intensity(
     rel_intensities = [np.ones_like(terrain)]
     weights = [ambient_weight]
     for azim, elev, lmpw in zip(azimuths, elevations, lamp_weights):
-        rel_int = relative_surface_intensity(
-            terrain, azimuth=azim, elevation=elev)
+        rel_int = relative_surface_intensity(terrain, azimuth=azim, elevation=elev)
         rel_intensities.append(rel_int)
         weights.append(lmpw)
 
@@ -70,8 +69,7 @@ def weighted_intensity(
 
     # The actual weighted-average calculation
     unit_weights = weights / np.sum(weights)
-    surface_intensity = np.average(
-        rel_intensities, axis=2, weights=unit_weights)
+    surface_intensity = np.average(rel_intensities, axis=2, weights=unit_weights)
     return surface_intensity
 
 
@@ -94,10 +92,8 @@ def relative_surface_intensity(terrain, azimuth=DEF_AZIMUTH, elevation=DEF_ELEVA
             1.0,
             err_msg="sanity check: light vector should have length 1",
         )
-        assert np.all(
-            intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
-        assert np.all(
-            intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
+        assert np.all(intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
+        assert np.all(intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
 
     # Where the dot product is smaller than 0 the angle between the light source and the surface
     # is larger than 90 degrees. These pixels receive no light so we clip the intensity to 0.
@@ -206,10 +202,8 @@ def mpl_surface_intensity(
     )
 
     if DO_SANITY_CHECKS:
-        assert np.all(
-            intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
-        assert np.all(
-            intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
+        assert np.all(intensity >= -1.0), "sanity check: cos(theta) should be >= -1"
+        assert np.all(intensity <= 1.0), "sanity check: cos(theta) should be <= 1"
 
     # The matplotlib source just normalizes the intensities. However, I believe that their
     # intensities are the same as mine so that, where they are < 0 the angle between the light
@@ -217,8 +211,7 @@ def mpl_surface_intensity(
     # they should be clipped. This is done when the normalize parameter is set to False.
 
     if normalize:
-        intensity = (intensity - intensity.min()) / \
-            (intensity.max() - intensity.min())
+        intensity = (intensity - intensity.min()) / (intensity.max() - intensity.min())
     else:
         intensity = np.clip(intensity, 0.0, 1.0)
 
@@ -379,8 +372,7 @@ def hill_shade(
         terrain = data
 
     assert data.ndim == 2, "data must be 2 dimensional"
-    assert terrain.shape == data.shape, "{} != {}".format(
-        terrain.shape, data.shape)
+    assert terrain.shape == data.shape, "{} != {}".format(terrain.shape, data.shape)
 
     surface_intensity = weighted_intensity(
         terrain,
@@ -425,8 +417,7 @@ def display_image(img, title, legend="", max_plot=False):
             for i in range(len(values))
         ]
         # put those patched as legend-handles into the legend
-        plt.legend(handles=patches, bbox_to_anchor=(
-            1.05, 1), loc=2, borderaxespad=0.0)
+        plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
     # plt.show()
     return True
 

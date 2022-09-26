@@ -246,8 +246,7 @@ def csv_points_to_shp(in_csv, out_shp, latitude="latitude", longitude="longitude
         xfield = fields.index(longitude)
         yfield = fields.index(latitude)
 
-    wbt.csv_points_to_vector(
-        in_csv, out_shp, xfield=xfield, yfield=yfield, epsg=4326)
+    wbt.csv_points_to_vector(in_csv, out_shp, xfield=xfield, yfield=yfield, epsg=4326)
 
 
 def csv_to_shp(in_csv, out_shp, latitude="latitude", longitude="longitude"):
@@ -303,8 +302,7 @@ def clone_repo(out_dir=".", unzip=True):
     """
     url = "https://github.com/giswqs/lidar/archive/master.zip"
     filename = "lidar-master.zip"
-    download_from_url(url, out_file_name=filename,
-                      out_dir=out_dir, unzip=unzip)
+    download_from_url(url, out_file_name=filename, out_dir=out_dir, unzip=unzip)
 
 
 def check_install(package):
@@ -437,8 +435,7 @@ def download_ned(region, out_dir=None, return_url=False, download_args={}, **kwa
             region = github_raw_url(region)
             region = download_file(region)
         elif not os.path.exists(region):
-            raise ValueError(
-                "region must be a path or a URL to a vector dataset.")
+            raise ValueError("region must be a path or a URL to a vector dataset.")
 
         roi = gpd.read_file(region, **kwargs)
         roi = roi.to_crs(epsg=4326)
@@ -481,8 +478,7 @@ def download_ned(region, out_dir=None, return_url=False, download_args={}, **kwa
         return links
     else:
         for index, link in enumerate(links):
-            print(
-                f"Downloading {index + 1} of {len(links)}: {os.path.basename(link)}")
+            print(f"Downloading {index + 1} of {len(links)}: {os.path.basename(link)}")
             download_file(link, filepaths[index], **download_args)
 
 
@@ -507,7 +503,7 @@ def download_ned_by_hu8(
             output = os.paht.join(out_dir, "WBDHU8_CONUS.zip")
         else:
             output = "WBDHU8_CONUS.zip"
-        shp_path = download_file(hu8_url, output=output)
+        shp_path = download_file(hu8_url, output=output, unzip=False)
 
     if isinstance(shp_path, str):
         gdf = gpd.read_file(shp_path, **kwargs)
@@ -558,8 +554,7 @@ def mosaic(images, output, merge_args={}, verbose=True, **kwargs):
 
     for index, p in enumerate(raster_files):
         if verbose:
-            print(
-                f"Reading {index+1}/{len(raster_files)}: {os.path.basename(p)}")
+            print(f"Reading {index+1}/{len(raster_files)}: {os.path.basename(p)}")
         raster = rio.open(p, **kwargs)
         raster_to_mosiac.append(raster)
 
