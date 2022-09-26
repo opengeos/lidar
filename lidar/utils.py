@@ -503,7 +503,11 @@ def download_ned_by_hu8(
 
     if shp_path is None:
         hu8_url = 'https://drive.google.com/file/d/1AVBPVVAzsLs8dnF_bCvFvGMCAEgaPthh/view?usp=sharing'
-        shp_path = download_file(hu8_url)
+        if out_dir is not None:
+            output = os.paht.join(out_dir, "WBDHU8_CONUS.zip")
+        else:
+            output = "WBDHU8_CONUS.zip"
+        shp_path = download_file(hu8_url, output=output)
 
     if isinstance(shp_path, str):
         gdf = gpd.read_file(shp_path, **kwargs)

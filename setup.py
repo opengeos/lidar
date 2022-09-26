@@ -62,6 +62,11 @@ install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
 dependency_links = [x.strip().replace('git+', '')
                     for x in all_reqs if 'git+' not in x]
 
+
+extras_requires = {
+    "all": ["geopandas", "rasterio"],
+}
+
 requirements = [
     'Click>=6.0',
 ]
@@ -89,6 +94,7 @@ setup(
         ],
     },
     install_requires=install_requires,
+    extras_require=extras_requires,
     dependency_links=dependency_links,
     license="MIT license",
     long_description=readme,
