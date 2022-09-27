@@ -536,6 +536,9 @@ def extract_sinks_by_huc8(
         if error_file is not None:
             with open(error_file, "a") as f:
                 f.write(huc8 + "\n")
+
+        if os.path.exists(tmp_dir):
+            shutil.rmtree(tmp_dir)
         print(e)
         return None
 
