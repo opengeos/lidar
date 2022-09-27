@@ -553,10 +553,11 @@ def reproject_image(image, output, dst_crs="EPSG:4326", resampling="nearest", **
 
 
 def check_file_path(file_path, make_dirs=True):
+
     """Gets the absolute file path.
 
     Args:
-        file_path ([str): The path to the file.
+        file_path (str): The path to the file.
         make_dirs (bool, optional): Whether to create the directory if it does not exist. Defaults to True.
 
     Raises:

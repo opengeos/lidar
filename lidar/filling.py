@@ -55,7 +55,7 @@ def regionGroup(img_array, min_size, no_data):
     """IdentifIies regions based on region growing method
 
     Args:
-        img_array (np.array): The numpy array containing the image.
+        img_array (array): The numpy array containing the image.
         min_size (int): The minimum number of pixels to be considered as a depression.
         no_data (float): The no_data value of the image.
 
@@ -77,7 +77,7 @@ def np2rdarray(in_array, no_data, projection, geotransform):
     """Converts an numpy array to rdarray.
 
     Args:
-        in_array (np.array): The input numpy array.
+        in_array (array): The input numpy array.
         no_data (float): The no_data value of the array.
         projection (str): The projection of the image.
         geotransform (str): The geotransform of the image.
