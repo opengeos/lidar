@@ -1,23 +1,31 @@
 # Changelog
 
-## v0.6.0 - February 27, 2021
+## v0.7.0 - Sep 23, 2022
 
-- Improved documentation
-- Added ArcGIS toolbox tutorials 
-- Addressed JOSS review comments
+-   Added extract sinks by huc and bbox
+-   Added huc8 data
+-   Added download ned functions
+-   Removed pygdal
 
-## v0.5.3 - February 10, 2021
+## v0.6.0 - Feb 27, 2021
 
-- Fixed PyPI markdown rendering error
-## v0.5.2 - February 10, 2021
+-   Improved documentation
+-   Added ArcGIS toolbox tutorials
+-   Addressed JOSS review comments
 
-- Added new documentation website (<https://lidar.gishub.org>)
-- Improved JOSS paper
-- Cleaned up source code
+## v0.5.3 - Feb 10, 2021
 
-## v0.5.1 - December 12, 2020
+-   Fixed PyPI markdown rendering error
 
-## v0.2.0 - September 16, 2018
+## v0.5.2 - Feb 10, 2021
+
+-   Added new documentation website (<https://lidar.gishub.org>)
+-   Improved JOSS paper
+-   Cleaned up source code
+
+## v0.5.1 - Dec 12, 2020
+
+## v0.2.0 - Sep 16, 2018
 
 ## v0.1.6 - May 21, 2018
 
