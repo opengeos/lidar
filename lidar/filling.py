@@ -9,6 +9,8 @@ import richdem as rd
 from scipy import ndimage
 from skimage import measure
 from osgeo import gdal, ogr, osr
+from .common import *
+from .filtering import *
 
 
 class Depression:
@@ -354,3 +356,257 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
 
     return out_sink
+
+
+def extract_sinks_by_bbox(
+    bbox,
+    filename,
+    min_size=10,
+    tmp_dir=None,
+    crs="EPSG:5070",
+    kernel_size=3,
+    resolution=10,
+    keep_files=True,
+    ignore_warnings=True,
+):
+    """Extract sinks from a DEM by HUC8.
+
+    Args:
+        bbox (list): The bounding box in the form of [minx, miny, maxx, maxy].
+        filename (str, optional): The output depression file name.
+        min_size (int, optional): The minimum number of pixels to be considered as a sink. Defaults to 10.
+        tmp_dir (str, optional): The temporary directory. Defaults to None, e.g., using the current directory.
+        crs (str, optional): The coordinate reference system. Defaults to "EPSG:5070".
+        kernel_size (int, optional): The kernel size for smoothing the DEM. Defaults to 3.
+        resolution (int, optional): The resolution of the DEM. Defaults to 10.
+        keep_files (bool, optional): Whether to keep the intermediate files. Defaults to True.
+        ignore_warnings (bool, optional): Whether to ignore warnings. Defaults to True.
+    """
+    import shutil
+    import warnings
+
+    if ignore_warnings:
+        warnings.filterwarnings("ignore")
+
+    start_time = time.time()
+
+    if not filename.endswith(".shp"):
+        filename = filename + ".shp"
+
+    filename = os.path.abspath(filename)
+
+    if tmp_dir is None:
+        tmp_dir = os.path.join(os.getcwd(), "tmp")
+
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
+
+    merge = os.path.join(tmp_dir, "mosaic.tif")
+    reproj = os.path.join(tmp_dir, "reproj.tif")
+    image = os.path.join(tmp_dir, "image.tif")
+    median = os.path.join(tmp_dir, "median.tif")
+    regions = os.path.join(tmp_dir, "regions.shp")
+    regions_info = os.path.join(tmp_dir, "regions_info.csv")
+
+    try:
+        download_ned_by_bbox(bbox, out_dir=tmp_dir)
+
+        if not os.path.exists(merge):
+            print("Merging NED tiles ...")
+            mosaic(tmp_dir, merge)
+
+        reproject_image(merge, reproj, crs)
+        resample(reproj, image, resolution)
+        MedianFilter(image, kernel_size, median)
+        ExtractSinks(median, min_size, tmp_dir)
+        join_tables(regions, regions_info, filename)
+
+        for file in [merge, reproj, image]:
+            if os.path.exists(file):
+                os.remove(file)
+
+        if not keep_files:
+            shutil.rmtree(tmp_dir)
+    except Exception as e:
+        print(e)
+        return None
+
+    end_time = time.time()
+    print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
+
+
+def extract_sinks_by_huc8(
+    huc8,
+    min_size=10,
+    filename=None,
+    tmp_dir=None,
+    wbd=None,
+    crs="EPSG:5070",
+    kernel_size=3,
+    resolution=10,
+    keep_files=True,
+    error_file=None,
+    ignore_warnings=True,
+):
+    """Extract sinks from a DEM by HUC8.
+
+    Args:
+        huc8 (str): The HUC8 code, e.g., 01010002
+        min_size (int, optional): The minimum number of pixels to be considered as a sink. Defaults to 10.
+        filename (str, optional): The output depression file name. Defaults to None, e,g., using the HUC8 code.
+        tmp_dir (str, optional): The temporary directory. Defaults to None, e.g., using the current directory.
+        wbd (str | GeoDataFrame, optional): The watershed boundary file. Defaults to None.
+        crs (str, optional): The coordinate reference system. Defaults to "EPSG:5070".
+        kernel_size (int, optional): The kernel size for smoothing the DEM. Defaults to 3.
+        resolution (int, optional): The resolution of the DEM. Defaults to 10.
+        keep_files (bool, optional): Whether to keep the intermediate files. Defaults to True.
+        error_file (_type_, optional): The file to save the error IDs. Defaults to None.
+        ignore_warnings (bool, optional): Whether to ignore warnings. Defaults to True.
+    """
+    import shutil
+    import warnings
+    import geopandas as gpd
+
+    if ignore_warnings:
+        warnings.filterwarnings("ignore")
+
+    start_time = time.time()
+
+    if filename is None:
+        filename = huc8
+
+    if not filename.endswith(".shp"):
+        filename = filename + ".shp"
+
+    filename = os.path.abspath(filename)
+
+    if tmp_dir is None:
+        tmp_dir = os.path.join(os.getcwd(), huc8)
+
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
+
+    merge = os.path.join(tmp_dir, "mosaic.tif")
+    mask = os.path.join(tmp_dir, "mask.geojson")
+    clip = os.path.join(tmp_dir, "clip.tif")
+    reproj = os.path.join(tmp_dir, "reproj.tif")
+    image = os.path.join(tmp_dir, "image.tif")
+    median = os.path.join(tmp_dir, "median.tif")
+    regions = os.path.join(tmp_dir, "regions.shp")
+    regions_info = os.path.join(tmp_dir, "regions_info.csv")
+
+    try:
+        download_ned_by_huc(huc8, out_dir=tmp_dir)
+
+        if wbd is None:
+            print("Downloading WBD ...")
+            hu8_url = "https://drive.google.com/file/d/1AVBPVVAzsLs8dnF_bCvFvGMCAEgaPthh/view?usp=sharing"
+            output = os.path.join(tmp_dir, "WBDHU8_CONUS.zip")
+            wbd = download_file(hu8_url, output=output, unzip=False)
+
+        if isinstance(wbd, str):
+            print("Reading WBD ...")
+            gdf = gpd.read_file(wbd)
+        elif isinstance(wbd, gpd.GeoDataFrame):
+            gdf = wbd
+        else:
+            raise ValueError("shp_path must be a filepath or a GeoDataFrame.")
+
+        selected = gdf[gdf["huc8"] == huc8].copy()
+        selected.to_crs(epsg=4326, inplace=True)
+        selected.to_file(mask)
+
+        if not os.path.exists(merge):
+            print("Merging NED tiles ...")
+            mosaic(tmp_dir, merge)
+        clip_image(merge, mask, clip)
+        reproject_image(clip, reproj, crs)
+        resample(reproj, image, resolution)
+        MedianFilter(image, kernel_size, median)
+        ExtractSinks(median, min_size, tmp_dir)
+        join_tables(regions, regions_info, filename)
+
+        for file in [merge, mask, clip, reproj, image]:
+            if os.path.exists(file):
+                os.remove(file)
+
+        if not keep_files:
+            shutil.rmtree(tmp_dir)
+    except Exception as e:
+        if error_file is not None:
+            with open(error_file, "a") as f:
+                f.write(huc8 + "\n")
+        print(e)
+        return None
+
+    end_time = time.time()
+    print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
+
+
+def extract_sinks_by_huc8_batch(
+    huc_ids=None,
+    min_size=10,
+    out_dir=None,
+    tmp_dir=None,
+    wbd=None,
+    crs="EPSG:5070",
+    kernel_size=3,
+    resolution=10,
+    keep_files=False,
+    reverse=False,
+    error_file=None,
+    ignore_warnings=True,
+    overwrite=False,
+):
+    """Extract sinks from NED by HUC8.
+
+    Args:
+        huc8 (str): The HUC8 code, e.g., 01010002
+        min_size (int, optional): The minimum number of pixels to be considered as a sink. Defaults to 10.
+        filename (str, optional): The output depression file name. Defaults to None, e,g., using the HUC8 code.
+        tmp_dir (str, optional): The temporary directory. Defaults to None, e.g., using the current directory.
+        wbd (str | GeoDataFrame, optional): The watershed boundary file. Defaults to None.
+        crs (str, optional): The coordinate reference system. Defaults to "EPSG:5070".
+        kernel_size (int, optional): The kernel size for smoothing the DEM. Defaults to 3.
+        resolution (int, optional): The resolution of the DEM. Defaults to 10.
+        keep_files (bool, optional): Whether to keep the intermediate files. Defaults to True.
+        reverse (bool, optional): Whether to reverse the HUC8 list. Defaults to False.
+        error_file (_type_, optional): The file to save the error IDs. Defaults to None.
+        ignore_warnings (bool, optional): Whether to ignore warnings. Defaults to True.
+        overwrite (bool, optional): Whether to overwrite the existing files. Defaults to False.
+    """
+    import pandas as pd
+
+    if huc_ids is None:
+        url = "https://raw.githubusercontent.com/giswqs/lidar/master/examples/data/huc8.csv"
+        df = pd.read_csv(url, dtype=str)
+        huc_ids = df["huc8_id"].tolist()
+
+    if not isinstance(huc_ids, list):
+        huc_ids = [huc_ids]
+
+    if reverse:
+        huc_ids = huc_ids[::-1]
+
+    if out_dir is None:
+        out_dir = os.getcwd()
+
+    for index, huc8 in enumerate(huc_ids):
+        print(f"Processing {index+1}:{len(huc_ids)}: {huc8} ...")
+        filename = os.path.join(out_dir, str(huc8) + ".shp")
+        if not os.path.exists(filename) or (os.path.exists(filename) and overwrite):
+            extract_sinks_by_huc8(
+                huc8,
+                min_size,
+                filename,
+                tmp_dir,
+                wbd,
+                crs,
+                kernel_size,
+                resolution,
+                keep_files,
+                error_file,
+                ignore_warnings,
+            )
+        else:
+            print(f"File already exists: {filename}")
