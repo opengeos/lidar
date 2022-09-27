@@ -559,6 +559,7 @@ def extract_sinks_by_huc8_batch(
     reverse=False,
     error_file=None,
     ignore_warnings=True,
+    ignored_ids=[],
     overwrite=False,
 ):
     """Extract sinks from NED by HUC8.
@@ -596,6 +597,8 @@ def extract_sinks_by_huc8_batch(
 
     for index, huc8 in enumerate(huc_ids):
         print(f"Processing {index+1}:{len(huc_ids)}: {huc8} ...")
+        if huc8 in ignored_ids:
+            continue
         filename = os.path.join(out_dir, str(huc8) + ".shp")
         if not os.path.exists(filename) or (os.path.exists(filename) and overwrite):
             extract_sinks_by_huc8(
