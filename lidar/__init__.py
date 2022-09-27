@@ -6,7 +6,12 @@ __author__ = """Qiusheng Wu"""
 __email__ = "giswqs@gmail.com"
 __version__ = "__version__ = '0.6.2'"
 
-from .filling import ExtractSinks
+from .filling import (
+    ExtractSinks,
+    extract_sinks_by_huc8,
+    extract_sinks_by_huc8_batch,
+    extract_sinks_by_bbox,
+)
 from .slicing import DelineateDepressions
 from .filtering import MeanFilter, MedianFilter, GaussianFilter
 from .mounts import DelineateMounts

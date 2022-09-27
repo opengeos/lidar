@@ -409,12 +409,13 @@ def github_raw_url(url):
     return url
 
 
-def mosaic(images, output, merge_args={}, verbose=True, **kwargs):
+def mosaic(images, output, ext=".tif", merge_args={}, verbose=True, **kwargs):
     """Mosaics a list of images into a single image. Inspired by https://bit.ly/3A6roDK.
 
     Args:
         images (str | list): An input directory containing images or a list of images.
         output (str): The output image filepath.
+        ext (str, optional): The image file extension. Defaults to '.tif'.
         merge_args (dict, optional): A dictionary of arguments to pass to the rasterio.merge function. Defaults to {}.
         verbose (bool, optional): Whether to print progress. Defaults to True.
 
@@ -422,16 +423,25 @@ def mosaic(images, output, merge_args={}, verbose=True, **kwargs):
     from rasterio.merge import merge
     import rasterio as rio
     from pathlib import Path
+    import shutil
 
     output = os.path.abspath(output)
 
     if isinstance(images, str):
         path = Path(images)
         raster_files = list(path.iterdir())
+        raster_files = [f for f in raster_files if f.suffix == ext]
     elif isinstance(images, list):
         raster_files = images
     else:
         raise ValueError("images must be a list of raster files.")
+
+    if len(raster_files) == 0:
+        print("No raster files found.")
+        return
+    elif len(raster_files) == 1:
+        shutil.copyfile(raster_files[0], output)
+        return
 
     raster_to_mosiac = []
 
@@ -537,6 +547,7 @@ def reproject_image(image, output, dst_crs="EPSG:4326", resampling="nearest", **
                     dst_transform=transform,
                     dst_crs=dst_crs,
                     resampling=resampling,
+                    dst_resolution=(10, 10),
                     **kwargs,
                 )
 
@@ -684,11 +695,10 @@ def join_tables(in_shp, in_csv, out_shp):
     dep_df = gpd.read_file(in_shp)
     info_df = pd.read_csv(in_csv)
     if len(info_df) > 0:
-        info_df.columns = [col.replace("-", "_") for col in info_df.columns]
+        info_df.columns = [col.replace("-", "_")[:10] for col in info_df.columns]
         info_df["id"] = info_df["region_id"]
         info_df.drop("region_id", axis=1, inplace=True)
         df = pd.merge(dep_df, info_df, on="id")
-
         df.to_file(out_shp)
     else:
         print("No data to join")
@@ -831,3 +841,16 @@ def download_ned_by_bbox(
                 download_file(link, filepath, **download_args)
             else:
                 print(f"{link} does not exist.")
+
+
+def resample(src, dst, resolution, **kwargs):
+    """Resample a raster to a new resolution.
+
+    Args:
+        src (str): The source raster.
+        dst (str): The destination raster.
+        resolution (float): The new resolution.
+    """
+    from osgeo import gdal
+
+    gdal.Warp(dst, src, xRes=resolution, yRes=resolution, **kwargs)
