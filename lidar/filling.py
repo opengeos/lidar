@@ -363,6 +363,7 @@ def extract_sinks_by_bbox(
     filename,
     min_size=10,
     tmp_dir=None,
+    mask=None,
     crs="EPSG:5070",
     kernel_size=3,
     resolution=10,
@@ -376,6 +377,7 @@ def extract_sinks_by_bbox(
         filename (str, optional): The output depression file name.
         min_size (int, optional): The minimum number of pixels to be considered as a sink. Defaults to 10.
         tmp_dir (str, optional): The temporary directory. Defaults to None, e.g., using the current directory.
+        mask (str, optional): The mask file path. Defaults to None.
         crs (str, optional): The coordinate reference system. Defaults to "EPSG:5070".
         kernel_size (int, optional): The kernel size for smoothing the DEM. Defaults to 3.
         resolution (int, optional): The resolution of the DEM. Defaults to 10.
@@ -402,6 +404,7 @@ def extract_sinks_by_bbox(
         os.makedirs(tmp_dir)
 
     merge = os.path.join(tmp_dir, "mosaic.tif")
+    clip = os.path.join(tmp_dir, "clip.tif")
     reproj = os.path.join(tmp_dir, "reproj.tif")
     image = os.path.join(tmp_dir, "image.tif")
     median = os.path.join(tmp_dir, "median.tif")
@@ -415,13 +418,18 @@ def extract_sinks_by_bbox(
             print("Merging NED tiles ...")
             mosaic(tmp_dir, merge)
 
-        reproject_image(merge, reproj, crs)
+        if mask is not None:
+            clip_image(merge, mask, clip)
+        else:
+            clip = merge
+
+        reproject_image(clip, reproj, crs)
         resample(reproj, image, resolution)
         MedianFilter(image, kernel_size, median)
         ExtractSinks(median, min_size, tmp_dir)
         join_tables(regions, regions_info, filename)
 
-        for file in [merge, reproj, image]:
+        for file in [merge, clip, reproj, image]:
             if os.path.exists(file):
                 os.remove(file)
 
