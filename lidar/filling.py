@@ -335,7 +335,8 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     print("Saving sink dem ...")
     sink = np.copy(dem)
     sink[region == 0] = 0
-    sink = np2rdarray(sink, no_data=0, projection=projection, geotransform=geotransform)
+    sink = np2rdarray(sink, no_data=0, projection=projection,
+                      geotransform=geotransform)
     rd.SaveGDAL(out_sink, sink)
     # del sink
 
@@ -367,6 +368,7 @@ def extract_sinks_by_bbox(
     crs="EPSG:5070",
     kernel_size=3,
     resolution=10,
+    to_cog=False,
     keep_files=True,
     ignore_warnings=True,
 ):
@@ -381,6 +383,7 @@ def extract_sinks_by_bbox(
         crs (str, optional): The coordinate reference system. Defaults to "EPSG:5070".
         kernel_size (int, optional): The kernel size for smoothing the DEM. Defaults to 3.
         resolution (int, optional): The resolution of the DEM. Defaults to 10.
+        to_cog (bool, optional): Whether to convert the output to COG. Defaults to False.
         keep_files (bool, optional): Whether to keep the intermediate files. Defaults to True.
         ignore_warnings (bool, optional): Whether to ignore warnings. Defaults to True.
     """
@@ -426,6 +429,8 @@ def extract_sinks_by_bbox(
         reproject_image(clip, reproj, crs)
         resample(reproj, image, resolution)
         MedianFilter(image, kernel_size, median)
+        if to_cog:
+            image_to_cog(median, median)
         ExtractSinks(median, min_size, tmp_dir)
         join_tables(regions, regions_info, filename)
 
@@ -624,3 +629,43 @@ def extract_sinks_by_huc8_batch(
             )
         else:
             print(f"File already exists: {filename}")
+
+
+def image_to_cog(source, dst_path=None, profile="deflate", **kwargs):
+    """Converts an image to a COG file.
+
+    Args:
+        source (str): A dataset path, URL or rasterio.io.DatasetReader object.
+        dst_path (str, optional): An output dataset path or or PathLike object. Defaults to None.
+        profile (str, optional): COG profile. More at https://cogeotiff.github.io/rio-cogeo/profile. Defaults to "deflate".
+
+    Raises:
+        ImportError: If rio-cogeo is not installed.
+        FileNotFoundError: If the source file could not be found.
+    """
+    try:
+        from rio_cogeo.cogeo import cog_translate
+        from rio_cogeo.profiles import cog_profiles
+
+    except ImportError:
+        raise ImportError(
+            "The rio-cogeo package is not installed. Please install it with `pip install rio-cogeo` or `conda install rio-cogeo -c conda-forge`."
+        )
+
+    if not source.startswith("http"):
+        source = check_file_path(source)
+
+        if not os.path.exists(source):
+            raise FileNotFoundError(
+                "The provided input file could not be found.")
+
+    if dst_path is None:
+        if not source.startswith("http"):
+            dst_path = os.path.splitext(source)[0] + "_cog.tif"
+        else:
+            dst_path = temp_file_path(extension=".tif")
+
+    dst_path = check_file_path(dst_path)
+
+    dst_profile = cog_profiles.get(profile)
+    cog_translate(source, dst_path, dst_profile, **kwargs)
