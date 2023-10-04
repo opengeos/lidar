@@ -21,8 +21,8 @@ def get_min_max_nodata(dem):
         tuple: The minimum, maximum, and no_data value.
     """
     no_data = dem.no_data
-    max_elev = np.float(np.max(dem[dem != no_data]))
-    min_elev = np.float(np.min(dem[dem != no_data]))
+    max_elev = float(np.max(dem[dem != no_data]))
+    min_elev = float(np.min(dem[dem != no_data]))
 
     return min_elev, max_elev, no_data
 
@@ -40,8 +40,8 @@ def FlipDEM(dem, delta=100, out_file=None):
     """
     # get min and max elevation of the dem
     no_data = dem.no_data
-    max_elev = np.float(np.max(dem[dem != no_data]))
-    # min_elev = np.float(np.min(dem[dem != no_data]))
+    max_elev = float(np.max(dem[dem != no_data]))
+    # min_elev = float(np.min(dem[dem != no_data]))
 
     dem = dem * (-1) + max_elev + delta
     dem[dem == no_data * (-1)] = no_data
