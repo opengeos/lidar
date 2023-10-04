@@ -107,10 +107,10 @@ def get_dep_props(objects, resolution):
         unique_id = object.label
         count = object.area
         size = count * pow(resolution, 2)  # depression size
-        min_elev = np.float(object.min_intensity)  # depression min elevation
-        max_elev = np.float(object.max_intensity)  # depression max elevation
+        min_elev = float(object.min_intensity)  # depression min elevation
+        max_elev = float(object.max_intensity)  # depression max elevation
         max_depth = max_elev - min_elev  # depression max depth
-        mean_depth = np.float(
+        mean_depth = float(
             (max_elev * count - np.sum(object.intensity_image)) / count
         )  # depression mean depth
         volume = mean_depth * count * pow(resolution, 2)  # depression volume
@@ -287,8 +287,8 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     cell_size = np.round(geotransform[1], decimals=2)
 
     # get min and max elevation of the dem
-    max_elev = np.float(np.max(dem[dem != no_data]))
-    min_elev = np.float(np.min(dem[dem > 0]))
+    max_elev = float(np.max(dem[dem != no_data]))
+    min_elev = float(np.min(dem[dem > 0]))
     print(
         "min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}".format(
             min_elev, max_elev, no_data, cell_size
