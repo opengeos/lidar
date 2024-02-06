@@ -4,7 +4,7 @@
 
 __author__ = """Qiusheng Wu"""
 __email__ = "giswqs@gmail.com"
-__version__ = "0.7.2"
+__version__ = "0.7.3"
 
 from .filling import (
     ExtractSinks,
