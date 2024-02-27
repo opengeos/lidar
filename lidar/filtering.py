@@ -1,6 +1,7 @@
 """Module for applying filters to image.
 
 """
+
 import os
 import pkg_resources
 import richdem as rd

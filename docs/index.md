@@ -67,7 +67,7 @@ length, elongatedness.
 
 ## State of the Field
 
-Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as [RichDEM](https://richdem.readthedocs.io/) and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools). However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar**  Python package is intended for filling this gap. 
+Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as [RichDEM](https://richdem.readthedocs.io/) and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools). However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar**  Python package is intended for filling this gap.
 
 ## Key Features
 

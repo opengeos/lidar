@@ -29,11 +29,11 @@ bool_shp = True      # output shapefiles for each individual level
 out_dem = os.path.join(out_dir, "median.tif")
 in_dem = MedianFilter(in_dem, kernel_size=3, out_file=out_dem)
 sink_path = ExtractSinks(in_dem, min_size, out_dir)
-dep_id_path, dep_level_path = DelineateDepressions(sink_path, 
-                                                   min_size, 
-                                                   min_depth, 
-                                                   interval, 
-                                                   out_dir, 
+dep_id_path, dep_level_path = DelineateDepressions(sink_path,
+                                                   min_size,
+                                                   min_depth,
+                                                   interval,
+                                                   out_dir,
                                                    bool_shp)
 print('Results are saved in: {}'.format(out_dir))
 ```
