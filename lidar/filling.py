@@ -287,8 +287,11 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     cell_size = np.round(geotransform[1], decimals=2)
 
     # get min and max elevation of the dem
-    max_elev = float(np.max(dem[dem != no_data]))
-    min_elev = float(np.min(dem[dem > 0]))
+    # max_elev = float(np.max(dem[dem != no_data]))
+    max_elev = float(np.nanmax(dem))
+    # min_elev = float(np.min(dem[dem > 0]))
+    # min_elev = float(np.min(dem[dem > 0]))
+    min_elev = float(np.nanmin(dem))
     print(
         "min = {:.2f}, max = {:.2f}, no_data = {}, cell_size = {}".format(
             min_elev, max_elev, no_data, cell_size
@@ -299,6 +302,7 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     if filled_dem is None:
         print("Depression filling ...")
         dem_filled = rd.FillDepressions(dem, in_place=False)
+        dem_filled[np.isnan(dem)] = np.nan
     else:
         dem_filled = rd.LoadGDAL(filled_dem)
     dem_diff = dem_filled - dem
@@ -331,6 +335,8 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
         label_objects, no_data=0, projection=projection, geotransform=geotransform
     )
     del label_objects
+
+    region[np.isnan(dem)] = 0
 
     print("Saving sink dem ...")
     sink = np.copy(dem)
