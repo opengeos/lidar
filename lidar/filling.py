@@ -335,8 +335,7 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     print("Saving sink dem ...")
     sink = np.copy(dem)
     sink[region == 0] = 0
-    sink = np2rdarray(sink, no_data=0, projection=projection,
-                      geotransform=geotransform)
+    sink = np2rdarray(sink, no_data=0, projection=projection, geotransform=geotransform)
     rd.SaveGDAL(out_sink, sink)
     # del sink
 
@@ -656,8 +655,7 @@ def image_to_cog(source, dst_path=None, profile="deflate", **kwargs):
         source = check_file_path(source)
 
         if not os.path.exists(source):
-            raise FileNotFoundError(
-                "The provided input file could not be found.")
+            raise FileNotFoundError("The provided input file could not be found.")
 
     if dst_path is None:
         if not source.startswith("http"):

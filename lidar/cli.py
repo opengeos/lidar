@@ -1,4 +1,5 @@
 """Console script for lidar."""
+
 import click
 
 

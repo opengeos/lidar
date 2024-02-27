@@ -1,6 +1,7 @@
 """Module for the level-set algorithm.
 
 """
+
 import os
 import math
 import time
@@ -218,7 +219,7 @@ def polygonize(img, shp_path):
     srs = osr.SpatialReference(wkt=prj)
 
     dst_layer = dst_ds.CreateLayer(dst_layername, srs=srs)
-    raster_field = ogr.FieldDefn('id', type_mapping[srcband.DataType])
+    raster_field = ogr.FieldDefn("id", type_mapping[srcband.DataType])
     dst_layer.CreateField(raster_field)
     gdal.Polygonize(srcband, srcband, dst_layer, 0, [], callback=None)
     del img, ds, srcband, dst_ds, dst_layer

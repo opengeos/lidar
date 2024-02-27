@@ -6,11 +6,16 @@ from .filling import ExtractSinks
 from .slicing import DelineateDepressions
 from .mounts import DelineateMounts
 
-import PySimpleGUI as sg
-
 
 def gui():
     """An interactive Graphical User Interface (GUI) for the lidar package."""
+
+    try:
+        import PySimpleGUI as sg
+    except ImportError:
+        raise ImportError(
+            "PySimpleGUI is not installed. Please install it via `pip install PySimpleGUI`"
+        )
 
     # identify the sample data directory of the package
     package_name = "lidar"

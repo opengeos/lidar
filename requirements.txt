@@ -2,10 +2,10 @@ Click>=6.0
 gdown
 matplotlib
 numpy
+pyshp
 richdem
 scikit-image
 scipy
-pyshp
-PySimpleGUI
 whitebox
+# PySimpleGUI
 # poppler<0.62
