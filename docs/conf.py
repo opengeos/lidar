@@ -43,7 +43,7 @@ MOCK_MODULES = [
     "scipy",
     "skimage",
     "osgeo",
-    "PySimpleGUI",
+    # "PySimpleGUI",
 ]
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 import lidar
@@ -170,7 +170,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "lidar.tex", u"lidar Documentation", u"Qiusheng Wu", "manual"),
+    (master_doc, "lidar.tex", "lidar Documentation", "Qiusheng Wu", "manual"),
 ]
 
 
@@ -178,7 +178,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "lidar", u"lidar Documentation", [author], 1)]
+man_pages = [(master_doc, "lidar", "lidar Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------
@@ -190,7 +190,7 @@ texinfo_documents = [
     (
         master_doc,
         "lidar",
-        u"lidar Documentation",
+        "lidar Documentation",
         author,
         "lidar",
         "One line description of project.",

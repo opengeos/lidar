@@ -6,6 +6,6 @@ richdem
 scikit-image
 scipy
 pyshp
-PySimpleGUI
 whitebox
+# PySimpleGUI
 # poppler<0.62
