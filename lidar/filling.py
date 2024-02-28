@@ -4,6 +4,7 @@
 
 import os
 import time
+import whitebox
 import numpy as np
 import richdem as rd
 from scipy import ndimage
@@ -249,7 +250,7 @@ def polygonize(img, shp_path):
     del img, ds, srcband, dst_ds, dst_layer
 
 
-def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
+def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None, engine="whitebox"):
     """Extract sinks (e.g., maximum depression extent) from a DEM.
 
     Args:
@@ -270,6 +271,7 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     out_depth = os.path.join(out_dir, "depth.tif")
     out_csv_file = os.path.join(out_dir, "regions_info.csv")
     out_vec_file = os.path.join(out_dir, "regions.shp")
+    out_gpkg = os.path.join(out_dir, "regions.gpkg")
     if filled_dem is None:
         out_dem_filled = os.path.join(out_dir, "dem_filled.tif")
     else:
@@ -301,8 +303,17 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     # depression filling
     if filled_dem is None:
         print("Depression filling ...")
-        dem_filled = rd.FillDepressions(dem, in_place=False)
-        dem_filled[np.isnan(dem)] = np.nan
+        if engine == "richdem":
+            dem_filled = rd.FillDepressions(dem, in_place=False)
+            dem_filled[np.isnan(dem)] = np.nan
+        elif engine == "whitebox":
+            wbt = whitebox.WhiteboxTools()
+            wbt.verbose = False
+            wbt.fill_depressions_wang_and_liu(
+                os.path.abspath(in_dem), os.path.abspath(out_dem_filled)
+            )
+            dem_filled = rd.LoadGDAL(out_dem_filled)
+
     else:
         dem_filled = rd.LoadGDAL(filled_dem)
     dem_diff = dem_filled - dem
@@ -351,12 +362,17 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None):
     dem_refined = np2rdarray(
         dem_refined, no_data=no_data, projection=projection, geotransform=geotransform
     )
+    dem_refined[np.isnan(dem)] = np.nan
     rd.SaveGDAL(out_dem, dem_refined)
     rd.SaveGDAL(out_region, region)
     del dem_refined, region, dem
 
     print("Converting raster to vector ...")
     polygonize(out_region, out_vec_file)
+
+    gdf = join_csv_to_gdf(out_vec_file, out_csv_file, "id", "region-id")
+    gdf.drop(columns=["id"], inplace=True)
+    gdf.to_file(out_gpkg, driver="GPKG")
 
     end_time = time.time()
     print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
