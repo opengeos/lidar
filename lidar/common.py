@@ -901,3 +901,112 @@ def join_csv_to_gdf(shapefile_path, csv_path, gdf_join_column, csv_join_column):
     )
 
     return result
+
+
+def download_3dep_1m(
+    huc,
+    output=None,
+    scale=3,
+    reducer=None,
+    kernel=None,
+    crs="EPSG:5070",
+    overwrite=False,
+    **kwargs,
+):
+
+    try:
+        import ee
+        import geemap
+    except ImportError:
+        raise ImportError(
+            "The geemap package is required to use this function. Use 'pip install geemap geedim' to install it."
+        )
+
+    geemap.ee_initialize()
+
+    if output is None:
+        output = f"{huc}.tif"
+
+    num = len(huc)
+
+    if num not in list(range(2, 13)):
+        raise ValueError("The HUC ID must be 2 to 12 characters long.")
+
+    fc = ee.FeatureCollection(f"USGS/WBD/2017/HUC{num}")
+    collection = ee.ImageCollection(f"USGS/3DEP/1m")
+
+    roi = fc.filter(ee.Filter.eq(f"huc{num}", huc))
+    images = collection.filterBounds(roi)
+    size = images.size().getInfo()
+
+    if size > 0:
+        image = images.median().clipToCollection(roi).setDefaultProjection(crs)
+
+        if reducer is None:
+            reducer = ee.Reducer.mean()
+
+        if kernel is None:
+            window_size = 2
+            kernel = ee.Kernel.square(radius=window_size, units="pixels")
+        dem = image.reduceNeighborhood(**{"reducer": reducer, "kernel": kernel})
+
+        if (not os.path.exists(output)) or (overwrite):
+            geemap.download_ee_image(
+                dem, output, scale=scale, crs=crs, region=roi.geometry(), **kwargs
+            )
+        else:
+            print(f"{output} already exists")
+    else:
+        print(f"No 3DEP 1m data found for {huc}")
+
+
+def download_3dep_10m(
+    huc,
+    output=None,
+    scale=10,
+    reducer=None,
+    kernel=None,
+    crs="EPSG:5070",
+    overwrite=False,
+    **kwargs,
+):
+
+    try:
+        import ee
+        import geemap
+    except ImportError:
+        raise ImportError(
+            "The geemap package is required to use this function. Use 'pip install geemap geedim' to install it."
+        )
+
+    geemap.ee_initialize()
+
+    if output is None:
+        output = f"{huc}.tif"
+
+    num = len(huc)
+
+    if num not in list(range(2, 13)):
+        raise ValueError("The HUC ID must be 2 to 12 characters long.")
+
+    fc = ee.FeatureCollection(f"USGS/WBD/2017/HUC{num}")
+    roi = fc.filter(ee.Filter.eq(f"huc{num}", huc))
+
+    collection = ee.Image(f"USGS/3DEP/10m")
+
+    image = collection.clipToCollection(roi).setDefaultProjection(crs)
+
+    if reducer is None:
+        reducer = ee.Reducer.mean()
+
+    if kernel is None:
+        window_size = 2
+        kernel = ee.Kernel.square(radius=window_size, units="pixels")
+    dem = image.reduceNeighborhood(**{"reducer": reducer, "kernel": kernel})
+
+    if (not os.path.exists(output)) or (overwrite):
+        geemap.download_ee_image(
+            dem, output, scale=scale, crs=crs, region=roi.geometry(), **kwargs
+        )
+    else:
+        print(f"{output} already exists")
