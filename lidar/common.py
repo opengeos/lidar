@@ -873,3 +873,31 @@ def resample(src, dst, resolution, **kwargs):
     from osgeo import gdal
 
     gdal.Warp(dst, src, xRes=resolution, yRes=resolution, **kwargs)
+
+
+def join_csv_to_gdf(shapefile_path, csv_path, gdf_join_column, csv_join_column):
+    """
+    Joins a CSV file to a GeoDataFrame based on a common column.
+
+    Args:
+        shapefile_path (str): Path to the Shapefile.
+        csv_path (str): Path to the CSV file.
+        gdf_join_column (str): Name of the join column in the GeoDataFrame.
+        csv_join_column (str): Name of the join column in the CSV.
+
+    Returns:
+        geopandas.GeoDataFrame: The GeoDataFrame with the joined data.
+    """
+    import pandas as pd
+    import geopandas as gpd
+
+    # Load the datasets
+    gdf = gpd.read_file(shapefile_path)
+    csv_data = pd.read_csv(csv_path)
+
+    # Perform the join
+    result = gdf.merge(
+        csv_data, left_on=gdf_join_column, right_on=csv_join_column, how="left"
+    )
+
+    return result
