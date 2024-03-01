@@ -932,7 +932,7 @@ def download_3dep_1m(
     if num not in list(range(2, 13)):
         raise ValueError("The HUC ID must be 2 to 12 characters long.")
 
-    fc = ee.FeatureCollection(f"USGS/WBD/2017/HUC{num}")
+    fc = ee.FeatureCollection(f"USGS/WBD/2017/HUC{str(num).zfill(2)}")
     collection = ee.ImageCollection(f"USGS/3DEP/1m")
 
     roi = fc.filter(ee.Filter.eq(f"huc{num}", huc))
@@ -989,7 +989,7 @@ def download_3dep_10m(
     if num not in list(range(2, 13)):
         raise ValueError("The HUC ID must be 2 to 12 characters long.")
 
-    fc = ee.FeatureCollection(f"USGS/WBD/2017/HUC{num}")
+    fc = ee.FeatureCollection(f"USGS/WBD/2017/HUC{str(num).zfill(2)}")
     roi = fc.filter(ee.Filter.eq(f"huc{num}", huc))
 
     collection = ee.Image(f"USGS/3DEP/10m")
