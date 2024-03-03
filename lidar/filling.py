@@ -250,7 +250,9 @@ def polygonize(img, shp_path):
     del img, ds, srcband, dst_ds, dst_layer
 
 
-def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None, engine="whitebox"):
+def ExtractSinks(
+    in_dem, min_size, out_dir, filled_dem=None, engine="whitebox", keep_files=True
+):
     """Extract sinks (e.g., maximum depression extent) from a DEM.
 
     Args:
@@ -271,7 +273,11 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None, engine="whitebox"):
     out_depth = os.path.join(out_dir, "depth.tif")
     out_csv_file = os.path.join(out_dir, "regions_info.csv")
     out_vec_file = os.path.join(out_dir, "regions.shp")
-    out_gpkg = os.path.join(out_dir, "regions.gpkg")
+
+    basename = os.path.splitext(os.path.basename(in_dem))[0]
+    out_gpkg = os.path.join(out_dir, basename + ".gpkg")
+
+    # out_gpkg = os.path.join(out_dir, "regions.gpkg")
     if filled_dem is None:
         out_dem_filled = os.path.join(out_dir, "dem_filled.tif")
     else:
@@ -373,6 +379,31 @@ def ExtractSinks(in_dem, min_size, out_dir, filled_dem=None, engine="whitebox"):
     gdf = join_csv_to_gdf(out_vec_file, out_csv_file, "id", "region-id")
     gdf.drop(columns=["id"], inplace=True)
     gdf.to_file(out_gpkg, driver="GPKG")
+
+    if not keep_files:
+        for file in [
+            out_dem,
+            out_dem_diff,
+            out_depth,
+            out_sink,
+            out_dem_filled,
+            out_region,
+            out_csv_file,
+        ]:
+            if os.path.exists(file):
+                os.remove(file)
+
+        out_vec_file_dbf = os.path.splitext(out_vec_file)[0] + ".dbf"
+        out_vec_file_shx = os.path.splitext(out_vec_file)[0] + ".shx"
+        out_csv_file_prj = os.path.splitext(out_vec_file)[0] + ".prj"
+        for file in [
+            out_vec_file,
+            out_vec_file_dbf,
+            out_vec_file_shx,
+            out_csv_file_prj,
+        ]:
+            if os.path.exists(file):
+                os.remove(file)
 
     end_time = time.time()
     print("Total run time:\t\t\t {:.4f} s\n".format(end_time - start_time))
