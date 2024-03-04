@@ -11,6 +11,9 @@ testing/
 lidar/levelset.py
 dev/
 examples/temp
+**/*.tif
+**/*.las
+**/*.laz
 
 # tif files extra
 *.tfw
