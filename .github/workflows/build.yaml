@@ -15,6 +15,7 @@ jobs:
             fail-fast: false
             matrix:
                 config:
+                    - { os: macOS-latest, py: "3.11" }
                     - { os: ubuntu-latest, py: "3.8" }
                     - { os: ubuntu-latest, py: "3.9" }
                     - { os: ubuntu-latest, py: "3.10" }
@@ -42,6 +43,23 @@ jobs:
               run: |
                   pip install -r requirements.txt
                   pip install .
+            # - name: Install dependencies
+            #   run: |
+            #       sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable -y
+            #       sudo apt-get -qq update
+            #       sudo apt-get install gdal-bin libgdal-dev -y
+            #       export CPLUS_INCLUDE_PATH=/usr/include/gdal
+            #       export CPLUS_INCLUDE_PATH=/usr/include/gdal
+            #       gdal-config --version
+            #       gdalinfo --version
+            #       python -m pip install --upgrade pip
+            #       pip install wheel
+            #       pip install --user --no-cache-dir Cython
+            #       pip install --user -r requirements.txt
+            #       pip install pygdal==3.3.2.10
+            #   pip install pygdal==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
+            #   pip install --user -r requirements_dev.txt
+            #   python -m pip install --upgrade pip
             - name: lidar-TEST
               run: |
                   python -m unittest discover tests/
