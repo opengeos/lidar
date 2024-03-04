@@ -47,6 +47,7 @@ jobs:
               run: |
                   conda install -c conda-forge mamba --yes
                   mamba install -c conda-forge gdal pyproj richdem lidar whitebox --yes
+                  pip install -U whitebox
 
             # - name: Test GDAL installation
             #   run: |
