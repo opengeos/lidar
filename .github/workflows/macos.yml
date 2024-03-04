@@ -15,7 +15,7 @@ jobs:
             fail-fast: false
             matrix:
                 config:
-                    - { os: macOS-latest, py: "3.11" }
+                    - { os: macOS-latest, py: "3.12" }
         env:
             SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
         steps:
@@ -46,7 +46,7 @@ jobs:
             - name: Install GDAL
               run: |
                   conda install -c conda-forge mamba --yes
-                  mamba install -c conda-forge gdal pyproj richdem lidar --yes
+                  mamba install -c conda-forge gdal pyproj richdem lidar whitebox --yes
 
             # - name: Test GDAL installation
             #   run: |
