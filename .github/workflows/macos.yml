@@ -1,0 +1,31 @@
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+
+name: macOS build
+jobs:
+    test-macOS:
+        runs-on: ${{ matrix.config.os }}
+        name: ${{ matrix.config.os }} (${{ matrix.config.py }})
+        strategy:
+            fail-fast: false
+            matrix:
+                config:
+                    - { os: macOS-latest, py: "3.11" }
+        env:
+            SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+        steps:
+            - name: CHECKOUT CODE
+              uses: actions/checkout@v4
+            - name: SETUP PYTHON
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ matrix.config.py }}
+            - name: Install package
+              run: pip install .
+            - name: Test import
+              run: python -c "import lidar; print('lidar import successful')"
