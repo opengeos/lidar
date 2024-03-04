@@ -1010,3 +1010,265 @@ def download_3dep_10m(
         )
     else:
         print(f"{output} already exists")
+
+
+def view_lidar(
+    filename,
+    cmap="terrain",
+    backend="pyvista",
+    background=None,
+    eye_dome_lighting=False,
+    **kwargs,
+):
+    """View LiDAR data in 3D.
+
+    Args:
+        filename (str): The filepath to the LiDAR data.
+        cmap (str, optional): The colormap to use. Defaults to "terrain". cmap currently does not work for the open3d backend.
+        backend (str, optional): The plotting backend to use, can be pyvista, ipygany, panel, and open3d. Defaults to "pyvista".
+        background (str, optional): The background color to use. Defaults to None.
+        eye_dome_lighting (bool, optional): Whether to use eye dome lighting. Defaults to False.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        ValueError: If the backend is not supported.
+    """
+
+    import sys
+
+    if os.environ.get("USE_MKDOCS") is not None:
+        return
+
+    if "google.colab" in sys.modules:
+        print("This function is not supported in Google Colab.")
+        return
+
+    warnings.filterwarnings("ignore")
+    filename = os.path.abspath(filename)
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"{filename} does not exist.")
+
+    backend = backend.lower()
+    if backend in ["pyvista", "ipygany", "panel"]:
+        try:
+            import pyntcloud
+        except ImportError:
+            print(
+                "The pyvista and pyntcloud packages are required for this function. Use pip install leafmap[lidar] to install them."
+            )
+            return
+
+        try:
+            if backend == "pyvista":
+                backend = None
+            if backend == "ipygany":
+                cmap = None
+            data = pyntcloud.PyntCloud.from_file(filename)
+            mesh = data.to_instance("pyvista", mesh=False)
+            mesh = mesh.elevation()
+            mesh.plot(
+                scalars="Elevation",
+                cmap=cmap,
+                jupyter_backend=backend,
+                background=background,
+                eye_dome_lighting=eye_dome_lighting,
+                **kwargs,
+            )
+
+        except Exception as e:
+            print("Something went wrong.")
+            print(e)
+            return
+
+    elif backend == "open3d":
+        try:
+            import laspy
+            import open3d as o3d
+            import numpy as np
+        except ImportError:
+            print(
+                "The laspy and open3d packages are required for this function. Use pip install laspy open3d to install them."
+            )
+            return
+
+        try:
+            las = laspy.read(filename)
+            point_data = np.stack([las.X, las.Y, las.Z], axis=0).transpose((1, 0))
+            geom = o3d.geometry.PointCloud()
+            geom.points = o3d.utility.Vector3dVector(point_data)
+            # geom.colors =  o3d.utility.Vector3dVector(colors)  # need to add colors. A list in the form of [[r,g,b], [r,g,b]] with value range 0-1. https://github.com/isl-org/Open3D/issues/614
+            o3d.visualization.draw_geometries([geom], **kwargs)
+
+        except Exception as e:
+            print("Something went wrong.")
+            print(e)
+            return
+
+    else:
+        raise ValueError(f"{backend} is not a valid backend.")
+
+
+def read_lidar(filename, **kwargs):
+    """Read a LAS file.
+
+    Args:
+        filename (str): A local file path or HTTP URL to a LAS file.
+
+    Returns:
+        LasData: The LasData object return by laspy.read.
+    """
+    try:
+        import laspy
+    except ImportError:
+        print(
+            "The laspy package is required for this function. Use `pip install laspy[lazrs,laszip]` to install it."
+        )
+        return
+
+    if (
+        isinstance(filename, str)
+        and filename.startswith("http")
+        and (filename.endswith(".las") or filename.endswith(".laz"))
+    ):
+        filename = github_raw_url(filename)
+        filename = download_file(filename)
+
+    return laspy.read(filename, **kwargs)
+
+
+def convert_lidar(
+    source, destination=None, point_format_id=None, file_version=None, **kwargs
+):
+    """Converts a Las from one point format to another Automatically upgrades the file version if source file version
+        is not compatible with the new point_format_id
+
+    Args:
+        source (str | laspy.lasdatas.base.LasBase): The source data to be converted.
+        destination (str, optional): The destination file path. Defaults to None.
+        point_format_id (int, optional): The new point format id (the default is None, which won't change the source format id).
+        file_version (str, optional): The new file version. None by default which means that the file_version may be upgraded
+            for compatibility with the new point_format. The file version will not be downgraded.
+
+    Returns:
+        aspy.lasdatas.base.LasBase: The converted LasData object.
+    """
+    try:
+        import laspy
+    except ImportError:
+        print(
+            "The laspy package is required for this function. Use `pip install laspy[lazrs,laszip]` to install it."
+        )
+        return
+
+    if isinstance(source, str):
+        source = read_lidar(source)
+
+    las = laspy.convert(
+        source, point_format_id=point_format_id, file_version=file_version
+    )
+
+    if destination is None:
+        return las
+    else:
+        destination = check_file_path(destination)
+        write_lidar(las, destination, **kwargs)
+        return destination
+
+
+def write_lidar(source, destination, do_compress=None, laz_backend=None):
+    """Writes to a stream or file.
+
+    Args:
+        source (str | laspy.lasdatas.base.LasBase): The source data to be written.
+        destination (str): The destination filepath.
+        do_compress (bool, optional): Flags to indicate if you want to compress the data. Defaults to None.
+        laz_backend (str, optional): The laz backend to use. Defaults to None.
+    """
+
+    try:
+        import laspy
+    except ImportError:
+        print(
+            "The laspy package is required for this function. Use `pip install laspy[lazrs,laszip]` to install it."
+        )
+        return
+
+    if isinstance(source, str):
+        source = read_lidar(source)
+
+    source.write(destination, do_compress=do_compress, laz_backend=laz_backend)
+
+
+def lidar_to_dsm(
+    filename,
+    output=None,
+    resolution=1.0,
+    radius=0.5,
+    minz=None,
+    maxz=None,
+    max_triangle_edge_length=None,
+    verbose=True,
+    **kwargs,
+):
+    """Generates a digital surface model (DSM) from a LiDAR point cloud. It is a wrapper for the `whitebox.lidar_digital_surface_model`.
+        See https://www.whiteboxgeo.com/manual/wbt_book/available_tools/lidar_tools.html#LidarDigitalSurfaceModel
+
+    Args:
+        filename (str): The input LiDAR file.
+        output (str, optional): The output file. Defaults to None.
+        resolution (float, optional): The resolution of the output raster. Defaults to 1.0.
+        radius (float, optional): The search radius. Defaults to 0.5.
+        minz (float, optional): Optional minimum elevation for inclusion in interpolation.
+        maxz (float, optional): Optional maximum elevation for inclusion in interpolation.
+        max_triangle_edge_length (float, optional): Optional maximum triangle edge length; triangles larger than this size will not be gridded
+        verbose (bool, optional): _description_. Defaults to True.
+    """
+    import whitebox
+
+    wbt = whitebox.WhiteboxTools()
+    wbt.verbose = verbose
+
+    filename = os.path.abspath(filename)
+    if output is not None:
+        output = os.path.abspath(output)
+
+    wbt.lidar_digital_surface_model(
+        i=filename,
+        output=output,
+        resolution=resolution,
+        radius=radius,
+        minz=minz,
+        maxz=maxz,
+        max_triangle_edge_length=max_triangle_edge_length,
+        **kwargs,
+    )
+
+
+def add_crs(filename, epsg):
+    """Add a CRS to a raster dataset.
+
+    Args:
+        filename (str): The filename of the raster dataset.
+        epsg (int | str): The EPSG code of the CRS.
+
+    """
+    try:
+        import rasterio
+    except ImportError:
+        raise ImportError(
+            "rasterio is required for adding a CRS to a raster. Please install it using 'pip install rasterio'."
+        )
+
+    if not os.path.exists(filename):
+        raise ValueError("filename must exist.")
+
+    if isinstance(epsg, int):
+        epsg = f"EPSG:{epsg}"
+    elif isinstance(epsg, str):
+        epsg = "EPSG:" + epsg
+    else:
+        raise ValueError("epsg must be an integer or string.")
+
+    crs = rasterio.crs.CRS({"init": epsg})
+    with rasterio.open(filename, mode="r+") as src:
+        src.crs = crs
