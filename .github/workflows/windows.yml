@@ -31,7 +31,7 @@ jobs:
                   miniconda-version: latest
 
             - name: Cache dependencies
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: ~/.cache/pip
                   key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
@@ -46,7 +46,7 @@ jobs:
             - name: Install GDAL
               run: |
                   conda install -c conda-forge mamba --yes
-                  mamba install -c conda-forge gdal pyproj --yes
+                  mamba install -c conda-forge gdal pyproj richdem --yes
 
             # - name: Test GDAL installation
             #   run: |
