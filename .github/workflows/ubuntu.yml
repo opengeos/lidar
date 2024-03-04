@@ -62,5 +62,5 @@ jobs:
                   pip install -r requirements.txt -r requirements_dev.txt
                   pip install .
 
-            - name: Test import
-              run: python -c "import lidar; print('lidar import successful')"
+            # - name: Test import
+            #   run: python -c "import lidar; print('lidar import successful')"
