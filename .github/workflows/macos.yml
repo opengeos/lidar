@@ -54,10 +54,10 @@ jobs:
             #       python -c "from osgeo import gdal"
             #       gdalinfo --version
 
-            # - name: Install dependencies
-            #   run: |
-            #       pip install -r requirements.txt -r requirements_dev.txt
-            #       pip install .
+            - name: Install dependencies
+              run: |
+                  pip install -r requirements.txt -r requirements_dev.txt
+                  pip install .
 
             - name: Test import
               run: python -c "import lidar; print('lidar import successful')"
