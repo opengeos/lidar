@@ -4,8 +4,8 @@
 [![image](https://img.shields.io/pypi/v/lidar.svg)](https://pypi.python.org/pypi/lidar)
 [![image](https://pepy.tech/badge/lidar)](https://pepy.tech/project/lidar)
 [![image](https://img.shields.io/conda/vn/conda-forge/lidar.svg)](https://anaconda.org/conda-forge/lidar)
-[![image](https://github.com/giswqs/lidar/workflows/build/badge.svg)](https://github.com/giswqs/lidar/actions?query=workflow%3Abuild)
-[![image](https://github.com/giswqs/lidar/workflows/docs/badge.svg)](https://lidar.gishub.org)
+[![image](https://github.com/opengeos/lidar/workflows/build/badge.svg)](https://github.com/opengeos/lidar/actions?query=workflow%3Abuild)
+[![image](https://github.com/opengeos/lidar/workflows/docs/badge.svg)](https://lidar.gishub.org)
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![image](https://img.shields.io/twitter/follow/giswqs?style=social)](https://twitter.com/giswqs)
 [![image](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
@@ -14,7 +14,7 @@
 **lidar** is Python package for delineating the nested hierarchy of surface depressions in digital elevation models (DEMs). It is
 particularly useful for analyzing high-resolution topographic data, such as DEMs derived from Light Detection and Ranging (LiDAR) data.
 
--   GitHub repo: <https://github.com/giswqs/lidar>
+-   GitHub repo: <https://github.com/opengeos/lidar>
 -   Documentation: <https://lidar.gishub.org>
 -   PyPI: <https://pypi.org/project/lidar>
 -   Conda-forge: <https://anaconda.org/conda-forge/lidar>
@@ -28,8 +28,8 @@ particularly useful for analyzing high-resolution topographic data, such as DEMs
 -   **Wu, Q.**, Lane, C.R., Wang, L., Vanderhoof, M.K., Christensen,
     J.R., & Liu, H. (2019). Efficient Delineation of Nested Depression
     Hierarchy in Digital Elevation Models for Hydrological Analysis
-    Using Level-Set Method. *Journal of the American Water Resources
-    Association*. <https://doi.org/10.1111/1752-1688.12689> ([PDF](https://spatial.utk.edu/pubs/2019_JAWRA.pdf))
+    Using Level-Set Method. _Journal of the American Water Resources
+    Association_. <https://doi.org/10.1111/1752-1688.12689> ([PDF](https://spatial.utk.edu/pubs/2019_JAWRA.pdf))
 
 ## Introduction
 
@@ -67,7 +67,7 @@ length, elongatedness.
 
 ## State of the Field
 
-Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as [RichDEM](https://richdem.readthedocs.io/) and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools). However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar**  Python package is intended for filling this gap.
+Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as [RichDEM](https://richdem.readthedocs.io/) and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools). However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar** Python package is intended for filling this gap.
 
 ## Key Features
 

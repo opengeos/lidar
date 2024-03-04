@@ -319,7 +319,7 @@ def clone_repo(out_dir=".", unzip=True):
         out_dir (str, optional): Output folder for the repo. Defaults to '.'.
         unzip (bool, optional): Whether to unzip the repository. Defaults to True.
     """
-    url = "https://github.com/giswqs/lidar/archive/master.zip"
+    url = "https://github.com/opengeos/lidar/archive/master.zip"
     filename = "lidar-master.zip"
     download_from_url(url, out_file_name=filename, out_dir=out_dir, unzip=unzip)
 

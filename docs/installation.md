@@ -22,9 +22,10 @@ If you have [Anaconda](https://www.anaconda.com/distribution/#download-section) 
 installed on your computer, you can create a fresh conda environment to install lidar:
 
 ```console
-conda create -n py38 python=3.8
-conda activate py38
-conda install lidar -c conda-forge
+conda create -n geo python=3.11
+conda activate geo
+conda install -c conda-forge mamba
+mamba install -c conda-forge lidar
 ```
 
 ## Upgrade lidar
@@ -38,18 +39,18 @@ pip install -U lidar
 If you use conda, you can update lidar to the latest version by running the following command in your terminal:
 
 ```console
-conda update lidar -c conda-forge
+mamba update lidar -c conda-forge
 ```
 
 To install the development version from GitHub directly using Git, run the following code:
 
 ```console
-pip install git+https://github.com/giswqs/lidar
+pip install git+https://github.com/opengeos/lidar
 ```
 
 ## Dependencies
 
-lidar's Python dependencies are listed in its [requirements.txt](https://github.com/giswqs/lidar/blob/master/requirements.txt) file. In
+lidar's Python dependencies are listed in its [requirements.txt](https://github.com/opengeos/lidar/blob/master/requirements.txt) file. In
 addition, lidar has a C library dependency: GDAL &gt;=1.11.2. How to
 install GDAL in different operating systems will be explained below.
 More information about GDAL can be found [here](https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries).
@@ -107,9 +108,10 @@ The instruction below assumes that you have installed [Anaconda](https://www.ana
 environment and install required packages
 
 ```console
-conda create -n py38 python=3.8
-conda activate py38
-conda install lidar -c conda-forge
+conda create -n geo python=3.11
+conda activate geo
+conda install -c conda-forge mamba
+mamba install -c conda-forge lidar
 ```
 
 When installing the **lidar** package, if you encounter an error

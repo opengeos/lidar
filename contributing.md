@@ -7,13 +7,13 @@ little bit helps, and credit will always be given. You can contribute in many wa
 
 ### Report Bugs
 
-Report bugs at <https://github.com/giswqs/lidar/issues>.
+Report bugs at <https://github.com/opengeos/lidar/issues>.
 
 If you are reporting a bug, please include:
 
-- Your operating system name and version.
-- Any details about your local setup that might be helpful in troubleshooting.
-- Detailed steps to reproduce the bug.
+-   Your operating system name and version.
+-   Any details about your local setup that might be helpful in troubleshooting.
+-   Detailed steps to reproduce the bug.
 
 ### Fix Bugs
 
@@ -29,19 +29,19 @@ lidar could always use more documentation, whether as part of the official lidar
 
 ### Submit Feedback
 
-The best way to send feedback is to file an issue at <https://github.com/giswqs/lidar/issues>.
+The best way to send feedback is to file an issue at <https://github.com/opengeos/lidar/issues>.
 
 If you are proposing a feature:
 
-- Explain in detail how it would work.
-- Keep the scope as narrow as possible, to make it easier to implement.
-- Remember that this is a volunteer-driven project, and that contributions are welcome.
+-   Explain in detail how it would work.
+-   Keep the scope as narrow as possible, to make it easier to implement.
+-   Remember that this is a volunteer-driven project, and that contributions are welcome.
 
 ## Get Started
 
 Ready to contribute? Here's how to set up _lidar_ for local development.
 
-1. Fork the [lidar](https://github.com/giswqs/lidar) repo on GitHub.
+1. Fork the [lidar](https://github.com/opengeos/lidar) repo on GitHub.
 
 2. Clone your fork locally:
 
@@ -50,7 +50,6 @@ git clone git@github.com:your_name_here/lidar.git
 ```
 
 3. Install your local copy into a conda env. Assuming you have conda installed, this is how you set up your fork for local development:
-
 
 ```console
 conda create -n lidar-test python
@@ -92,4 +91,4 @@ Before you submit a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
 2. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in README.md.
-3. The pull request should work for Python 3.7 and 3.8. Check <https://github.com/giswqs/lidar/actions> and make sure that the tests pass for all supported Python versions.
+3. The pull request should work for Python 3.7 and 3.8. Check <https://github.com/opengeos/lidar/actions> and make sure that the tests pass for all supported Python versions.

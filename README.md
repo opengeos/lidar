@@ -4,8 +4,8 @@
 [![image](https://img.shields.io/pypi/v/lidar.svg)](https://pypi.python.org/pypi/lidar)
 [![image](https://pepy.tech/badge/lidar)](https://pepy.tech/project/lidar)
 [![image](https://img.shields.io/conda/vn/conda-forge/lidar.svg)](https://anaconda.org/conda-forge/lidar)
-[![image](https://github.com/giswqs/lidar/workflows/build/badge.svg)](https://github.com/giswqs/lidar/actions?query=workflow%3Abuild)
-[![image](https://github.com/giswqs/lidar/workflows/docs/badge.svg)](https://lidar.gishub.org)
+[![image](https://github.com/opengeos/lidar/workflows/build/badge.svg)](https://github.com/opengeos/lidar/actions?query=workflow%3Abuild)
+[![image](https://github.com/opengeos/lidar/workflows/docs/badge.svg)](https://lidar.gishub.org)
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![image](https://img.shields.io/twitter/follow/giswqs?style=social)](https://twitter.com/giswqs)
 [![image](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-yellowgreen.svg)](https://www.buymeacoffee.com/giswqs)
@@ -14,7 +14,7 @@
 **lidar** is Python package for delineating the nested hierarchy of surface depressions in digital elevation models (DEMs). It is
 particularly useful for analyzing high-resolution topographic data, such as DEMs derived from Light Detection and Ranging (LiDAR) data.
 
--   GitHub repo: <https://github.com/giswqs/lidar>
+-   GitHub repo: <https://github.com/opengeos/lidar>
 -   Documentation: <https://lidar.gishub.org>
 -   PyPI: <https://pypi.org/project/lidar>
 -   Conda-forge: <https://anaconda.org/conda-forge/lidar>
@@ -116,9 +116,10 @@ If you have [Anaconda](https://www.anaconda.com/distribution/#download-section) 
 installed on your computer, you can create a fresh conda environment to install lidar:
 
 ```console
-conda create -n py38 python=3.8
-conda activate py38
-conda install lidar -c conda-forge
+conda create -n geo python=3.11
+conda activate geo
+conda install -c conda-forge mamba
+mamba install -c conda-forge lidar
 ```
 
 ### Upgrade lidar
@@ -132,18 +133,18 @@ pip install -U lidar
 If you use conda, you can update lidar to the latest version by running the following command in your terminal:
 
 ```console
-conda update lidar -c conda-forge
+mamba update -c conda-forge lidar
 ```
 
 To install the development version from GitHub directly using Git, run the following code:
 
 ```console
-pip install git+https://github.com/giswqs/lidar
+pip install git+https://github.com/opengeos/lidar
 ```
 
 ### Dependencies
 
-lidar's Python dependencies are listed in its [requirements.txt](https://github.com/giswqs/lidar/blob/master/requirements.txt) file. In
+lidar's Python dependencies are listed in its [requirements.txt](https://github.com/opengeos/lidar/blob/master/requirements.txt) file. In
 addition, lidar has a C library dependency: GDAL &gt;=1.11.2. How to
 install GDAL in different operating systems will be explained below.
 More information about GDAL can be found [here](https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries).
@@ -201,9 +202,10 @@ The instruction below assumes that you have installed [Anaconda](https://www.ana
 environment and install required packages
 
 ```console
-conda create -n py38 python=3.8
-conda activate py38
-conda install lidar -c conda-forge
+conda create -n geo python=3.11
+conda activate geo
+conda install -c conda-forge mamba
+mamba install -c conda-forge lidar
 ```
 
 When installing the **lidar** package, if you encounter an error
@@ -356,7 +358,7 @@ little bit helps, and credit will always be given. You can contribute in many wa
 
 #### Report Bugs
 
-Report bugs at <https://github.com/giswqs/lidar/issues>.
+Report bugs at <https://github.com/opengeos/lidar/issues>.
 
 If you are reporting a bug, please include:
 
@@ -378,7 +380,7 @@ lidar could always use more documentation, whether as part of the official lidar
 
 #### Submit Feedback
 
-The best way to send feedback is to file an issue at <https://github.com/giswqs/lidar/issues>.
+The best way to send feedback is to file an issue at <https://github.com/opengeos/lidar/issues>.
 
 If you are proposing a feature:
 
@@ -390,7 +392,7 @@ If you are proposing a feature:
 
 Ready to contribute? Here's how to set up _lidar_ for local development.
 
-1. Fork the [lidar](https://github.com/giswqs/lidar) repo on GitHub.
+1. Fork the [lidar](https://github.com/opengeos/lidar) repo on GitHub.
 
 2. Clone your fork locally:
 
@@ -440,7 +442,7 @@ Before you submit a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
 2. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in README.md.
-3. The pull request should work for Python 3.7 and 3.8. Check <https://github.com/giswqs/lidar/actions> and make sure that the tests pass for all supported Python versions.
+3. The pull request should work for Python 3.7 and 3.8. Check <https://github.com/opengeos/lidar/actions> and make sure that the tests pass for all supported Python versions.
 
 ## Credits
 
