@@ -2,7 +2,7 @@ site_name: lidar
 
 site_url: https://lidar.github.org
 
-repo_url: https://github.com/giswqs/lidar
+repo_url: https://github.com/opengeos/lidar
 
 theme:
     palette:
@@ -46,7 +46,7 @@ nav:
     - Contributing: contributing.md
     - Citations: citations.md
     - Changelog: changelog.md
-    - Report Issues: https://github.com/giswqs/lidar/issues
+    - Report Issues: https://github.com/opengeos/lidar/issues
     - API Reference:
           - common module: common.md
           - filling module: filling.md

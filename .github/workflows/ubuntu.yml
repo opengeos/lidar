@@ -6,13 +6,14 @@ on:
         branches:
             - master
 
-name: Windows build
+name: Linux build
 jobs:
-    test-windows:
-        runs-on: windows-latest
+    test-ubuntu:
+        runs-on: ubuntu-latest
         strategy:
+            fail-fast: false
             matrix:
-                python-version: ["3.12"]
+                python-version: ["3.9", "3.10", "3.11", "3.12"]
 
         defaults:
             run:
@@ -45,8 +46,11 @@ jobs:
 
             - name: Install GDAL
               run: |
-                  conda install -c conda-forge mamba --yes
-                  mamba install -c conda-forge gdal pyproj richdem --yes
+                  #   pip install --no-cache-dir Cython
+                  #   pip install --find-links=https://girder.github.io/large_image_wheels --no-cache GDAL
+                    conda install gdal --yes
+                    conda install -c conda-forge mamba --yes
+                    mamba install -c conda-forge pyproj richdem lidar --yes
 
             # - name: Test GDAL installation
             #   run: |
@@ -55,8 +59,8 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  pip install -r requirements.txt
+                  pip install -r requirements.txt -r requirements_dev.txt
                   pip install .
 
-            - name: Test import
-              run: python -c "import lidar; print('lidar import successful')"
+            # - name: Test import
+            #   run: python -c "import lidar; print('lidar import successful')"

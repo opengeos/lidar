@@ -113,7 +113,7 @@ setup(
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
-    url="https://github.com/giswqs/lidar",
+    url="https://github.com/opengeos/lidar",
     version="0.8.1",
     zip_safe=False,
 )

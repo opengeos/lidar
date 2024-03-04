@@ -31,17 +31,17 @@ The **lidar** package is intended for scientists and researchers who would like 
 
 # State of the Field
 
-Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as RichDEM [@Barnes2018] and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools) [@Lindsay2018]. However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar**  Python package is intended for filling this gap.
+Currently, there are a few open-source Python packages that can perform depression filling on digital elevation data, such as RichDEM [@Barnes2018] and [whitebox](https://github.com/giswqs/whitebox-python), the Python frontend for [WhiteboxTools](https://github.com/jblindsay/whitebox-tools) [@Lindsay2018]. However, there are no Python packages offering tools for delineating the nested hierarchy of surface depressions and catchments as well as simulating inundation dynamics. The **lidar** Python package is intended for filling this gap.
 
 # lidar Functionality
 
 The key functionality of the **lidar** package is organized into several modules:
 
--   [filtering](https://github.com/giswqs/lidar/blob/master/lidar/filtering.py): Smoothing DEMs using mean, median, and Gaussian filters.
--   [filling](https://github.com/giswqs/lidar/blob/master/lidar/filling.py): Delineating surface depressions from DEMs using the traditional depression filling method.
--   [slicing](https://github.com/giswqs/lidar/blob/master/lidar/slicing.py): Delineating the nested hierarchy of surface depressions using the level-set method; computing topological and geometric properties of depressions; and exporting depression properties as a CSV file.
--   [mounts](https://github.com/giswqs/lidar/blob/master/lidar/mounts.py): Delineating the nested hierarchy of elevated features (i.e., mounts) using the level-set method; computing topological and geometric properties of mounts; and exporting mount properties as a CSV file.
--   [toolbox](https://github.com/giswqs/lidar/blob/master/lidar/toolbox): An [ArcGIS](https://www.esri.com/en-us/arcgis/about-arcgis/overview) toolbox for delineating the nested hierarchy of surface depressions and simulating inundation dynamics.
+-   [filtering](https://github.com/opengeos/lidar/blob/master/lidar/filtering.py): Smoothing DEMs using mean, median, and Gaussian filters.
+-   [filling](https://github.com/opengeos/lidar/blob/master/lidar/filling.py): Delineating surface depressions from DEMs using the traditional depression filling method.
+-   [slicing](https://github.com/opengeos/lidar/blob/master/lidar/slicing.py): Delineating the nested hierarchy of surface depressions using the level-set method; computing topological and geometric properties of depressions; and exporting depression properties as a CSV file.
+-   [mounts](https://github.com/opengeos/lidar/blob/master/lidar/mounts.py): Delineating the nested hierarchy of elevated features (i.e., mounts) using the level-set method; computing topological and geometric properties of mounts; and exporting mount properties as a CSV file.
+-   [toolbox](https://github.com/opengeos/lidar/blob/master/lidar/toolbox): An [ArcGIS](https://www.esri.com/en-us/arcgis/about-arcgis/overview) toolbox for delineating the nested hierarchy of surface depressions and simulating inundation dynamics.
 
 # lidar Tutorials
 

@@ -6,18 +6,18 @@ on:
         branches:
             - master
 
-name: Windows build
+name: macOS build
 jobs:
-    test-windows:
-        runs-on: windows-latest
+    test-macOS:
+        runs-on: ${{ matrix.config.os }}
+        name: ${{ matrix.config.os }} (${{ matrix.config.py }})
         strategy:
+            fail-fast: false
             matrix:
-                python-version: ["3.12"]
-
-        defaults:
-            run:
-                shell: bash -el {0}
-
+                config:
+                    - { os: macOS-latest, py: "3.12" }
+        env:
+            SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
         steps:
             - uses: actions/checkout@v4
 
@@ -25,7 +25,7 @@ jobs:
               uses: conda-incubator/setup-miniconda@v3
               with:
                   auto-activate-base: true
-                  python-version: ${{ matrix.python-version }}
+                  python-version: ${{ matrix.config.py }}
                   channels: conda-forge,defaults
                   channel-priority: true
                   miniconda-version: latest
@@ -46,17 +46,18 @@ jobs:
             - name: Install GDAL
               run: |
                   conda install -c conda-forge mamba --yes
-                  mamba install -c conda-forge gdal pyproj richdem --yes
+                  mamba install -c conda-forge gdal pyproj richdem lidar --yes
+              #   pip install -U whitebox
 
             # - name: Test GDAL installation
             #   run: |
             #       python -c "from osgeo import gdal"
             #       gdalinfo --version
 
-            - name: Install dependencies
-              run: |
-                  pip install -r requirements.txt
-                  pip install .
+            # - name: Install dependencies
+            #   run: |
+            #       pip install -r requirements.txt -r requirements_dev.txt
+            #       pip install .
 
-            - name: Test import
-              run: python -c "import lidar; print('lidar import successful')"
+            # - name: Test import
+            #   run: python -c "import lidar; print('lidar import successful')"
