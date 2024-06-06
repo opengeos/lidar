@@ -157,7 +157,7 @@ def write_dep_csv(dep_list, csv_file):
     """
     csv = open(csv_file, "w")
     header = (
-        "region-id"
+        "region_id"
         + ","
         + "count"
         + ","
@@ -165,19 +165,19 @@ def write_dep_csv(dep_list, csv_file):
         + ","
         + "volume"
         + ","
-        + "avg-depth"
+        + "avg_depth"
         + ","
-        + "max-depth"
+        + "max_depth"
         + ","
-        + "min-elev"
+        + "min_elev"
         + ","
-        + "max-elev"
+        + "max_elev"
         + ","
         + "perimeter"
         + ","
-        + "major-axis"
+        + "major_axis"
         + ","
-        + "minor-axis"
+        + "minor_axis"
         + ","
         + "elongatedness"
         + ","
@@ -185,7 +185,7 @@ def write_dep_csv(dep_list, csv_file):
         + ","
         + "orientation"
         + ","
-        + "area-bbox-ratio"
+        + "area_bbox_ratio"
     )
 
     csv.write(header + "\n")
@@ -376,7 +376,7 @@ def ExtractSinks(
     print("Converting raster to vector ...")
     polygonize(out_region, out_vec_file)
 
-    gdf = join_csv_to_gdf(out_vec_file, out_csv_file, "id", "region-id")
+    gdf = join_csv_to_gdf(out_vec_file, out_csv_file, "id", "region_id")
     gdf.drop(columns=["id"], inplace=True)
     gdf.to_file(out_gpkg, driver="GPKG")
 
