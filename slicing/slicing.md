@@ -1,0 +1,3 @@
+# slicing module
+
+::: lidar.slicing
