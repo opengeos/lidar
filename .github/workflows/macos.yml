@@ -38,15 +38,15 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pip-
 
-            - name: Testing conda
-              run: |
-                  conda info
-                  conda list
+            # - name: Testing conda
+            #   run: |
+            #       conda info
+            #       conda list
 
-            - name: Install GDAL
-              run: |
-                  conda install -c conda-forge mamba --yes
-                  mamba install -c conda-forge gdal pyproj richdem lidar --yes
+            # - name: Install GDAL
+            #   run: |
+            #       conda install -c conda-forge mamba --yes
+            #       mamba install -c conda-forge gdal pyproj richdem lidar --yes
               #   pip install -U whitebox
 
             # - name: Test GDAL installation
