@@ -7,10 +7,16 @@ import math
 import time
 import shutil
 import numpy as np
-import richdem as rd
 from scipy import ndimage
 from skimage import measure
 from osgeo import gdal, ogr, osr
+
+try:
+    import richdem as rd
+except ImportError:
+    print(
+        "richdem is not installed. Please install it with `pip install richdem` or `conda install richdem -c conda-forge`."
+    )
 
 
 class Depression:

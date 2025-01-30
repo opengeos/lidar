@@ -1,10 +1,16 @@
 import os
 import pkg_resources
-import richdem as rd
 from .filtering import MedianFilter, MeanFilter, GaussianFilter
 from .filling import ExtractSinks
 from .slicing import DelineateDepressions
 from .mounts import DelineateMounts
+
+try:
+    import richdem as rd
+except ImportError:
+    print(
+        "richdem is not installed. Please install it with `pip install richdem` or `conda install richdem -c conda-forge`."
+    )
 
 
 def gui():
