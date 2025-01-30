@@ -3,7 +3,6 @@
 """
 
 import os
-import pkg_resources
 from scipy import ndimage
 import numpy as np
 import time

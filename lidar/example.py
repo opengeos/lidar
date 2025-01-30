@@ -1,13 +1,13 @@
 import os
-import pkg_resources
 import richdem as rd
 from filtering import MedianFilter
 from filling import ExtractSinks
 from slicing import DelineateDepressions
+import importlib.resources as resources
 
 # identify the sample data directory of the package
 package_name = "lidar"
-data_dir = pkg_resources.resource_filename(package_name, "data/")
+data_dir = resources.files(package_name) / "data"
 
 # use the sample dem. Change it to your own dem if needed
 in_dem = os.path.join(data_dir, "dem.tif")

@@ -3,7 +3,6 @@
 """
 
 import os
-import pkg_resources
 import numpy as np
 import lidar
 from .filling import ExtractSinks
