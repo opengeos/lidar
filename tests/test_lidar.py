@@ -11,7 +11,7 @@ from click.testing import CliRunner
 from lidar import cli
 
 import os
-import pkg_resources
+import importlib.resources as resources
 import richdem as rd
 from scipy import ndimage
 import numpy as np
@@ -35,7 +35,7 @@ class TestLidar(unittest.TestCase):
 
         # identify the sample data directory of the package
         package_name = "lidar"
-        data_dir = pkg_resources.resource_filename(package_name, "data/")
+        data_dir = resources.files(package_name) / "data"
         print("Sample data directory: {}".format(data_dir))
 
         # use the sample dem. Change it to your own dem if needed
@@ -54,7 +54,7 @@ class TestLidar(unittest.TestCase):
 
         # identify the sample data directory of the package
         package_name = "lidar"
-        data_dir = pkg_resources.resource_filename(package_name, "data/")
+        data_dir = resources.files(package_name) / "data"
         print("Sample data directory: {}".format(data_dir))
 
         # use the sample dem. Change it to your own dem if needed
@@ -73,7 +73,7 @@ class TestLidar(unittest.TestCase):
 
         # identify the sample data directory of the package
         package_name = "lidar"
-        data_dir = pkg_resources.resource_filename(package_name, "data/")
+        data_dir = resources.files(package_name) / "data"
         print("Sample data directory: {}".format(data_dir))
 
         # use the sample dem. Change it to your own dem if needed
@@ -92,7 +92,7 @@ class TestLidar(unittest.TestCase):
 
         # identify the sample data directory of the package
         package_name = "lidar"
-        data_dir = pkg_resources.resource_filename(package_name, "data/")
+        data_dir = resources.files(package_name) / "data"
         print("Sample data directory: {}".format(data_dir))
 
         # use the sample dem. Change it to your own dem if needed
@@ -115,7 +115,7 @@ class TestLidar(unittest.TestCase):
         # set input files
         # identify the sample data directory of the package
         package_name = "lidar"
-        data_dir = pkg_resources.resource_filename(package_name, "data/")
+        data_dir = resources.files(package_name) / "data"
         # in_dem = os.path.join(data_dir, "dem.tif")
         in_sink = os.path.join(data_dir, "sink.tif")
         # parameters for level set method
@@ -144,7 +144,7 @@ class TestLidar(unittest.TestCase):
 
         # identify the sample data directory of the package
         package_name = "lidar"
-        data_dir = pkg_resources.resource_filename(package_name, "data/")
+        data_dir = resources.files(package_name) / "data"
 
         # use the sample dem. Change it to your own dem if needed
         in_dem = os.path.join(data_dir, "dsm.tif")

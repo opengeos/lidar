@@ -1,10 +1,16 @@
 import os
-import pkg_resources
-import richdem as rd
+import importlib.resources as resources
 from .filtering import MedianFilter, MeanFilter, GaussianFilter
 from .filling import ExtractSinks
 from .slicing import DelineateDepressions
 from .mounts import DelineateMounts
+
+try:
+    import richdem as rd
+except ImportError:
+    print(
+        "richdem is not installed. Please install it with `pip install richdem` or `conda install richdem -c conda-forge`."
+    )
 
 
 def gui():
@@ -19,7 +25,7 @@ def gui():
 
     # identify the sample data directory of the package
     package_name = "lidar"
-    data_dir = pkg_resources.resource_filename(package_name, "data/")
+    data_dir = resources.files(package_name) / "data"
 
     # use the sample dem. Change it to your own dem if needed
     in_dem = os.path.join(data_dir, "dem.tif")

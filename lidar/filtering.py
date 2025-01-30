@@ -3,11 +3,16 @@
 """
 
 import os
-import pkg_resources
-import richdem as rd
 from scipy import ndimage
 import numpy as np
 import time
+
+try:
+    import richdem as rd
+except ImportError:
+    print(
+        "richdem is not installed. Please install it with `pip install richdem` or `conda install richdem -c conda-forge`."
+    )
 
 
 def np2rdarray(in_array, no_data, projection, geotransform):
