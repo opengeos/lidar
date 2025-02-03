@@ -1,6 +1,4 @@
-"""Module for filling surface depressions.
-
-"""
+"""Module for filling surface depressions."""
 
 import os
 import time
