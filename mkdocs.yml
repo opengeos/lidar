@@ -47,6 +47,11 @@ nav:
     - Citations: citations.md
     - Changelog: changelog.md
     - Report Issues: https://github.com/opengeos/lidar/issues
+    - Notebooks:
+          - notebooks/lidar.ipynb
+          - notebooks/lidar_colab.ipynb
+          - notebooks/lidar_dsm.ipynb
+          - notebooks/inundation.ipynb
     - API Reference:
           - common module: common.md
           - filling module: filling.md
