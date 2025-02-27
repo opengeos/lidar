@@ -1,6 +1,4 @@
-"""Module for applying filters to image.
-
-"""
+"""Module for applying filters to image."""
 
 import os
 from scipy import ndimage

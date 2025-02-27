@@ -1,6 +1,4 @@
-"""Module for delineating the nested hierarchy of elevated features (i.e., mounts).
-
-"""
+"""Module for delineating the nested hierarchy of elevated features (i.e., mounts)."""
 
 import os
 import numpy as np

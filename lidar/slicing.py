@@ -1,6 +1,4 @@
-"""Module for the level-set algorithm.
-
-"""
+"""Module for the level-set algorithm."""
 
 import os
 import math
