@@ -468,10 +468,21 @@ if __name__ == "__main__":
         out_flood_name = "flood_" + str(iter_number).zfill(digits) + ".tif"
         out_flood_file = os.path.join(out_flood_dir, out_flood_name)
 
-        for region in copy.deepcopy(regions):  # iterate through each depression region
-            label_id = region.label
-            img = region.intensity_image  # dem
-            bbox = region.bbox
+        regions_copy = [
+            {
+                "label": region.label,
+                "intensity_image": np.copy(
+                    region.intensity_image
+                ),  # Ensure independent copy
+                "bbox": region.bbox,
+            }
+            for region in regions
+        ]
+
+        for region in regions_copy:  # iterate through each depression region
+            label_id = region["label"]
+            img = region["intensity_image"]
+            bbox = region["bbox"]
             reg_catchment = catchment_img[
                 bbox[0] : bbox[2], bbox[1] : bbox[3]
             ]  # extract the corresponding catchment
