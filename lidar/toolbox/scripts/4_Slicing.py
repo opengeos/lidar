@@ -219,7 +219,7 @@ def levelSet(
 
         objects = measure.regionprops(label_objects, img)
         for i, object in enumerate(objects):
-            (row, col) = object.coords[0]  # get a boundary cell
+            row, col = object.coords[0]  # get a boundary cell
             bbox = object.bbox
 
             if len(parent_ids) == 0:  # This is the first depression, maximum depression
