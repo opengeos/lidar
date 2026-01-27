@@ -3,7 +3,6 @@
 
 """Tests for `lidar` package."""
 
-
 import unittest
 from click.testing import CliRunner
 

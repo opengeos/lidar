@@ -285,7 +285,7 @@ def levelSet(img, region_id, obj_uid, image_paras):
     parent_ids = {}  # store current parent depressions
     nbr_ids = {}  # store the inner-neighbor ids of current parent depressions
     dep_list = []  # list for storing depressions
-    (rows, cols) = img.shape
+    rows, cols = img.shape
     if rows == 1 or cols == 1:  # if the depression is a horizontal or vertical line
         cells = rows * cols
         size = cells * pow(resolution, 2)  # depression size
@@ -345,7 +345,7 @@ def levelSet(img, region_id, obj_uid, image_paras):
         # objects = measure.regionprops(label_objects, img, coordinates='xy')
         objects = measure.regionprops(label_objects, img)
         for i, object in enumerate(objects):
-            (row, col) = object.coords[0]  # get a boundary cell
+            row, col = object.coords[0]  # get a boundary cell
             bbox = object.bbox
 
             if len(parent_ids) == 0:  # This is the first depression, maximum depression
